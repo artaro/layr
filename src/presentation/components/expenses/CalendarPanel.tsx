@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Transaction } from '@/domain/entities';
 import { TransactionType } from '@/domain/enums';
 import { formatCurrency } from '@/lib/formatters';
+import { useTranslation } from '@/lib/i18n';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CalendarPanelProps {
@@ -13,8 +14,19 @@ interface CalendarPanelProps {
 type ViewType = 'expense' | 'income' | 'total';
 
 export default function CalendarPanel({ transactions }: CalendarPanelProps) {
+  const { t, language } = useTranslation();
   const [view, setView] = useState<ViewType>('total');
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  const viewLabels: Record<ViewType, string> = {
+    total: t('calendar.total'),
+    expense: t('calendar.expense'),
+    income: t('calendar.income'),
+  };
+
+  const weekdays = language === 'th'
+    ? ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส']
+    : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -98,7 +110,7 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
                     <ChevronLeft size={20} />
                 </button>
                 <h3 className="text-lg font-bold text-gray-900 min-w-[140px] text-center">
-                    {currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}
+                    {currentDate.toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', { month: 'long', year: 'numeric' })}
                 </h3>
                 <button 
                    onClick={handleNextMonth} 
@@ -113,13 +125,13 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
                     <button
                         key={v}
                         onClick={() => setView(v)}
-                        className={`px-3 py-1.5 text-xs font-semibold rounded-md capitalize transition-all ${
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
                             view === v 
                             ? 'bg-white text-gray-900 shadow-sm' 
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
                     >
-                        {v}
+                        {viewLabels[v]}
                     </button>
                 ))}
             </div>
@@ -127,7 +139,7 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
 
         {/* Weekday Headers */}
         <div className="grid grid-cols-7 mb-2">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          {weekdays.map((day) => (
             <div key={day} className="text-center text-xs font-semibold text-gray-400">
                {day}
             </div>

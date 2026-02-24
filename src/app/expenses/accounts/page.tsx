@@ -20,8 +20,10 @@ import { AccountType } from '@/domain/enums/accountType';
 import { formatCurrency } from '@/lib/formatters';
 import { useUIStore } from '@/presentation/stores';
 import AccountForm from '@/presentation/components/expenses/AccountForm';
+import { useTranslation } from '@/lib/i18n';
 
 export default function AccountsPage() {
+  const { t } = useTranslation();
   const { data: accounts = [], isLoading, error } = useAccounts();
   const createAccount = useCreateAccount();
   const updateAccount = useUpdateAccount();
@@ -38,7 +40,7 @@ export default function AccountsPage() {
       setFormOpen(false);
       showSnackbar('Account created! 🏦', 'success');
     } catch {
-      showSnackbar('Failed to create account', 'error');
+      showSnackbar(t('common.error'), 'error');
     }
   };
 
@@ -49,7 +51,7 @@ export default function AccountsPage() {
       setEditAccount(null);
       showSnackbar('Account updated! ✅', 'success');
     } catch {
-      showSnackbar('Failed to update account', 'error');
+      showSnackbar(t('common.error'), 'error');
     }
   };
 
@@ -57,9 +59,8 @@ export default function AccountsPage() {
     try {
       await deleteAccount.mutateAsync(id);
       setActiveMenuId(null);
-      showSnackbar('Account deleted', 'success');
     } catch {
-      showSnackbar('Failed to delete account', 'error');
+      showSnackbar(t('common.error'), 'error');
     }
   };
 
@@ -86,34 +87,34 @@ export default function AccountsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            Accounts 🏦
+            {t('accounts.title')}
           </h1>
           <p className="text-gray-500">
-            Manage your bank accounts and credit cards
+            {t('accounts.subtitle')}
           </p>
         </div>
         <button
           onClick={() => setFormOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 hover:-translate-y-0.5 transition-all"
         >
-          <Plus size={18} /> <span className="hidden sm:inline">Add Account</span>
+          <Plus size={18} /> <span className="hidden sm:inline">{t('accounts.addAccount')}</span>
         </button>
       </div>
 
       {/* Net Worth Card */}
       <div className="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-6 text-white shadow-xl shadow-indigo-200">
-          <p className="text-indigo-100 font-medium text-sm mb-1">Net Balance</p>
+          <p className="text-indigo-100 font-medium text-sm mb-1">{t('accounts.netBalance')}</p>
           <h2 className="text-4xl font-extrabold mb-2">
             {isLoading ? '...' : formatCurrency(totalBalance)}
           </h2>
           <p className="text-indigo-100 text-sm opacity-80">
-            Across {accounts.length} account{accounts.length !== 1 ? 's' : ''}
+            {t('accounts.across', { count: accounts.length })}
           </p>
       </div>
 
       {error && (
         <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl">
-          {error instanceof Error ? error.message : 'Failed to load accounts'}
+          {error instanceof Error ? error.message : t('common.failedToLoad')}
         </div>
       )}
 
@@ -129,7 +130,7 @@ export default function AccountsPage() {
       {/* Bank Accounts */}
       {bankAccounts.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-bold text-gray-800">🏦 Bank Accounts</h3>
+          <h3 className="text-lg font-bold text-gray-800">{t('accounts.bankAccounts')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {bankAccounts.map((account) => (
               <AccountCard
@@ -148,7 +149,7 @@ export default function AccountsPage() {
       {/* Credit Cards */}
       {creditCards.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-bold text-gray-800">💳 Credit Cards</h3>
+          <h3 className="text-lg font-bold text-gray-800">{t('accounts.creditCards')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {creditCards.map((account) => (
               <AccountCard
@@ -168,13 +169,13 @@ export default function AccountsPage() {
       {!isLoading && accounts.length === 0 && (
         <div className="text-center py-16 flex flex-col items-center">
           <div className="text-6xl mb-4">🏦</div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No accounts yet</h3>
-          <p className="text-gray-500 mb-6 font-medium">Add your bank accounts and credit cards to start tracking</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{t('empty.noAccounts')}</h3>
+          <p className="text-gray-500 mb-6 font-medium">{t('empty.noAccountsDesc')}</p>
           <button
             onClick={() => setFormOpen(true)}
             className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all"
           >
-            <Plus size={20} /> Add Your First Account
+            <Plus size={20} /> {t('empty.addFirstAccount')}
           </button>
         </div>
       )}
@@ -209,6 +210,7 @@ interface AccountCardProps {
 }
 
 function AccountCard({ account, activeMenuId, onToggleMenu, onEdit, onDelete }: AccountCardProps) {
+  const { t } = useTranslation();
   const isBank = account.type === AccountType.BANK;
   const showMenu = activeMenuId === account.id;
 
@@ -245,13 +247,13 @@ function AccountCard({ account, activeMenuId, onToggleMenu, onEdit, onDelete }: 
                         onClick={(e) => { e.stopPropagation(); onEdit(); }}
                         className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-indigo-600 rounded-lg text-left"
                     >
-                        <Edit2 size={14} /> Edit
+                        <Edit2 size={14} /> {t('common.edit')}
                     </button>
                     <button 
                         onClick={(e) => { e.stopPropagation(); onDelete(); }}
                         className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg text-left"
                     >
-                        <Trash2 size={14} /> Delete
+                        <Trash2 size={14} /> {t('common.delete')}
                     </button>
                 </div>
             )}
@@ -261,7 +263,7 @@ function AccountCard({ account, activeMenuId, onToggleMenu, onEdit, onDelete }: 
       <div className="flex justify-between items-end">
         <div>
            <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-0.5">
-               {isBank ? 'Balance' : 'Outstanding'}
+               {isBank ? t('accounts.balance') : t('accounts.outstanding')}
            </p>
            <p className={`text-xl font-extrabold ${isBank ? 'text-gray-900' : 'text-red-500'}`}>
                {formatCurrency(Number(account.balance))}
@@ -274,7 +276,7 @@ function AccountCard({ account, activeMenuId, onToggleMenu, onEdit, onDelete }: 
                ? 'bg-teal-50 text-teal-600 border border-teal-100' 
                : 'bg-red-50 text-red-600 border border-red-100'
            }`}>
-               {isBank ? 'Bank' : 'Credit'}
+               {isBank ? t('accounts.bank') : t('accounts.credit')}
            </span>
            {account.accountNumberLast4 && (
                <span className="text-xs text-gray-400 font-medium">•••• {account.accountNumberLast4}</span>

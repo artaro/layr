@@ -20,6 +20,7 @@ import {
 } from '@/presentation/hooks';
 import { Category } from '@/domain/entities';
 import { TransactionType } from '@/domain/enums';
+import { useTranslation } from '@/lib/i18n';
 
 const EMOJI_OPTIONS = [
   '🍔', '🚗', '🛍️', '🎮', '💡', '💊', '📚', '💰', '🔄', '📦', 
@@ -27,21 +28,12 @@ const EMOJI_OPTIONS = [
 ];
 
 const COLOR_OPTIONS = [
-  '#FF7675', // Light Red
-  '#74B9FF', // Light Blue
-  '#FD79A8', // Pink
-  '#6C5CE7', // Purple
-  '#FDCB6E', // Mustard
-  '#55EFC4', // Mint
-  '#00B894', // Green
-  '#0984E3', // Blue
-  '#E17055', // Orange
-  '#A29BFE', // Lavender
-  '#E84393', // Dark Pink
-  '#636E72', // Grey
+  '#FF7675', '#74B9FF', '#FD79A8', '#6C5CE7', '#FDCB6E', '#55EFC4',
+  '#00B894', '#0984E3', '#E17055', '#A29BFE', '#E84393', '#636E72',
 ];
 
 export default function CategoriesPage() {
+  const { t } = useTranslation();
   const { data: categories = [], isLoading, isError } = useCategories();
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
@@ -60,23 +52,13 @@ export default function CategoriesPage() {
   });
 
   const openAddForm = (type: TransactionType) => {
-    setFormData({ 
-      name: '', 
-      icon: '📦', 
-      color: '#6C5CE7',
-      type: type 
-    });
+    setFormData({ name: '', icon: '📦', color: '#6C5CE7', type: type });
     setEditTarget(null);
     setFormOpen(true);
   };
 
   const openEditForm = (cat: Category) => {
-    setFormData({ 
-      name: cat.name, 
-      icon: cat.icon, 
-      color: cat.color,
-      type: cat.type 
-    });
+    setFormData({ name: cat.name, icon: cat.icon, color: cat.color, type: cat.type });
     setEditTarget(cat);
     setFormOpen(true);
   };
@@ -85,10 +67,7 @@ export default function CategoriesPage() {
     if (e) e.preventDefault();
     try {
       if (editTarget) {
-        await updateMutation.mutateAsync({
-          id: editTarget.id,
-          input: formData,
-        });
+        await updateMutation.mutateAsync({ id: editTarget.id, input: formData });
       } else {
         await createMutation.mutateAsync(formData);
       }
@@ -127,10 +106,10 @@ export default function CategoriesPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-1">
-          Categories 🏷️
+          {t('categories.title')}
         </h1>
         <p className="text-gray-500">
-          Manage your income and expense categories for better tracking
+          {t('categories.subtitle')}
         </p>
       </div>
 
@@ -142,7 +121,7 @@ export default function CategoriesPage() {
       )}
       {isError && (
         <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl">
-          Failed to load categories
+          {t('categories.failedToLoad')}
         </div>
       )}
 
@@ -151,13 +130,13 @@ export default function CategoriesPage() {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
             <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-            Expense
+            {t('transactions.expense')}
           </h2>
           <button
             onClick={() => openAddForm(TransactionType.EXPENSE)}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm"
           >
-            <Plus size={16} /> Add
+            <Plus size={16} /> {t('common.add')}
           </button>
         </div>
         
@@ -173,7 +152,7 @@ export default function CategoriesPage() {
           ))}
           {expenseCategories.length === 0 && !isLoading && (
             <div className="col-span-full py-4 text-center text-gray-400 italic">
-              No expense categories yet.
+              {t('empty.noExpenseCategories')}
             </div>
           )}
         </div>
@@ -186,13 +165,13 @@ export default function CategoriesPage() {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
             <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
-            Income
+            {t('transactions.income')}
           </h2>
           <button
             onClick={() => openAddForm(TransactionType.INCOME)}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm"
           >
-            <Plus size={16} /> Add
+            <Plus size={16} /> {t('common.add')}
           </button>
         </div>
         
@@ -208,7 +187,7 @@ export default function CategoriesPage() {
           ))}
           {incomeCategories.length === 0 && !isLoading && (
             <div className="col-span-full py-4 text-center text-gray-400 italic">
-              No income categories yet.
+              {t('empty.noIncomeCategories')}
             </div>
           )}
         </div>
@@ -224,7 +203,7 @@ export default function CategoriesPage() {
             <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm animate-in zoom-in-95 duration-200 flex flex-col">
                 <div className="flex items-center justify-between p-5 border-b border-gray-100">
                     <h2 className="text-lg font-bold text-gray-900">
-                        {editTarget ? 'Edit Category ✏️' : 'New Category 🏷️'}
+                        {editTarget ? t('categories.editCategory') : t('categories.newCategory')}
                     </h2>
                     <button 
                         onClick={() => setFormOpen(false)}
@@ -246,7 +225,7 @@ export default function CategoriesPage() {
                                 : 'text-gray-500 hover:text-gray-700'
                             }`}
                         >
-                            Expense
+                            {t('transactions.expense')}
                         </button>
                         <button
                             type="button"
@@ -257,26 +236,26 @@ export default function CategoriesPage() {
                                 : 'text-gray-500 hover:text-gray-700'
                             }`}
                         >
-                            Income
+                            {t('transactions.income')}
                         </button>
                     </div>
 
                     {/* Name Input */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Category Name</label>
+                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.categoryName')}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400"
-                            placeholder="e.g. Groceries"
+                            placeholder={t('categories.categoryNamePlaceholder')}
                             required
                         />
                     </div>
 
                     {/* Icon Picker */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Icon</label>
+                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.icon')}</label>
                         <div className="flex flex-wrap gap-2">
                              {EMOJI_OPTIONS.map((emoji) => (
                                 <button
@@ -297,7 +276,7 @@ export default function CategoriesPage() {
 
                     {/* Color Picker */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Color</label>
+                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.color')}</label>
                         <div className="flex flex-wrap gap-2">
                              {COLOR_OPTIONS.map((color) => (
                                 <button
@@ -323,14 +302,14 @@ export default function CategoriesPage() {
                             className="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
                             disabled={loading}
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={!formData.name.trim() || loading}
                             className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
-                            {loading ? 'Saving...' : editTarget ? 'Save Changes' : 'Create Category'}
+                            {loading ? t('common.saving') : editTarget ? t('categories.saveChanges') : t('categories.createCategory')}
                         </button>
                     </div>
                 </form>
@@ -341,9 +320,10 @@ export default function CategoriesPage() {
       {/* Delete confirmation */}
       <ConfirmDialog
         open={!!deleteTarget}
-        title="Delete Category? 🗑️"
-        message={`Are you sure you want to delete "${deleteTarget?.name}"? Transactions in this category won't be deleted, just uncategorized.`}
-        confirmLabel={deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+        title={t('categories.deleteCategory')}
+        message={t('categories.deleteCategoryMsg', { name: deleteTarget?.name || '' })}
+        confirmLabel={deleteMutation.isPending ? t('common.deleting') : t('common.delete')}
+        cancelLabel={t('common.cancel')}
         onConfirm={handleDelete}
         onCancel={() => setDeleteTarget(null)}
       />
@@ -381,21 +361,18 @@ function CategoryCard({ category, onEdit, onDelete, onPin }: {
                   <button 
                     onClick={(e) => { e.stopPropagation(); onPin(category); }}
                     className="p-1 bg-white shadow-sm rounded-md hover:text-indigo-600 hover:bg-indigo-50"
-                    title={category.isPinned ? "Unpin" : "Pin"}
                   >
                       <Pin size={12} className={category.isPinned ? "fill-indigo-600" : ""} />
                   </button>
                   <button 
                     onClick={(e) => { e.stopPropagation(); onEdit(category); }}
                     className="p-1 bg-white shadow-sm rounded-md hover:text-blue-600 hover:bg-blue-50"
-                    title="Edit"
                   >
                       <Edit2 size={12} />
                   </button>
                   <button 
                     onClick={(e) => { e.stopPropagation(); onDelete(category); }}
                     className="p-1 bg-white shadow-sm rounded-md hover:text-red-600 hover:bg-red-50"
-                    title="Delete"
                   >
                       <Trash2 size={12} />
                   </button>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit, Kanit } from 'next/font/google';
 import './globals.css';
 import Providers from './providers';
+import LangSwitcher from '@/presentation/components/layout/LangSwitcher';
 
 const outfit = Outfit({ 
   subsets: ['latin'], 
@@ -17,10 +18,10 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: 'LifePulse — Track Your Expenses',
+  title: 'Layr — จัดการเงินส่วนตัว',
   description:
-    'LifePulse is your daily life tracker. Start with expense tracking — import bank & credit card statements, track categories, and set budget goals. Built for teens who want to stay on top of their cash.',
-  keywords: ['expense tracker', 'budget', 'finance', 'money management', 'LifePulse'],
+    'Layr (เลเยอร์) คือแอปจัดการเงินส่วนตัว ติดตามรายรับ-รายจ่าย นำเข้าใบแจ้งยอดธนาคาร ตั้งเป้าหมายงบประมาณ ออกแบบมาเพื่อคนรุ่นใหม่',
+  keywords: ['จัดการเงิน', 'ติดตามรายจ่าย', 'งบประมาณ', 'Layr', 'expense tracker', 'budget'],
 };
 
 export default function RootLayout({
@@ -29,9 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="th" suppressHydrationWarning>
       <body className={`${outfit.variable} ${kanit.variable} font-sans antialiased text-gray-900 bg-gray-50`} suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <LangSwitcher />
+          {children}
+        </Providers>
       </body>
     </html>
   );

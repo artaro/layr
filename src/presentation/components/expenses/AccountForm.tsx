@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { CreditCard, Landmark, X, DollarSign, Building2 } from 'lucide-react';
 import { CreateAccountInput, UpdateAccountInput, Account } from '@/domain/entities';
 import { AccountType } from '@/domain/enums/accountType';
+import { useTranslation } from '@/lib/i18n';
 
 interface AccountFormProps {
   open: boolean;
@@ -20,6 +21,7 @@ export default function AccountForm({
   initialData,
   loading = false,
 }: AccountFormProps) {
+  const { t } = useTranslation();
   const isEdit = !!initialData;
 
   const [name, setName] = useState(initialData?.name || '');
@@ -32,13 +34,9 @@ export default function AccountForm({
     if (open) {
       // eslint-disable-next-line
       setName(initialData?.name || '');
-
       setType(initialData?.type || AccountType.BANK);
-
       setBalance(String(initialData?.balance ?? 0));
-
       setBankName(initialData?.bankName || '');
-
       setLast4(initialData?.accountNumberLast4 || '');
     }
   }, [open, initialData]);
@@ -69,7 +67,7 @@ export default function AccountForm({
       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm animate-in zoom-in-95 duration-200 flex flex-col">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <h2 className="text-xl font-bold text-gray-900">
-            {isEdit ? 'Edit Account ✏️' : 'Add Account 🏦'}
+            {isEdit ? t('accountForm.editAccount') : t('accountForm.addAccount')}
           </h2>
           <button 
             onClick={onClose}
@@ -83,21 +81,21 @@ export default function AccountForm({
            
            {/* Account Name */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">Account Name</label>
+             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.accountName')}</label>
              <input 
                type="text"
                required
                value={name}
                onChange={(e) => setName(e.target.value)}
                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400"
-               placeholder="e.g. KBank Savings" 
+               placeholder={t('accountForm.accountNamePlaceholder')} 
              />
            </div>
 
            {/* Account Type */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
-            <div className="flex gap-2">
+             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.accountType')}</label>
+             <div className="flex gap-2">
                 <button
                     type="button"
                     onClick={() => setType(AccountType.BANK)}
@@ -107,7 +105,7 @@ export default function AccountForm({
                         : 'border-gray-200 hover:bg-gray-50 text-gray-600'
                     }`}
                 >
-                    <Landmark size={18} /> Bank
+                    <Landmark size={18} /> {t('accountForm.bankType')}
                 </button>
                 <button
                     type="button"
@@ -118,14 +116,14 @@ export default function AccountForm({
                         : 'border-gray-200 hover:bg-gray-50 text-gray-600'
                     }`}
                 >
-                    <CreditCard size={18} /> Credit Card
+                    <CreditCard size={18} /> {t('accountForm.creditType')}
                 </button>
             </div>
            </div>
 
            {/* Balance */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">Current Balance</label>
+             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.currentBalance')}</label>
              <div className="relative">
                <DollarSign size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                <input 
@@ -141,7 +139,7 @@ export default function AccountForm({
 
            {/* Bank Name */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">Bank Name (optional)</label>
+             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.bankName')}</label>
              <div className="relative">
                <Building2 size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                <input 
@@ -149,14 +147,14 @@ export default function AccountForm({
                  value={bankName}
                  onChange={(e) => setBankName(e.target.value)}
                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400" 
-                 placeholder="e.g. Kasikorn Bank"
+                 placeholder={t('accountForm.bankNamePlaceholder')}
                />
              </div>
            </div>
 
            {/* Last 4 Digits */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">Last 4 digits (optional)</label>
+             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.last4')}</label>
              <input 
                type="text"
                maxLength={4}
@@ -175,14 +173,14 @@ export default function AccountForm({
                 className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
                 disabled={loading}
              >
-                Cancel
+                {t('common.cancel')}
              </button>
              <button 
                 type="submit"
                 className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 disabled={loading || !name.trim()}
              >
-                {loading ? 'Saving...' : (isEdit ? 'Update' : 'Create')}
+                {loading ? t('common.saving') : (isEdit ? t('accountForm.update') : t('accountForm.create'))}
              </button>
            </div>
         </form>

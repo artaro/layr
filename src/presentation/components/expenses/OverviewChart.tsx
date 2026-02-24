@@ -15,13 +15,14 @@ import { Transaction } from '@/domain/entities';
 import { TransactionType } from '@/domain/enums';
 import { EXPENSE_COLORS } from '@/lib/constants';
 import { formatCurrency } from '@/lib/formatters';
+import { useTranslation } from '@/lib/i18n';
 
 interface OverviewChartProps {
   transactions: Transaction[];
-  title?: string;
 }
 
-export default function OverviewChart({ transactions, title = 'Financial Overview' }: OverviewChartProps) {
+export default function OverviewChart({ transactions }: OverviewChartProps) {
+  const { t, language } = useTranslation();
   const data = useMemo(() => {
     const today = new Date();
     const dataMap = new Map<string, { label: string; income: number; expense: number; date: Date }>();
@@ -31,7 +32,7 @@ export default function OverviewChart({ transactions, title = 'Financial Overvie
       const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       dataMap.set(key, {
-        label: d.toLocaleString('default', { month: 'short' }),
+        label: d.toLocaleString(language === 'th' ? 'th-TH' : 'en-US', { month: 'short' }),
         income: 0,
         expense: 0,
         date: d,
@@ -58,7 +59,7 @@ export default function OverviewChart({ transactions, title = 'Financial Overvie
       <div className="flex justify-between items-center mb-6">
           <div>
             <h3 className="text-lg font-bold text-gray-900">
-              {title}
+              {t('chart.financialOverview')}
             </h3>
 
           </div>
@@ -100,14 +101,14 @@ export default function OverviewChart({ transactions, title = 'Financial Overvie
               />
               <Bar
                 dataKey="income"
-                name="💰 Income"
+                name={`💰 ${t('dashboard.totalIncome')}`}
                 fill={EXPENSE_COLORS.income}
                 radius={[4, 4, 0, 0]}
                 barSize={32}
               />
               <Bar
                 dataKey="expense"
-                name="💸 Expense"
+                name={`💸 ${t('dashboard.totalExpenses')}`}
                 fill={EXPENSE_COLORS.expense}
                 radius={[4, 4, 0, 0]}
                 barSize={32}

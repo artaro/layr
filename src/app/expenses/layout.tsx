@@ -7,6 +7,7 @@ import { useAuth } from '@/presentation/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import GlobalModals from '@/presentation/components/layout/GlobalModals';
+import BottomNav from '@/presentation/components/layout/BottomNav';
 
 export default function DashboardLayout({
   children,
@@ -33,7 +34,7 @@ export default function DashboardLayout({
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-sm text-gray-500 font-medium">Loading...</p>
+        <p className="text-sm text-gray-500 font-medium">กำลังโหลด...</p>
       </div>
     );
   }
@@ -55,6 +56,7 @@ export default function DashboardLayout({
       
       <TransactionFAB />
       <GlobalModals />
+      <BottomNav />
     </div>
   );
 }

@@ -12,13 +12,14 @@ import {
 import { Transaction } from '@/domain/entities';
 import { TransactionType } from '@/domain/enums';
 import { formatCurrency } from '@/lib/formatters';
+import { useTranslation } from '@/lib/i18n';
 
 interface ExpensePieChartProps {
   transactions: Transaction[];
-  title?: string;
 }
 
-export default function ExpensePieChart({ transactions, title = 'Spending by Category' }: ExpensePieChartProps) {
+export default function ExpensePieChart({ transactions }: ExpensePieChartProps) {
+  const { t } = useTranslation();
   const filteredData = useMemo(() => {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -67,7 +68,7 @@ export default function ExpensePieChart({ transactions, title = 'Spending by Cat
   return (
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-full flex flex-col">
       <h3 className="text-lg font-bold text-gray-900 mb-4">
-        {title} <span className="text-gray-400 font-normal text-sm">(Monthly)</span>
+        {t('chart.spendingByCategory')}
       </h3>
 
       {filteredData.length > 0 ? (
@@ -113,7 +114,7 @@ export default function ExpensePieChart({ transactions, title = 'Spending by Cat
             
             {/* Daily Averages Box */}
             <div className="mt-4 pt-4 border-t border-gray-50">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Daily Averages</p>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{t('chart.avgExpense')}</p>
                 <div className="grid grid-cols-2 gap-3">
                     {filteredData.slice(0, 4).map((item) => (
                         <div key={item.name} className="bg-gray-50 rounded-xl p-2.5 flex items-center justify-between">
@@ -132,7 +133,7 @@ export default function ExpensePieChart({ transactions, title = 'Spending by Cat
       ) : (
         <div className="flex-grow flex flex-col items-center justify-center min-h-[300px] text-center">
           <div className="text-5xl mb-3 opacity-50">📉</div>
-          <p className="text-gray-500 font-medium">No expenses this month</p>
+          <p className="text-gray-500 font-medium">{t('empty.noExpenses')}</p>
         </div>
       )}
     </div>

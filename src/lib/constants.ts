@@ -1,4 +1,4 @@
-export const APP_NAME = 'LifePulse';
+export const APP_NAME = 'Layr';
 
 export const DEFAULT_CURRENCY = 'THB';
 export const DEFAULT_LOCALE = 'th-TH';

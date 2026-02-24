@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '@/presentation/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { APP_NAME } from '@/lib/constants';
+import { useTranslation } from '@/lib/i18n';
 import { Eye, EyeOff, Check, X, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
@@ -18,6 +19,7 @@ export default function LoginPage() {
 
   const { signIn, signUp } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,27 +29,25 @@ export default function LoginPage() {
 
     try {
       if (tab === 0) {
-        // Login
         await signIn(email, password);
         router.push('/expenses');
       } else {
-        // Sign Up
         if (password !== confirmPassword) {
-          setError('Passwords don\'t match!');
+          setError(t('login.passwordsMismatch'));
           setLoading(false);
           return;
         }
         if (password.length < 6) {
-          setError('Password must be at least 6 characters');
+          setError(t('login.passwordTooShort'));
           setLoading(false);
           return;
         }
         await signUp(email, password);
-        setSuccess('Account created! Check your email to confirm, then log in 🎉');
+        setSuccess(t('login.accountCreated'));
         setTab(0);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      setError(err instanceof Error ? err.message : t('login.somethingWrong'));
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ export default function LoginPage() {
             {APP_NAME}
           </h1>
           <p className="text-gray-500 font-medium">
-            Your money, your rules ✨
+            {t('app.tagline')}
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function LoginPage() {
                    : 'text-gray-500 hover:text-gray-700'
                 }`}
              >
-               Log In
+               {t('login.logIn')}
              </button>
              <button
                 type="button"
@@ -92,7 +92,7 @@ export default function LoginPage() {
                    : 'text-gray-500 hover:text-gray-700'
                 }`}
              >
-               Sign Up
+               {t('login.signUp')}
              </button>
           </div>
 
@@ -112,7 +112,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">Email</label>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.email')}</label>
               <input
                 type="email"
                 required
@@ -124,7 +124,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">Password</label>
+               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.password')}</label>
                <div className="relative">
                  <input
                     type={showPassword ? 'text' : 'password'}
@@ -146,7 +146,7 @@ export default function LoginPage() {
 
             {tab === 1 && (
                <div className="animate-in slide-in-from-top-2">
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">Confirm Password</label>
+                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.confirmPassword')}</label>
                   <input
                       type={showPassword ? 'text' : 'password'}
                       required
@@ -166,15 +166,15 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <Loader2 size={20} className="animate-spin" /> 
-                  Please wait...
+                  {t('login.pleaseWait')}
                 </>
-              ) : tab === 0 ? 'Log In' : 'Create Account'}
+              ) : tab === 0 ? t('login.logIn') : t('login.createAccount')}
             </button>
           </form>
         </div>
         
         <p className="text-center text-xs font-semibold text-gray-400 mt-6">
-          Built with 💜 by {APP_NAME} Team
+          {t('app.footer')}
         </p>
       </div>
     </div>

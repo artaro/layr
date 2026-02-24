@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { TransactionType } from '@/domain/enums';
 import { Account, Category, CreateTransactionInput } from '@/domain/entities';
+import { useTranslation } from '@/lib/i18n';
 
 interface TransactionFormProps {
   open: boolean;
@@ -32,6 +33,7 @@ export default function TransactionForm({
   loading = false,
   isEdit = false,
 }: TransactionFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     description: '',
     amount: '',
@@ -91,7 +93,7 @@ export default function TransactionForm({
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <h2 className="text-xl font-bold text-gray-900">
-            {isEdit ? 'Edit Transaction ✏️' : 'New Transaction 💸'}
+            {isEdit ? t('txForm.editTransaction') : t('txForm.newTransaction')}
           </h2>
           <button 
             onClick={onClose}
@@ -114,7 +116,7 @@ export default function TransactionForm({
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
             >
-                Expense
+                {t('transactions.expense')}
             </button>
             <button
                 type="button"
@@ -125,13 +127,13 @@ export default function TransactionForm({
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
             >
-                Income
+                {t('transactions.income')}
             </button>
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Amount</label>
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.amount')}</label>
             <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">
                     <DollarSign size={18} />
@@ -152,14 +154,14 @@ export default function TransactionForm({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Description</label>
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.description')}</label>
             <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                     <FileText size={18} />
                 </div>
                 <input
                     type="text"
-                    placeholder="What was this for?"
+                    placeholder={t('txForm.descriptionPlaceholder')}
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900"
@@ -171,7 +173,7 @@ export default function TransactionForm({
           <div className="grid grid-cols-2 gap-4">
               {/* Category */}
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Category</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.category')}</label>
                 <div className="relative">
                     <select
                         value={formData.categoryId}
@@ -179,7 +181,7 @@ export default function TransactionForm({
                         className="w-full pl-3 pr-8 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none appearance-none bg-white font-medium text-sm truncate"
                         required
                     >
-                        <option value="" disabled>Select...</option>
+                        <option value="" disabled>{t('txForm.selectCategory')}</option>
                         {filteredCategories.map(c => (
                             <option key={c.id} value={c.id}>
                                 {c.icon} {c.name}
@@ -192,7 +194,7 @@ export default function TransactionForm({
 
               {/* Date */}
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Date</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.date')}</label>
                 <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                         <CalendarIcon size={16} />
@@ -210,7 +212,7 @@ export default function TransactionForm({
 
           {/* Account */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">Account</label>
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.account')}</label>
             <div className="relative">
                 <select
                     value={formData.accountId}
@@ -218,7 +220,7 @@ export default function TransactionForm({
                     className="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none appearance-none bg-white font-medium"
                     required
                 >
-                    <option value="" disabled>Select Account</option>
+                    <option value="" disabled>{t('txForm.selectAccount')}</option>
                     {accounts.map(a => (
                         <option key={a.id} value={a.id}>
                             {a.type === 'bank' ? '🏦' : '💳'} {a.name}
@@ -237,14 +239,14 @@ export default function TransactionForm({
                 className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
                 disabled={loading}
             >
-                Cancel
+                {t('common.cancel')}
             </button>
             <button
                 type="submit"
                 disabled={loading || !formData.amount || !formData.description || !formData.accountId || !formData.categoryId}
                 className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-                {loading ? 'Saving...' : 'Save Transaction'}
+                {loading ? t('common.saving') : t('txForm.saveTransaction')}
             </button>
           </div>
         </form>

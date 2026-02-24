@@ -8,6 +8,9 @@ export interface Account {
   balance: number;
   bankName: string | null;
   accountNumberLast4: string | null;
+  // Credit card specific fields
+  creditLimit?: number | null;
+  pendingCharges?: number | null;
   createdAt: string;
 }
 
@@ -17,6 +20,7 @@ export interface CreateAccountInput {
   balance?: number;
   bankName?: string;
   accountNumberLast4?: string;
+  creditLimit?: number;
 }
 
 export interface UpdateAccountInput {
@@ -25,4 +29,5 @@ export interface UpdateAccountInput {
   balance?: number;
   bankName?: string;
   accountNumberLast4?: string;
+  creditLimit?: number;
 }

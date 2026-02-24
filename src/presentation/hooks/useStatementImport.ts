@@ -8,7 +8,7 @@ import { TransactionType, StatementSource } from '@/domain/enums';
 import { generateMockTransactions } from '@/data/mock/mockStatementTransactions';
 import { compressImage } from '@/lib/imageUtils';
 
-const LAST_IMPORT_KEY = 'lifepulse_last_import';
+const LAST_IMPORT_KEY = 'layr_last_import';
 
 export interface ParsedLLMTransaction {
   date: string;

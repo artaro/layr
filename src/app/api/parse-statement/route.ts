@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-
 const genAI = new GoogleGenerativeAI(process.env.LLM_API_KEY || '');
 
 const SYSTEM_PROMPT_BASE = `You are a strict financial data extraction assistant. Your ONLY job is to extract transaction rows from the provided bank statement (PDF, CSV, or Image) into a JSON array.
@@ -20,6 +19,22 @@ Strict Rules:
 
 Output ONLY this JSON array. No markdown formatting. No explanation.`;
 
+// Map file extensions / MIME types to Gemini-supported mimeType strings
+function resolveGeminiMimeType(mimeType: string, filename: string): string {
+  if (mimeType === 'application/pdf') return 'application/pdf';
+  if (mimeType === 'image/png') return 'image/png';
+  if (mimeType === 'image/webp') return 'image/webp';
+  if (mimeType === 'image/heic' || mimeType === 'image/heif') return 'image/heic';
+  if (mimeType === 'image/gif') return 'image/gif';
+  // Default: treat as jpeg (covers image/jpeg + compressed blobs)
+  if (mimeType.startsWith('image/')) return 'image/jpeg';
+  // Fallback by extension
+  const ext = filename.split('.').pop()?.toLowerCase();
+  if (ext === 'pdf') return 'application/pdf';
+  if (ext === 'png') return 'image/png';
+  return 'image/jpeg';
+}
+
 export async function POST(request: NextRequest) {
   try {
     if (!process.env.LLM_API_KEY) {
@@ -29,32 +44,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { file } = await request.json() as any;
+    // Accept FormData (sent by useStatementImport hook)
+    const formData = await request.formData();
+    const file = formData.get('file') as File | null;
+    const password = formData.get('password') as string | null;
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // specific handling for base64
-    const base64Data = file.split(',')[1];
-    const buffer = Buffer.from(base64Data, 'base64');
-    const bytes = new Uint8Array(buffer);
+    // Read file as ArrayBuffer → base64
+    const arrayBuffer = await file.arrayBuffer();
+    const base64Data = Buffer.from(arrayBuffer).toString('base64');
+    const geminiMimeType = resolveGeminiMimeType(file.type, file.name);
 
-    // Initialize the model
+    // Initialize Gemini model
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
       systemInstruction: SYSTEM_PROMPT_BASE,
     });
 
+    // Build prompt — hint about password if provided
+    const promptText = password
+      ? `Extract transactions from this document. PDF password if needed: ${password}. Return ONLY a valid JSON array.`
+      : 'Extract transactions from this file. Return ONLY a valid JSON array.';
+
     // Generate content
     const result = await model.generateContent([
-      "Extract transactions from this image. Return ONLY a valid JSON array.",
+      promptText,
       {
         inlineData: {
-          data: Buffer.from(bytes).toString('base64'),
-          mimeType: 'image/jpeg', // Assuming jpeg for now from compression
+          data: base64Data,
+          mimeType: geminiMimeType,
         },
       },
     ]);
@@ -62,7 +83,7 @@ export async function POST(request: NextRequest) {
     const response = await result.response;
     const text = response.text();
 
-    // Clean up
+    // Clean markdown fences if Gemini wraps in ```json ... ```
     let cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
     const firstBracket = cleanedText.indexOf('[');
     const lastBracket = cleanedText.lastIndexOf(']');
@@ -70,24 +91,36 @@ export async function POST(request: NextRequest) {
       cleanedText = cleanedText.substring(firstBracket, lastBracket + 1);
     }
 
-    let transactions = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let transactions: any[] = [];
     try {
       transactions = JSON.parse(cleanedText);
     } catch {
-      console.warn('Failed to parse Gemini response as JSON', text);
+      console.warn('[parse-statement] Failed to parse Gemini response as JSON:', text);
+      return NextResponse.json(
+        { error: 'AI could not extract transactions from this file. Please try a clearer image.' },
+        { status: 422 }
+      );
     }
 
-    // ... validation ...
-
+    // Validate & filter
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const validTransactions = transactions.filter((t: any) => {
-      return t.date && t.description && t.amount && (t.type === 'income' || t.type === 'expense');
-    });
+    const validTransactions = transactions.filter((t: any) =>
+      t.date && t.description && typeof t.amount === 'number' &&
+      (t.type === 'income' || t.type === 'expense')
+    );
+
+    if (validTransactions.length === 0) {
+      return NextResponse.json(
+        { error: 'No valid transactions found in the file.' },
+        { status: 422 }
+      );
+    }
 
     return NextResponse.json({ transactions: validTransactions });
 
   } catch (error) {
-    console.error('Parse statement error:', error);
+    console.error('[parse-statement] Error:', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }

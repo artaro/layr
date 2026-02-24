@@ -1,32 +1,66 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/infrastructure/query/queryClient';
 import GlobalLoader from '@/presentation/components/common/GlobalLoader';
 import { useUIStore } from '@/presentation/stores';
-import { X } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+
+const TOAST_DURATION_MS = 4000;
 
 function Toast() {
   const { snackbar, hideSnackbar } = useUIStore();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-close after TOAST_DURATION_MS
+  useEffect(() => {
+    if (snackbar.open) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(hideSnackbar, TOAST_DURATION_MS);
+    }
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [snackbar.open, snackbar.message, hideSnackbar]);
 
   if (!snackbar.open) return null;
 
-  const severityStyles = {
-    error: 'bg-red-50 text-red-700 border-red-100',
-    success: 'bg-green-50 text-green-700 border-green-100',
-    info: 'bg-blue-50 text-blue-700 border-blue-100',
-    warning: 'bg-amber-50 text-amber-700 border-amber-100',
+  const config = {
+    error:   { bg: 'bg-red-600',    icon: <AlertCircle size={16} />,    bar: 'bg-red-400' },
+    success: { bg: 'bg-emerald-600', icon: <CheckCircle size={16} />,    bar: 'bg-emerald-400' },
+    info:    { bg: 'bg-indigo-600',  icon: <Info size={16} />,           bar: 'bg-indigo-400' },
+    warning: { bg: 'bg-amber-500',   icon: <AlertTriangle size={16} />,  bar: 'bg-amber-300' },
   };
 
-  const style = severityStyles[snackbar.severity as keyof typeof severityStyles] || severityStyles.info;
+  const { bg, icon, bar } = config[snackbar.severity as keyof typeof config] || config.info;
 
   return (
-    <div className={`fixed bottom-4 right-4 z-[9999] flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg shadow-black/5 animate-fade-in ${style}`}>
-      <span className="text-sm font-medium">{snackbar.message}</span>
-      <button onClick={hideSnackbar} className="p-1 hover:bg-black/5 rounded-full transition-colors">
-        <X size={16} />
+    <div
+      className={`
+        fixed top-4 left-1/2 -translate-x-1/2 z-[9999]
+        flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl shadow-black/15
+        text-white min-w-[260px] max-w-[420px]
+        animate-in slide-in-from-top-2 fade-in duration-200
+        ${bg}
+      `}
+    >
+      <span className="flex-shrink-0 opacity-90">{icon}</span>
+      <span className="text-sm font-medium flex-1">{snackbar.message}</span>
+      <button
+        onClick={hideSnackbar}
+        className="p-1 hover:bg-white/20 rounded-full transition-colors flex-shrink-0"
+      >
+        <X size={14} />
       </button>
+
+      {/* Auto-close progress bar */}
+      <div
+        className={`absolute bottom-0 left-0 h-0.5 rounded-b-xl ${bar} opacity-60`}
+        style={{
+          animation: `shrink ${TOAST_DURATION_MS}ms linear forwards`,
+        }}
+      />
     </div>
   );
 }

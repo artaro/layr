@@ -17,6 +17,7 @@ import {
 } from '@/presentation/components/expenses';
 import { formatCurrency } from '@/lib/formatters';
 import { StatementSource } from '@/domain/enums';
+import { useTranslation } from '@/lib/i18n';
 import {
   useTransactions,
   useTransactionSummary,
@@ -26,19 +27,19 @@ import {
 } from '@/presentation/hooks';
 
 export default function ExpenseDashboardPage() {
-  // Fetch summary for all time
+  const { t } = useTranslation();
+
   const {
     data: summary,
     isLoading: isSummaryLoading,
     isError: isSummaryError,
   } = useTransactionSummary();
 
-  // Fetch recent transactions (grabbing more to populate charts)
   const {
     data: transactionsData,
     isLoading: isTransactionsLoading,
     isError: isTransactionsError,
-  } = useTransactions({ pageSize: 500 }); // Increased for better chart data
+  } = useTransactions({ pageSize: 500 });
 
   const { data: accounts = [] } = useAccounts();
   const { data: categories = [] } = useCategories();
@@ -50,7 +51,6 @@ export default function ExpenseDashboardPage() {
   const isLoading = isSummaryLoading || isTransactionsLoading;
   const isError = isSummaryError || isTransactionsError;
 
- 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreate = async (data: any) => {
     try {
@@ -74,10 +74,10 @@ export default function ExpenseDashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-1">
-          Dashboard 📊
+          {t('dashboard.title')}
         </h1>
         <p className="text-gray-500">
-          Here&apos;s what&apos;s happening with your money
+          {t('dashboard.subtitle')}
         </p>
       </div>
 
@@ -91,7 +91,7 @@ export default function ExpenseDashboardPage() {
       {isError && (
         <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl flex items-center gap-3">
           <AlertCircle size={20} />
-          <span className="font-medium">Failed to load dashboard data</span>
+          <span className="font-medium">{t('dashboard.failedToLoad')}</span>
         </div>
       )}
 
@@ -100,48 +100,41 @@ export default function ExpenseDashboardPage() {
           {/* Stat cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
             <StatCard
-              title="Total Income"
+              title={t('dashboard.totalIncome')}
               value={formatCurrency(summary?.totalIncome || 0)}
               icon={<TrendingUp className="text-white w-6 h-6" />}
               gradient="linear-gradient(135deg, #00CEC9 0%, #00B894 100%)"
-              trend={{ value: 'All time', positive: true }}
+              trend={{ value: t('common.allTime'), positive: true }}
             />
             <StatCard
-              title="Total Expenses"
+              title={t('dashboard.totalExpenses')}
               value={formatCurrency(summary?.totalExpense || 0)}
               icon={<TrendingDown className="text-white w-6 h-6" />}
               gradient="linear-gradient(135deg, #FF7675 0%, #D63031 100%)"
-              trend={{ value: 'All time', positive: false }}
+              trend={{ value: t('common.allTime'), positive: false }}
             />
             <StatCard
-              title="Balance"
+              title={t('dashboard.balance')}
               value={formatCurrency(summary?.balance || 0)}
               icon={<Wallet className="text-white w-6 h-6" />}
               gradient="linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%)"
               trend={{
-                value: 'Net Worth',
+                value: t('common.netWorth'),
                 positive: (summary?.balance || 0) >= 0,
               }}
             />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Calendar Panel - 8/12 on large */}
             <div className="lg:col-span-8">
               <CalendarPanel transactions={transactions} />
             </div>
-
-            {/* Account Balance List - 4/12 on large */}
             <div className="lg:col-span-4 h-full">
               <AccountBalanceList accounts={accounts} />
             </div>
-
-            {/* Pie Chart - 5/12 on large */}
             <div className="lg:col-span-5">
               <ExpensePieChart transactions={transactions} />
             </div>
-
-            {/* Overview Chart - 7/12 on large */}
             <div className="lg:col-span-7">
               <OverviewChart transactions={transactions} />
             </div>
@@ -151,13 +144,13 @@ export default function ExpenseDashboardPage() {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold text-gray-900">
-                Recent Transactions 💸
+                {t('dashboard.recentTransactions')}
               </h2>
               <Link 
                 href="/expenses/transactions" 
                 className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors"
               >
-                View All
+                {t('common.viewAll')}
               </Link>
             </div>
 
@@ -167,17 +160,17 @@ export default function ExpenseDashboardPage() {
                   <TransactionRow
                     key={tx.id}
                     transaction={tx}
-                    onEdit={() => {}} // Read-only view in dashboard
-                    onDelete={() => {}} // Read-only view in dashboard
+                    onEdit={() => {}}
+                    onDelete={() => {}}
                   />
                 ))}
               </div>
             ) : (
               <EmptyState
                 emoji="🤷‍♂️"
-                title="No transactions yet"
-                description="Start by adding your first transaction or uploading a bank statement!"
-                actionLabel="Add Transaction"
+                title={t('empty.noTransactions')}
+                description={t('empty.noTransactionsDesc')}
+                actionLabel={t('empty.addTransaction')}
                 onAction={() => setFormOpen(true)}
               />
             )}

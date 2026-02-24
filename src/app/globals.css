@@ -30,6 +30,11 @@ body {
   padding: 0;
 }
 
+/* When language is Thai, prioritize Kanit font */
+html[lang="th"] body {
+  font-family: var(--font-kanit), var(--font-outfit), sans-serif;
+}
+
 .animate-fade-in {
   animation: fadeIn 0.4s ease-in-out;
 }
@@ -53,4 +58,15 @@ body {
 
 .animate-progress {
   animation: progress 1.5s infinite linear;
+}
+
+/* Toast auto-close progress bar */
+@keyframes shrink {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Safe area for bottom nav on iPhone notch devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

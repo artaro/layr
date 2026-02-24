@@ -11,22 +11,24 @@ import {
   X
 } from 'lucide-react';
 import { APP_NAME } from '@/lib/constants';
+import { useTranslation } from '@/lib/i18n';
 
 interface AppSidebarProps {
   open: boolean;
   onClose: () => void;
 }
 
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, href: '/expenses', emoji: '📊' },
-  { label: 'Transactions', icon: Receipt, href: '/expenses/transactions', emoji: '💸' },
-  { label: 'Categories', icon: Tags, href: '/expenses/categories', emoji: '🏷️' },
-  { label: 'Accounts', icon: Landmark, href: '/expenses/accounts', emoji: '🏦' },
-];
-
 const AppSidebar = ({ open, onClose }: AppSidebarProps) => {
   const pathname = usePathname();
   const currentPath = pathname || '';
+  const { t } = useTranslation();
+
+  const navItems = [
+    { label: t('nav.dashboard'), icon: LayoutDashboard, href: '/expenses', emoji: '📊' },
+    { label: t('nav.transactions'), icon: Receipt, href: '/expenses/transactions', emoji: '💸' },
+    { label: t('nav.categories'), icon: Tags, href: '/expenses/categories', emoji: '🏷️' },
+    { label: t('nav.accounts'), icon: Landmark, href: '/expenses/accounts', emoji: '🏦' },
+  ];
 
   return (
     <>
@@ -56,7 +58,7 @@ const AppSidebar = ({ open, onClose }: AppSidebarProps) => {
                   {APP_NAME}
                 </h2>
                 <p className="text-xs text-gray-500 font-medium">
-                  Expense Tracker
+                  {t('app.subtitle')}
                 </p>
               </div>
             </div>
@@ -105,7 +107,7 @@ const AppSidebar = ({ open, onClose }: AppSidebarProps) => {
             <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-indigo-100/50 text-center">
               <div className="text-2xl mb-2">🚀</div>
               <p className="text-xs font-semibold text-indigo-900/60">
-                Pro features coming soon!
+                {t('nav.proComingSoon')}
               </p>
             </div>
           </div>

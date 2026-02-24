@@ -21,8 +21,10 @@ import {
   useUpdateTransaction,
   useDeleteTransaction,
 } from '@/presentation/hooks';
+import { useTranslation } from '@/lib/i18n';
 
 export default function TransactionsPage() {
+  const { t } = useTranslation();
   const [formOpen, setFormOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Transaction | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,7 +33,7 @@ export default function TransactionsPage() {
   const [filterStartDate, setFilterStartDate] = useState('');
   const [filterEndDate, setFilterEndDate] = useState('');
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(50); // Increased default for split view
+  const [pageSize] = useState(50);
   
   // Selection State
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -50,7 +52,7 @@ export default function TransactionsPage() {
     startDate: filterStartDate || undefined,
     endDate: filterEndDate || undefined,
     page,
-    pageSize, // Can be larger since we have internal pagination
+    pageSize,
   });
 
   const { data: accounts = [] } = useAccounts();
@@ -95,7 +97,6 @@ export default function TransactionsPage() {
       await updateMutation.mutateAsync({
         id: editTarget.id,
         input: {
-            // Only update fields present in form
             ...data
         },
       });
@@ -132,7 +133,6 @@ export default function TransactionsPage() {
 
     const currentType = getSelectedType();
     
-    // Enforce single type selection
     if (currentType && currentType !== tx.type && selectedIds.size > 0) {
         return; 
     }
@@ -216,11 +216,11 @@ export default function TransactionsPage() {
                 <div className="flex flex-1 items-center gap-4 animate-in slide-in-from-left-2 fade-in duration-200">
                     <div className="flex items-center gap-3">
                         <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
-                        {selectedIds.size} selected
+                        {selectedIds.size} {t('common.selected')}
                         </span>
                         <div className="h-4 w-px bg-gray-300" />
                         <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                        {selectedType === 'income' ? 'Income' : 'Expenses'}
+                        {selectedType === 'income' ? t('transactions.income') : t('transactions.expense')}
                         </span>
                     </div>
 
@@ -230,7 +230,7 @@ export default function TransactionsPage() {
                             onChange={(e) => handleBatchCategoryChange(e.target.value)}
                             className="text-sm py-1.5 pl-3 pr-8 rounded-lg border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 min-w-[150px]"
                         >
-                            <option value="">Set Category...</option>
+                            <option value="">{t('transactions.setCategory')}</option>
                             {selectedType === 'income' 
                                 ? incomeCategories.map(c => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)
                                 : expenseCategories.map(c => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)
@@ -240,7 +240,7 @@ export default function TransactionsPage() {
                         <button 
                             onClick={() => setBatchDeleteConfirm(true)}
                             className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                            title="Delete Selected"
+                            title={t('common.delete')}
                         >
                             <Trash2 size={18} />
                         </button>
@@ -251,7 +251,7 @@ export default function TransactionsPage() {
                             onClick={() => setSelectedIds(new Set())}
                             className="text-sm font-medium text-gray-600 hover:text-gray-900"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                     </div>
                 </div>
@@ -259,13 +259,13 @@ export default function TransactionsPage() {
                 // Standard Title State
                 <div>
                    <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                     Transactions 💸
+                     {t('transactions.title')}
                    </h1>
                 </div>
             )}
         </div>
 
-        {/* Second Row: Controls (Toggles & Filters) - Always Visible */}
+        {/* Second Row: Controls (Toggles & Filters) */}
         <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between">
             
             {/* Type Toggle Group */}
@@ -278,7 +278,7 @@ export default function TransactionsPage() {
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
                 >
-                All
+                {t('common.all')}
                 </button>
                 <button
                 onClick={() => { setFilterType(TransactionType.EXPENSE); setPage(1); setSelectedIds(new Set()); }}
@@ -288,7 +288,7 @@ export default function TransactionsPage() {
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
                 >
-                Expense
+                {t('transactions.expense')}
                 </button>
                 <button
                 onClick={() => { setFilterType(TransactionType.INCOME); setPage(1); setSelectedIds(new Set()); }}
@@ -298,7 +298,7 @@ export default function TransactionsPage() {
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
                 >
-                Income
+                {t('transactions.income')}
                 </button>
             </div>
 
@@ -309,7 +309,7 @@ export default function TransactionsPage() {
                     <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder={t('common.search')}
                         value={searchQuery}
                         onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
                         className="w-full pl-9 pr-4 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-sm transition-all"
@@ -340,7 +340,7 @@ export default function TransactionsPage() {
                         onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
                         className="w-full px-3 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 outline-none text-sm appearance-none font-medium truncate pr-6"
                     >
-                        <option value="">All Categories</option>
+                        <option value="">{t('transactions.allCategories')}</option>
                         {filterType === TransactionType.INCOME
                         ? incomeCategories.map((c) => (
                             <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
@@ -351,12 +351,12 @@ export default function TransactionsPage() {
                             ))
                             : (
                             <>
-                                <optgroup label="Income">
+                                <optgroup label={t('transactions.income')}>
                                     {incomeCategories.map((c) => (
                                         <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
                                     ))}
                                 </optgroup>
-                                <optgroup label="Expense">
+                                <optgroup label={t('transactions.expense')}>
                                     {expenseCategories.map((c) => (
                                         <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
                                     ))}
@@ -380,7 +380,7 @@ export default function TransactionsPage() {
       {isError && (
         <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-3xl mb-6 flex items-center gap-3">
           <AlertCircle size={20} />
-          <span className="font-medium">Failed to load transactions</span>
+          <span className="font-medium">{t('transactions.failedToLoad')}</span>
         </div>
       )}
 
@@ -402,9 +402,9 @@ export default function TransactionsPage() {
           ) : (
             <EmptyState
               emoji="🔍"
-              title="No transactions found"
-              description="Try adjusting your filters or add a new transaction"
-              actionLabel="Add Transaction"
+              title={t('empty.noSearchResults')}
+              description={t('empty.noSearchResultsDesc')}
+              actionLabel={t('empty.addTransaction')}
               onAction={() => setFormOpen(true)}
             />
           )}
@@ -437,9 +437,10 @@ export default function TransactionsPage() {
       {/* Delete confirmation (batch) */}
       <ConfirmDialog
         open={batchDeleteConfirm}
-        title="Delete Selected Transactions? 🗑️"
-        message={`Delete ${selectedIds.size} transactions? This can't be undone.`}
-        confirmLabel={deleteMutation.isPending ? 'Deleting...' : 'Delete All'}
+        title={t('transactions.deleteSelected')}
+        message={t('transactions.deleteSelectedMsg', { count: selectedIds.size })}
+        confirmLabel={deleteMutation.isPending ? t('common.deleting') : t('transactions.deleteAll')}
+        cancelLabel={t('common.cancel')}
         onConfirm={handleBatchDelete}
         onCancel={() => setBatchDeleteConfirm(false)}
       />
