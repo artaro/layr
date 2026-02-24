@@ -8,7 +8,7 @@ import {
   EmptyState
 } from '@/presentation/components/common';
 import {
-  TransactionRow,
+  TransactionItem,
   ExpensePieChart,
   OverviewChart,
   CalendarPanel,
@@ -157,11 +157,10 @@ export default function ExpenseDashboardPage() {
             {transactions.length > 0 ? (
               <div className="flex flex-col gap-2">
                 {transactions.slice(0, 5).map((tx) => (
-                  <TransactionRow
+                  <TransactionItem
                     key={tx.id}
                     transaction={tx}
-                    onEdit={() => {}}
-                    onDelete={() => {}}
+                    showActions={false}
                   />
                 ))}
               </div>

@@ -65,7 +65,7 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
           </div>
       </div>
 
-      <div className="flex-grow min-h-[300px]">
+      <div className="flex-grow min-h-[300px] overflow-hidden">
           <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <BarChart data={data} barGap={4}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
@@ -87,6 +87,8 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter={(value: any) => formatCurrency(Number(value))}
                 cursor={{ fill: '#F9FAFB' }}
+                isAnimationActive={false}
+                wrapperStyle={{ zIndex: 10, pointerEvents: 'none' }}
                 contentStyle={{
                   borderRadius: '1rem',
                   border: 'none',

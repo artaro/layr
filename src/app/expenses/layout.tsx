@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AppSidebar, AppHeader } from '@/presentation/components/layout';
-import TransactionFAB from '@/presentation/components/expenses/TransactionFAB';
+
 import { useAuth } from '@/presentation/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
@@ -49,12 +49,11 @@ export default function DashboardLayout({
         <AppHeader onMenuClick={() => setSidebarOpen(true)} />
         <div className="h-16" /> {/* Spacer for fixed header */}
         
-        <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 max-w-7xl mx-auto">
           {children}
         </div>
       </main>
       
-      <TransactionFAB />
       <GlobalModals />
       <BottomNav />
     </div>

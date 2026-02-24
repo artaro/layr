@@ -30,13 +30,35 @@ const translations: Record<Language, Record<string, string>> = {
         'common.selected': 'ที่เลือก',
         'common.selectAll': 'เลือกทั้งหมด',
         'common.failedToLoad': 'ไม่สามารถโหลดข้อมูลได้',
+        'common.back': 'กลับ',
+        'common.submit': 'บันทึก',
 
         // ── Navigation ──
         'nav.dashboard': 'แดชบอร์ด',
         'nav.transactions': 'รายการ',
         'nav.categories': 'หมวดหมู่',
         'nav.accounts': 'บัญชี',
+        'nav.more': 'เพิ่มเติม',
+        'nav.addNew': 'เพิ่มรายการ',
+        'nav.uploadStatement': 'อัปโหลดใบแจ้งยอด',
+        'nav.addManually': 'เพิ่มด้วยตัวเอง',
         'nav.proComingSoon': 'ฟีเจอร์ Pro เร็วๆ นี้!',
+
+        // ── More Page ──
+        'more.title': 'เพิ่มเติม ⚙️',
+        'more.subtitle': 'จัดการแอปของคุณ',
+        'more.categoryManagement': 'จัดการหมวดหมู่',
+        'more.categoryManagementDesc': 'เพิ่ม แก้ไข และจัดการหมวดหมู่รายรับ-รายจ่าย',
+        'more.settings': 'ตั้งค่า',
+        'more.settingsDesc': 'ปรับแต่งการตั้งค่าแอปของคุณ',
+
+        // ── Settings Page ──
+        'settings.title': 'ตั้งค่า ⚙️',
+        'settings.subtitle': 'ปรับแต่งแอปตามที่คุณต้องการ',
+        'settings.language': 'ภาษา',
+        'settings.version': 'เวอร์ชัน',
+        'settings.general': 'ทั่วไป',
+        'settings.about': 'เกี่ยวกับ',
 
         // ── Login ──
         'login.logIn': 'เข้าสู่ระบบ',
@@ -193,9 +215,17 @@ const translations: Record<Language, Record<string, string>> = {
         'import.importSuccess': 'นำเข้ารายการสำเร็จ!',
         'import.confirmStartOver': 'ยืนยันเริ่มใหม่ 🔄',
         'import.confirmStartOverMsg': 'ข้อมูลที่วิเคราะห์ไว้จะหายไป คุณแน่ใจหรือเปล่า?',
+        'import.confirmClose': 'ปิดหน้าต่าง? 🚨',
+        'import.confirmCloseMsg': 'ข้อมูลที่นำเข้าจะหายไป คุณแน่ใจหรือเปล่า?',
         'import.deleteSelected': 'ลบ {count} รายการที่เลือก?',
         'import.confirmDelete': 'ยืนยันลบ',
         'import.deleteMsg': 'ลบ "{name}" ({amount})?',
+        'import.submit': 'บันทึก',
+        'import.review': 'ตรวจสอบ',
+        'import.reviewTitle': 'ตรวจสอบก่อนนำเข้า',
+        'import.expenseTotal': 'รายจ่ายรวม',
+        'import.incomeTotal': 'รายรับรวม',
+        'import.categoryBreakdown': 'สรุปตามหมวดหมู่',
 
         // ── Confirm Dialog ──
         'confirm.delete': 'ยืนยันลบ',
@@ -233,13 +263,35 @@ const translations: Record<Language, Record<string, string>> = {
         'common.selected': 'selected',
         'common.selectAll': 'Select all',
         'common.failedToLoad': 'Failed to load data',
+        'common.back': 'Back',
+        'common.submit': 'Submit',
 
         // ── Navigation ──
         'nav.dashboard': 'Dashboard',
         'nav.transactions': 'Transactions',
         'nav.categories': 'Categories',
         'nav.accounts': 'Accounts',
+        'nav.more': 'More',
+        'nav.addNew': 'Add New',
+        'nav.uploadStatement': 'Upload Statement',
+        'nav.addManually': 'Add Manually',
         'nav.proComingSoon': 'Pro features coming soon!',
+
+        // ── More Page ──
+        'more.title': 'More ⚙️',
+        'more.subtitle': 'Manage your app',
+        'more.categoryManagement': 'Category Management',
+        'more.categoryManagementDesc': 'Add, edit, and manage your income & expense categories',
+        'more.settings': 'Settings',
+        'more.settingsDesc': 'Customize your app preferences',
+
+        // ── Settings Page ──
+        'settings.title': 'Settings ⚙️',
+        'settings.subtitle': 'Customize the app to fit your needs',
+        'settings.language': 'Language',
+        'settings.version': 'Version',
+        'settings.general': 'General',
+        'settings.about': 'About',
 
         // ── Login ──
         'login.logIn': 'Log In',
@@ -396,9 +448,17 @@ const translations: Record<Language, Record<string, string>> = {
         'import.importSuccess': 'Transactions imported successfully!',
         'import.confirmStartOver': 'Confirm Start Over 🔄',
         'import.confirmStartOverMsg': 'All analyzed data will be lost. Are you sure?',
+        'import.confirmClose': 'Close import? 🚨',
+        'import.confirmCloseMsg': 'Your imported data will be lost. Are you sure?',
         'import.deleteSelected': 'Delete {count} selected transactions?',
         'import.confirmDelete': 'Confirm Delete',
         'import.deleteMsg': 'Delete "{name}" ({amount})?',
+        'import.submit': 'Submit',
+        'import.review': 'Review',
+        'import.reviewTitle': 'Review Import',
+        'import.expenseTotal': 'Expense Total',
+        'import.incomeTotal': 'Income Total',
+        'import.categoryBreakdown': 'By Category',
 
         // ── Confirm Dialog ──
         'confirm.delete': 'Confirm Delete',

@@ -1,3 +1,5 @@
+export { default as CentralModal } from './CentralModal';
+export type { CentralModalProps, ModalAction, ModalActionType } from './CentralModal';
 export { default as StatCard } from './StatCard';
 export { default as EmptyState } from './EmptyState';
 export { default as ConfirmDialog } from './ConfirmDialog';

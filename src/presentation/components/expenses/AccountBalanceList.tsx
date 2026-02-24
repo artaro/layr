@@ -37,7 +37,7 @@ export default function AccountBalanceList({ accounts }: AccountBalanceListProps
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-1 space-y-3 max-h-[300px] scrollbar-thin scrollbar-thumb-gray-200">
+      <div className="flex-1 overflow-y-auto pr-1 space-y-3 max-h-[300px] scrollbar-hide">
         {sortedAccounts.length > 0 ? (
           sortedAccounts.map((account) => (
             <div 

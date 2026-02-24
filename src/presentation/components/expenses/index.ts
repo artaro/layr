@@ -1,5 +1,6 @@
 export { default as CategoryChip } from './CategoryChip';
 export { default as TransactionRow } from './TransactionRow';
+export { default as TransactionItem } from './TransactionItem';
 export { default as TransactionForm } from './TransactionForm';
 export { default as ExpensePieChart } from './ExpensePieChart';
 export { default as OverviewChart } from './OverviewChart';

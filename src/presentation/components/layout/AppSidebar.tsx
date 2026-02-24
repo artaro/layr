@@ -6,12 +6,15 @@ import Link from 'next/link';
 import { 
   LayoutDashboard, 
   Receipt, 
-  Tags, 
   Landmark, 
-  X
+  Ellipsis,
+  X,
+  Plus,
+  Upload
 } from 'lucide-react';
 import { APP_NAME } from '@/lib/constants';
 import { useTranslation } from '@/lib/i18n';
+import { useUIStore } from '@/presentation/stores';
 
 interface AppSidebarProps {
   open: boolean;
@@ -22,12 +25,13 @@ const AppSidebar = ({ open, onClose }: AppSidebarProps) => {
   const pathname = usePathname();
   const currentPath = pathname || '';
   const { t } = useTranslation();
+  const { openTransactionModal, openImportModal } = useUIStore();
 
   const navItems = [
     { label: t('nav.dashboard'), icon: LayoutDashboard, href: '/expenses', emoji: '📊' },
     { label: t('nav.transactions'), icon: Receipt, href: '/expenses/transactions', emoji: '💸' },
-    { label: t('nav.categories'), icon: Tags, href: '/expenses/categories', emoji: '🏷️' },
     { label: t('nav.accounts'), icon: Landmark, href: '/expenses/accounts', emoji: '🏦' },
+    { label: t('nav.more'), icon: Ellipsis, href: '/expenses/more', emoji: '⚙️' },
   ];
 
   return (
@@ -74,6 +78,26 @@ const AppSidebar = ({ open, onClose }: AppSidebarProps) => {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
+            {/* Add New Button */}
+            <div className="mb-3">
+              <button
+                onClick={openTransactionModal}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-all duration-200 shadow-md shadow-indigo-200 group"
+              >
+                <Plus size={20} />
+                <span>{t('nav.addNew')}</span>
+              </button>
+              <button
+                onClick={() => { openImportModal(); onClose(); }}
+                className="w-full flex items-center gap-3 px-4 py-2.5 mt-1 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all duration-200 text-sm"
+              >
+                <Upload size={16} className="text-gray-400" />
+                <span>{t('nav.uploadStatement')}</span>
+              </button>
+            </div>
+
+            <div className="h-px bg-gray-100 mx-2 mb-2" />
+
             {navItems.map((item) => {
               const isActive = currentPath === item.href;
               const Icon = item.icon;

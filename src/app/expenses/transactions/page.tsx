@@ -28,7 +28,7 @@ export default function TransactionsPage() {
   const [formOpen, setFormOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Transaction | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<TransactionType | ''>('');
+  const [filterType, setFilterType] = useState<TransactionType>(TransactionType.EXPENSE);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterStartDate, setFilterStartDate] = useState('');
   const [filterEndDate, setFilterEndDate] = useState('');
@@ -47,7 +47,7 @@ export default function TransactionsPage() {
     isError,
   } = useTransactions({
     search: searchQuery || undefined,
-    type: filterType || undefined,
+    type: filterType,
     categoryId: filterCategory || undefined,
     startDate: filterStartDate || undefined,
     endDate: filterEndDate || undefined,
@@ -271,16 +271,6 @@ export default function TransactionsPage() {
             {/* Type Toggle Group */}
             <div className="flex bg-gray-100/80 p-1 rounded-xl w-full md:w-auto flex-shrink-0">
                 <button
-                onClick={() => { setFilterType(''); setPage(1); setSelectedIds(new Set()); }}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${
-                    filterType === '' 
-                    ? 'bg-white text-gray-900 shadow-sm' 
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-                >
-                {t('common.all')}
-                </button>
-                <button
                 onClick={() => { setFilterType(TransactionType.EXPENSE); setPage(1); setSelectedIds(new Set()); }}
                 className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${
                     filterType === TransactionType.EXPENSE 
@@ -341,29 +331,12 @@ export default function TransactionsPage() {
                         className="w-full px-3 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 outline-none text-sm appearance-none font-medium truncate pr-6"
                     >
                         <option value="">{t('transactions.allCategories')}</option>
-                        {filterType === TransactionType.INCOME
-                        ? incomeCategories.map((c) => (
+                        {(filterType === TransactionType.INCOME
+                          ? incomeCategories
+                          : expenseCategories
+                        ).map((c) => (
                             <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                            ))
-                        : filterType === TransactionType.EXPENSE
-                            ? expenseCategories.map((c) => (
-                                <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                            ))
-                            : (
-                            <>
-                                <optgroup label={t('transactions.income')}>
-                                    {incomeCategories.map((c) => (
-                                        <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                                    ))}
-                                </optgroup>
-                                <optgroup label={t('transactions.expense')}>
-                                    {expenseCategories.map((c) => (
-                                        <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                                    ))}
-                                </optgroup>
-                            </>
-                            )
-                        }
+                        ))}
                     </select>
                 </div>
             </div>
