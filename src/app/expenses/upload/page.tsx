@@ -13,16 +13,16 @@ import {
   Loader2,
   ChevronDown
 } from 'lucide-react';
-import { FileUploadZone } from '@/presentation/components/common';
+import { FileUploadZone } from '@/shared/components';
 import {
   CsvColumnMapping,
   CsvParseResult,
   parseCsvFile,
-} from '@/infrastructure/parsers/csvParser';
-import { TransactionType, StatementSource } from '@/domain/enums';
-import { formatCurrency } from '@/lib/formatters';
-import { useAccounts, useCreateTransactionsBulk } from '@/presentation/hooks';
-import { CreateTransactionInput } from '@/domain/entities';
+} from '@/features/import/parsers/csvParser';
+import { TransactionType, StatementSource } from '@/features/expenses/types';
+import { formatCurrency } from '@/shared/lib/formatters';
+import { useAccounts, useCreateTransactionsBulk } from '@/features/expenses';
+import { CreateTransactionInput } from '@/features/expenses/types';
 
 export default function UploadPage() {
   const { data: accounts = [], isLoading: accountsLoading } = useAccounts();

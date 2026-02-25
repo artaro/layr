@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAuth } from '@/presentation/hooks/useAuth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { APP_NAME } from '@/lib/constants';
-import { useTranslation } from '@/lib/i18n';
+import { APP_NAME } from '@/shared/lib/constants';
+import { useTranslation } from '@/shared/lib/i18n';
 import { Eye, EyeOff, Check, X, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {

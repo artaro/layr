@@ -14,13 +14,13 @@ import {
   useCreateAccount,
   useUpdateAccount,
   useDeleteAccount,
-} from '@/presentation/hooks';
-import { Account, CreateAccountInput, UpdateAccountInput } from '@/domain/entities';
-import { AccountType } from '@/domain/enums/accountType';
-import { formatCurrency } from '@/lib/formatters';
-import { useUIStore } from '@/presentation/stores';
-import AccountForm from '@/presentation/components/expenses/AccountForm';
-import { useTranslation } from '@/lib/i18n';
+} from '@/features/expenses';
+import { Account, CreateAccountInput, UpdateAccountInput } from '@/features/expenses/types';
+import { AccountType } from '@/features/expenses/types';
+import { formatCurrency } from '@/shared/lib/formatters';
+import { useUIStore } from '@/shared/stores';
+import AccountForm from '@/features/expenses/components/AccountForm';
+import { useTranslation } from '@/shared/lib/i18n';
 
 export default function AccountsPage() {
   const { t } = useTranslation();

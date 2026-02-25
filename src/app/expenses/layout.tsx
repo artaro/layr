@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { AppSidebar, AppHeader } from '@/presentation/components/layout';
+import { AppSidebar, AppHeader } from '@/shared/components/layout';
 
-import { useAuth } from '@/presentation/hooks/useAuth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import GlobalModals from '@/presentation/components/layout/GlobalModals';
-import BottomNav from '@/presentation/components/layout/BottomNav';
+import GlobalModals from '@/shared/components/layout/GlobalModals';
+import BottomNav from '@/shared/components/layout/BottomNav';
 
 export default function DashboardLayout({
   children,

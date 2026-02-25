@@ -8,11 +8,11 @@ import {
 } from 'lucide-react';
 import {
   TransactionForm,
-} from '@/presentation/components/expenses';
-import TransactionsListCards from '@/presentation/components/expenses/TransactionsListCards';
-import { ConfirmDialog, EmptyState } from '@/presentation/components/common';
-import { TransactionType, StatementSource } from '@/domain/enums';
-import { Transaction } from '@/domain/entities';
+} from '@/features/expenses/components';
+import TransactionsListCards from '@/features/expenses/components/TransactionsListCards';
+import { ConfirmDialog, EmptyState } from '@/shared/components';
+import { TransactionType, StatementSource } from '@/features/expenses/types';
+import { Transaction } from '@/features/expenses/types';
 import {
   useTransactions,
   useAccounts,
@@ -20,8 +20,8 @@ import {
   useCreateTransaction,
   useUpdateTransaction,
   useDeleteTransaction,
-} from '@/presentation/hooks';
-import { useTranslation } from '@/lib/i18n';
+} from '@/features/expenses';
+import { useTranslation } from '@/shared/lib/i18n';
 
 export default function TransactionsPage() {
   const { t } = useTranslation();

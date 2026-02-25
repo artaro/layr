@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit, Kanit } from 'next/font/google';
 import './globals.css';
 import Providers from './providers';
-import LangSwitcher from '@/presentation/components/layout/LangSwitcher';
+import LangSwitcher from '@/shared/components/layout/LangSwitcher';
 
 const outfit = Outfit({ 
   subsets: ['latin'], 

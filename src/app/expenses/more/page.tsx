@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Tags, Settings, ChevronRight, Upload } from 'lucide-react';
-import { useTranslation } from '@/lib/i18n';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface PortalCard {
   href: string;

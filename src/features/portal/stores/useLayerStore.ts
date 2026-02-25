@@ -1,0 +1,131 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface Layer {
+    id: string;
+    name: string;
+    icon: string;
+    color: string;
+    progress: number; // 0–100
+    order: number;    // stack position (0 = foundation/bottom)
+    isFoundation: boolean;
+}
+
+export type LayerTemplate = 'starter' | 'custom';
+
+// ─── Preset Layers ────────────────────────────────────────────────────────────
+
+export const PRESET_LAYERS: Record<string, Omit<Layer, 'progress'>> = {
+    financial: {
+        id: 'financial',
+        name: 'Financial',
+        icon: '💰',
+        color: '#6C5CE7',
+        order: 0,
+        isFoundation: true,
+    },
+    knowledge: {
+        id: 'knowledge',
+        name: 'Knowledge & Skills',
+        icon: '📚',
+        color: '#F59E0B',
+        order: 1,
+        isFoundation: false,
+    },
+    health: {
+        id: 'health',
+        name: 'Health',
+        icon: '💪',
+        color: '#10B981',
+        order: 2,
+        isFoundation: false,
+    },
+};
+
+export const STARTER_TEMPLATE_LAYERS: Layer[] = [
+    { ...PRESET_LAYERS.financial, progress: 0 },
+    { ...PRESET_LAYERS.knowledge, progress: 0 },
+    { ...PRESET_LAYERS.health, progress: 0 },
+];
+
+export const CUSTOM_TEMPLATE_LAYERS: Layer[] = [
+    { ...PRESET_LAYERS.financial, progress: 0 },
+];
+
+// ─── State ────────────────────────────────────────────────────────────────────
+
+interface LayerState {
+    layers: Layer[];
+    selectedTemplate: LayerTemplate | null;
+    hasCompletedSetup: boolean;
+}
+
+// ─── Actions ──────────────────────────────────────────────────────────────────
+
+interface LayerActions {
+    selectTemplate: (template: LayerTemplate) => void;
+    addLayer: (layer: Layer) => void;
+    removeLayer: (id: string) => void;
+    updateProgress: (id: string, progress: number) => void;
+    completeSetup: () => void;
+    resetLayers: () => void;
+}
+
+type LayerStore = LayerState & LayerActions;
+
+// ─── Store ────────────────────────────────────────────────────────────────────
+
+export const useLayerStore = create<LayerStore>()(
+    persist(
+        (set) => ({
+            layers: [],
+            selectedTemplate: null,
+            hasCompletedSetup: false,
+
+            selectTemplate: (template) => {
+                const layers =
+                    template === 'starter'
+                        ? [...STARTER_TEMPLATE_LAYERS]
+                        : [...CUSTOM_TEMPLATE_LAYERS];
+                set({ selectedTemplate: template, layers });
+            },
+
+            addLayer: (layer) =>
+                set((state) => ({
+                    layers: [...state.layers, { ...layer, order: state.layers.length }],
+                })),
+
+            removeLayer: (id) =>
+                set((state) => ({
+                    layers: state.layers
+                        .filter((l) => l.id !== id)
+                        .map((l, i) => ({ ...l, order: i })),
+                })),
+
+            updateProgress: (id, progress) =>
+                set((state) => ({
+                    layers: state.layers.map((l) =>
+                        l.id === id ? { ...l, progress: Math.min(100, Math.max(0, progress)) } : l
+                    ),
+                })),
+
+            completeSetup: () => set({ hasCompletedSetup: true }),
+
+            resetLayers: () =>
+                set({
+                    layers: [],
+                    selectedTemplate: null,
+                    hasCompletedSetup: false,
+                }),
+        }),
+        { name: 'layr-layers' }
+    )
+);
+
+// ─── Selectors ────────────────────────────────────────────────────────────────
+
+export const useLayers = () => useLayerStore((s) => s.layers);
+export const useHasCompletedSetup = () => useLayerStore((s) => s.hasCompletedSetup);
+export const useSelectedTemplate = () => useLayerStore((s) => s.selectedTemplate);

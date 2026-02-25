@@ -9,18 +9,18 @@ import {
   Pin,
   X
 } from 'lucide-react';
-import { DEFAULT_CATEGORIES } from '@/data/defaults/defaultCategories';
-import { ConfirmDialog } from '@/presentation/components/common';
+import { DEFAULT_CATEGORIES } from '@/features/expenses/constants';
+import { ConfirmDialog } from '@/shared/components';
 import {
   useCategories,
   useCreateCategory,
   useUpdateCategory,
   useDeleteCategory,
   useTogglePinCategory,
-} from '@/presentation/hooks';
-import { Category } from '@/domain/entities';
-import { TransactionType } from '@/domain/enums';
-import { useTranslation } from '@/lib/i18n';
+} from '@/features/expenses';
+import { Category } from '@/features/expenses/types';
+import { TransactionType } from '@/features/expenses/types';
+import { useTranslation } from '@/shared/lib/i18n';
 
 const EMOJI_OPTIONS = [
   '🍔', '🚗', '🛍️', '🎮', '💡', '💊', '📚', '💰', '🔄', '📦', 

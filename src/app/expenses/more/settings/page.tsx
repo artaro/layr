@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useTranslation } from '@/lib/i18n';
+import { useTranslation } from '@/shared/lib/i18n';
 import { Languages, Info, Sparkles } from 'lucide-react';
-import { useLanguageStore } from '@/presentation/stores/useLanguageStore';
+import { useLanguageStore } from '@/shared/stores/useLanguageStore';
 
 export default function SettingsPage() {
   const { t, language } = useTranslation();

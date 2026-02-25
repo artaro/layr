@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '@/infrastructure/query/queryClient';
-import GlobalLoader from '@/presentation/components/common/GlobalLoader';
-import { useUIStore } from '@/presentation/stores';
+import { queryClient } from '@/config/query';
+import GlobalLoader from '@/shared/components/GlobalLoader';
+import { useUIStore } from '@/shared/stores';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 
 const TOAST_DURATION_MS = 4000;

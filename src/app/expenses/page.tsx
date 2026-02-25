@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown, Wallet, AlertCircle } from 'lucide-react';
 import { 
   StatCard, 
   EmptyState
-} from '@/presentation/components/common';
+} from '@/shared/components';
 import {
   TransactionItem,
   ExpensePieChart,
@@ -14,17 +14,17 @@ import {
   CalendarPanel,
   TransactionForm,
   AccountBalanceList,
-} from '@/presentation/components/expenses';
-import { formatCurrency } from '@/lib/formatters';
-import { StatementSource } from '@/domain/enums';
-import { useTranslation } from '@/lib/i18n';
+} from '@/features/expenses/components';
+import { formatCurrency } from '@/shared/lib/formatters';
+import { StatementSource } from '@/features/expenses/types';
+import { useTranslation } from '@/shared/lib/i18n';
 import {
   useTransactions,
   useTransactionSummary,
   useAccounts,
   useCategories,
   useCreateTransaction,
-} from '@/presentation/hooks';
+} from '@/features/expenses';
 
 export default function ExpenseDashboardPage() {
   const { t } = useTranslation();
