@@ -131,9 +131,23 @@ export interface TransactionFilter {
     type?: TransactionType;
     startDate?: string;
     endDate?: string;
+    month?: number;
+    year?: number;
     search?: string;
     page?: number;
     pageSize?: number;
+}
+
+export interface PaginationMeta {
+    total_item: number;
+    total_page: number;
+    page: number;
+    row_per_page: number;
+}
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    meta: PaginationMeta;
 }
 
 export interface TransactionSummary {

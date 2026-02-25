@@ -51,7 +51,7 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
     });
 
     return Array.from(dataMap.values()).sort((a, b) => a.date.getTime() - b.date.getTime());
-  }, [transactions]);
+  }, [transactions, language]);
 
 
   return (

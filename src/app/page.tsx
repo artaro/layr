@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/shared/lib/i18n';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import HeroSection from '@/features/landing/components/HeroSection';
 import LayersSection from '@/features/landing/components/LayersSection';
 import FeaturesSection from '@/features/landing/components/FeaturesSection';
@@ -14,6 +15,9 @@ import FinalCtaSection from '@/features/landing/components/FinalCtaSection';
 
 export default function HomePage() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  const ctaHref = user ? '/portal' : '/login';
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -28,7 +32,7 @@ export default function HomePage() {
           </h1>
         </div>
         <Link
-          href="/portal"
+          href={ctaHref}
           className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-200 hover:shadow-lg transition-all active:scale-95 flex items-center gap-1.5"
         >
           {t('landing.openApp')} <ArrowRight size={14} />

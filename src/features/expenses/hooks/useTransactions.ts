@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { transactionRepository } from '@/features/expenses/api';
 import { queryKeys } from '@/config/query';
 import {
@@ -17,6 +17,7 @@ export function useTransactions(filter?: TransactionFilter) {
     queryKey: queryKeys.transactions.list(filter as Record<string, unknown> || {}),
     queryFn: () => transactionRepository.getAll(userId!, filter),
     enabled: !!userId,
+    placeholderData: keepPreviousData,
   });
 }
 

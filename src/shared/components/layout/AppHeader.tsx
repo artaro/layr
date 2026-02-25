@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Menu, User, LogOut, Bell } from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useTranslation } from '@/shared/lib/i18n';
@@ -12,6 +13,7 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
+  const router = useRouter();
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
   const { language, toggleLanguage } = useLanguageStore();
@@ -37,6 +39,7 @@ export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
   const handleLogout = async () => {
     setIsMenuOpen(false);
     await signOut();
+    router.push('/');
   };
 
   return (

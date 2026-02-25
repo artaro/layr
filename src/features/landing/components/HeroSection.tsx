@@ -4,9 +4,13 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { useTranslation } from '@/shared/lib/i18n';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 export default function HeroSection() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  const ctaHref = user ? '/portal' : '/login';
 
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 text-center overflow-hidden">
@@ -18,15 +22,15 @@ export default function HeroSection() {
       <div className="absolute top-1/3 right-[12%] w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-pink-200/50 to-pink-300/30 backdrop-blur-sm animate-float-delayed -z-0 hidden sm:block" />
       <div className="absolute bottom-1/3 left-[15%] w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-gradient-to-br from-indigo-200/50 to-indigo-300/30 backdrop-blur-sm animate-float -z-0 hidden sm:block" />
 
-      {/* Layer stack visual */}
+      {/* Layer stack visual — only 3 core layers */}
       <div className="mb-8 relative">
         <div className="flex flex-col items-center gap-1.5">
-          {['💰', '📚', '💪', '🤝', '➕'].map((emoji, i) => (
+          {['💰', '📚', '💪'].map((emoji, i) => (
             <div
               key={emoji}
               className="w-14 h-10 sm:w-16 sm:h-11 rounded-xl flex items-center justify-center text-lg shadow-md transition-all duration-500"
               style={{
-                background: `rgba(108, 92, 231, ${0.15 + i * 0.05})`,
+                background: `rgba(108, 92, 231, ${0.15 + i * 0.07})`,
                 animationDelay: `${i * 0.15}s`,
                 transform: `scale(${1 - i * 0.02})`,
               }}
@@ -52,7 +56,7 @@ export default function HeroSection() {
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <Link
-          href="/portal"
+          href={ctaHref}
           className="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white text-base sm:text-lg font-bold rounded-2xl shadow-xl shadow-indigo-200 hover:shadow-2xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
         >
           {t('landing.getStarted')} <ArrowRight size={18} />
@@ -64,6 +68,11 @@ export default function HeroSection() {
           {t('landing.ctaSecondary')} <ChevronDown size={18} />
         </a>
       </div>
+
+      {/* Phase note */}
+      <p className="mt-6 text-sm text-gray-400 font-medium">
+        {t('landing.phaseNote')}
+      </p>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 animate-bounce-slow">

@@ -5,12 +5,8 @@ import {
   UpdateTransactionInput,
   TransactionFilter,
   TransactionSummary,
+  PaginatedResponse,
 } from '@/features/expenses/types';
-
-interface PaginatedResult<T> {
-  data: T[];
-  count: number;
-}
 
 function toSnakeCase(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
@@ -39,7 +35,7 @@ export const transactionRepository = {
   async getAll(
     userId: string,
     filter?: TransactionFilter
-  ): Promise<PaginatedResult<Transaction>> {
+  ): Promise<PaginatedResponse<Transaction>> {
     let query = supabase
       .from('transactions')
       .select('*, category:categories(*), account:accounts(*)', { count: 'exact' })
@@ -61,8 +57,29 @@ export const transactionRepository = {
     if (filter?.endDate) {
       query = query.lte('transaction_date', filter.endDate);
     }
+
+    if (filter?.year && !filter?.startDate && !filter?.endDate) {
+      if (filter?.month) {
+        // Specific month in a year
+        const startOfMonth = new Date(filter.year, filter.month - 1, 1).toISOString().split('T')[0];
+        const endOfMonth = new Date(filter.year, filter.month, 0).toISOString().split('T')[0];
+        query = query.gte('transaction_date', startOfMonth).lte('transaction_date', endOfMonth);
+      } else {
+        // Entire year
+        const startOfYear = `${filter.year}-01-01`;
+        const endOfYear = `${filter.year}-12-31`;
+        query = query.gte('transaction_date', startOfYear).lte('transaction_date', endOfYear);
+      }
+    }
     if (filter?.search) {
-      query = query.ilike('description', `%${filter.search}%`);
+      // Search by description OR amount value
+      const searchTerm = filter.search;
+      const numericSearch = parseFloat(searchTerm);
+      if (!isNaN(numericSearch)) {
+        query = query.or(`description.ilike.%${searchTerm}%,amount.eq.${numericSearch}`);
+      } else {
+        query = query.ilike('description', `%${searchTerm}%`);
+      }
     }
 
     // Pagination
@@ -76,9 +93,17 @@ export const transactionRepository = {
 
     if (error) throw new Error(error.message);
 
+    const totalItem = count || 0;
+    const totalPage = Math.ceil(totalItem / pageSize);
+
     return {
       data: (data || []).map((row) => toCamelCase<Transaction>(row as Record<string, unknown>)),
-      count: count || 0,
+      meta: {
+        total_item: totalItem,
+        total_page: totalPage,
+        page,
+        row_per_page: pageSize,
+      },
     };
   },
 

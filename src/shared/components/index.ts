@@ -1,4 +1,5 @@
 export { default as CentralModal } from './CentralModal';
+export { default as ContentList } from './ContentList';
 export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as EmptyState } from './EmptyState';
 export { default as FileUploadZone } from './FileUploadZone';

@@ -13,8 +13,6 @@ export interface Layer {
     isFoundation: boolean;
 }
 
-export type LayerTemplate = 'starter' | 'custom';
-
 // ─── Preset Layers ────────────────────────────────────────────────────────────
 
 export const PRESET_LAYERS: Record<string, Omit<Layer, 'progress'>> = {
@@ -26,9 +24,9 @@ export const PRESET_LAYERS: Record<string, Omit<Layer, 'progress'>> = {
         order: 0,
         isFoundation: true,
     },
-    knowledge: {
-        id: 'knowledge',
-        name: 'Knowledge & Skills',
+    skill: {
+        id: 'skill',
+        name: 'Skills & Learning',
         icon: '📚',
         color: '#F59E0B',
         order: 1,
@@ -44,30 +42,23 @@ export const PRESET_LAYERS: Record<string, Omit<Layer, 'progress'>> = {
     },
 };
 
-export const STARTER_TEMPLATE_LAYERS: Layer[] = [
+export const DEFAULT_LAYERS: Layer[] = [
     { ...PRESET_LAYERS.financial, progress: 0 },
-    { ...PRESET_LAYERS.knowledge, progress: 0 },
+    { ...PRESET_LAYERS.skill, progress: 0 },
     { ...PRESET_LAYERS.health, progress: 0 },
-];
-
-export const CUSTOM_TEMPLATE_LAYERS: Layer[] = [
-    { ...PRESET_LAYERS.financial, progress: 0 },
 ];
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
 interface LayerState {
     layers: Layer[];
-    selectedTemplate: LayerTemplate | null;
     hasCompletedSetup: boolean;
 }
 
 // ─── Actions ──────────────────────────────────────────────────────────────────
 
 interface LayerActions {
-    selectTemplate: (template: LayerTemplate) => void;
-    addLayer: (layer: Layer) => void;
-    removeLayer: (id: string) => void;
+    initLayers: () => void;
     updateProgress: (id: string, progress: number) => void;
     completeSetup: () => void;
     resetLayers: () => void;
@@ -81,28 +72,11 @@ export const useLayerStore = create<LayerStore>()(
     persist(
         (set) => ({
             layers: [],
-            selectedTemplate: null,
             hasCompletedSetup: false,
 
-            selectTemplate: (template) => {
-                const layers =
-                    template === 'starter'
-                        ? [...STARTER_TEMPLATE_LAYERS]
-                        : [...CUSTOM_TEMPLATE_LAYERS];
-                set({ selectedTemplate: template, layers });
+            initLayers: () => {
+                set({ layers: [...DEFAULT_LAYERS] });
             },
-
-            addLayer: (layer) =>
-                set((state) => ({
-                    layers: [...state.layers, { ...layer, order: state.layers.length }],
-                })),
-
-            removeLayer: (id) =>
-                set((state) => ({
-                    layers: state.layers
-                        .filter((l) => l.id !== id)
-                        .map((l, i) => ({ ...l, order: i })),
-                })),
 
             updateProgress: (id, progress) =>
                 set((state) => ({
@@ -116,7 +90,6 @@ export const useLayerStore = create<LayerStore>()(
             resetLayers: () =>
                 set({
                     layers: [],
-                    selectedTemplate: null,
                     hasCompletedSetup: false,
                 }),
         }),
@@ -128,4 +101,3 @@ export const useLayerStore = create<LayerStore>()(
 
 export const useLayers = () => useLayerStore((s) => s.layers);
 export const useHasCompletedSetup = () => useLayerStore((s) => s.hasCompletedSetup);
-export const useSelectedTemplate = () => useLayerStore((s) => s.selectedTemplate);

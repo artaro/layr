@@ -59,7 +59,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] inline-flex items-center justify-center text-3xl shadow-xl shadow-indigo-200 mb-4 animate-bounce-slow">
-            💜
+            🧱
           </div>
           <h1 className="text-3xl font-extrabold text-gray-900 mb-1 tracking-tight">
             {APP_NAME}

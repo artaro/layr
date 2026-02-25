@@ -7,8 +7,6 @@ const LAYERS = [
   { key: 'financial', active: true },
   { key: 'knowledge', active: false },
   { key: 'health', active: false },
-  { key: 'relationships', active: false },
-  { key: 'custom', active: false },
 ] as const;
 
 export default function LayersSection() {
@@ -16,7 +14,7 @@ export default function LayersSection() {
 
   return (
     <section className="py-16 sm:py-24 px-4 bg-white">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-3 text-gray-900">
           {t('landing.layersTitle')}
         </h2>
@@ -24,7 +22,7 @@ export default function LayersSection() {
           {t('landing.layersDesc')}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {LAYERS.map((layer) => (
             <div
               key={layer.key}

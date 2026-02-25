@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { useStatementImport } from '@/features/import/hooks/useStatementImport';
 import { Account, Category } from '@/features/expenses/types';
-import { formatCurrency, formatDate } from '@/shared/lib/formatters';
+import { formatCurrency } from '@/shared/lib/formatters';
 import { FileUploadZone, CentralModal } from '@/shared/components';
 import ImportPreviewCards from './ImportPreviewCards';
-import { X, AlertCircle, FileText, Loader2, RotateCcw, ArrowRight, Trash2, Eye, Send } from 'lucide-react';
+import { AlertCircle, FileText, Loader2, RotateCcw, ArrowRight, Trash2, Send } from 'lucide-react';
 import { useUIStore } from '@/shared/stores';
 import { useTranslation } from '@/shared/lib/i18n';
 import { ConfirmDialog } from '@/shared/components';

@@ -1,16 +1,14 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { 
-  Search, 
-  Trash2, 
-  AlertCircle
+import {
+  Search,
 } from 'lucide-react';
 import {
   TransactionForm,
 } from '@/features/expenses/components';
 import TransactionsListCards from '@/features/expenses/components/TransactionsListCards';
-import { ConfirmDialog, EmptyState } from '@/shared/components';
+import { EmptyState, ContentList } from '@/shared/components';
 import { TransactionType, StatementSource } from '@/features/expenses/types';
 import { Transaction } from '@/features/expenses/types';
 import {
@@ -23,6 +21,8 @@ import {
 } from '@/features/expenses';
 import { useTranslation } from '@/shared/lib/i18n';
 
+const PAGE_SIZE = 20;
+
 export default function TransactionsPage() {
   const { t } = useTranslation();
   const [formOpen, setFormOpen] = useState(false);
@@ -30,15 +30,10 @@ export default function TransactionsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<TransactionType>(TransactionType.EXPENSE);
   const [filterCategory, setFilterCategory] = useState('');
-  const [filterStartDate, setFilterStartDate] = useState('');
-  const [filterEndDate, setFilterEndDate] = useState('');
+  const [filterAccount, setFilterAccount] = useState('');
+  const [filterMonth, setFilterMonth] = useState<string>('');
+  const [filterYear, setFilterYear] = useState<string>('');
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(50);
-  
-  // Selection State
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [batchCategory, setBatchCategory] = useState('');
-  const [batchDeleteConfirm, setBatchDeleteConfirm] = useState(false);
 
   // Data fetching
   const {
@@ -49,10 +44,11 @@ export default function TransactionsPage() {
     search: searchQuery || undefined,
     type: filterType,
     categoryId: filterCategory || undefined,
-    startDate: filterStartDate || undefined,
-    endDate: filterEndDate || undefined,
+    accountId: filterAccount || undefined,
+    month: filterMonth ? parseInt(filterMonth) : undefined,
+    year: filterYear ? parseInt(filterYear) : undefined,
     page,
-    pageSize,
+    pageSize: PAGE_SIZE,
   });
 
   const { data: accounts = [] } = useAccounts();
@@ -64,14 +60,18 @@ export default function TransactionsPage() {
   const deleteMutation = useDeleteTransaction();
 
   const transactions = transactionData?.data || [];
+  const meta = transactionData?.meta;
 
   // Filtered categories helper
   const expenseCategories = useMemo(() => categories.filter(c => c.type === 'expense'), [categories]);
   const incomeCategories = useMemo(() => categories.filter(c => c.type === 'income'), [categories]);
+  const filteredCategories = filterType === TransactionType.INCOME ? incomeCategories : expenseCategories;
+
+  const totalItem = meta?.total_item || 0;
+  const totalPage = meta?.total_page || 1;
 
   // --- Handlers ---
 
- 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreate = async (data: any) => {
     try {
@@ -96,9 +96,7 @@ export default function TransactionsPage() {
     try {
       await updateMutation.mutateAsync({
         id: editTarget.id,
-        input: {
-            ...data
-        },
+        input: { ...data },
       });
       setFormOpen(false);
       setEditTarget(null);
@@ -107,14 +105,9 @@ export default function TransactionsPage() {
     }
   };
 
-  // Inline update from list
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleInlineUpdate = async (id: string, input: any) => {
-      try {
-          await updateMutation.mutateAsync({ id, input });
-      } catch (error) {
-          console.error('Failed to inline update', error);
-      }
+  const handleEditInteraction = (tx: Transaction) => {
+    setEditTarget(tx);
+    setFormOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -125,264 +118,165 @@ export default function TransactionsPage() {
     }
   };
 
-  // --- Batch Logic ---
-
-  const handleSelectOne = (id: string) => {
-    const tx = transactions.find(t => t.id === id);
-    if (!tx) return;
-
-    const currentType = getSelectedType();
-    
-    if (currentType && currentType !== tx.type && selectedIds.size > 0) {
-        return; 
-    }
-
-    const next = new Set(selectedIds);
-    if (next.has(id)) {
-        next.delete(id);
-    } else {
-        next.add(id);
-    }
-    setSelectedIds(next);
-  };
-
-  const getSelectedType = (): 'income' | 'expense' | null => {
-    if (selectedIds.size === 0) return null;
-    const firstId = Array.from(selectedIds)[0];
-    const tx = transactions.find(t => t.id === firstId);
-    return tx?.type as 'income' | 'expense' || null;
-  };
-
-  const handleSelectAllOfType = (type: 'income' | 'expense', ids: string[]) => {
-    const currentType = getSelectedType();
-    if (currentType && currentType !== type) return;
-
-    const allSelected = ids.every(id => selectedIds.has(id));
-    const next = new Set(selectedIds);
-    
-    if (allSelected) {
-       ids.forEach(id => next.delete(id));
-    } else {
-       ids.forEach(id => next.add(id));
-    }
-    setSelectedIds(next);
-  };
-
-  const handleBatchDelete = async () => {
-    try {
-      for (const id of selectedIds) {
-        await deleteMutation.mutateAsync(id);
-      }
-      setSelectedIds(new Set());
-      setBatchDeleteConfirm(false);
-    } catch (error) {
-      console.error('Failed to batch delete', error);
-    }
-  };
-
-  const handleBatchCategoryChange = async (categoryId: string) => {
-    if (!categoryId) return;
-    try {
-      for (const id of selectedIds) {
-        await updateMutation.mutateAsync({
-          id,
-          input: { categoryId },
-        });
-      }
-      setSelectedIds(new Set());
-      setBatchCategory('');
-    } catch (error) {
-      console.error('Failed to batch update category', error);
-    }
-  };
+  // --- Handlers ---
 
   const handleFormClose = () => {
     setFormOpen(false);
     setEditTarget(null);
   };
 
-  const selectedType = getSelectedType();
+  const resetPage = () => setPage(1);
+
+  // Current year to populate year dropdown up to a few years back
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => (currentYear - i).toString());
 
   return (
-    <div className="animate-fade-in pb-24 relative">
-      
-      {/* Sticky Header Container */}
-      <div className="sticky top-16 z-30 -mx-4 px-4 md:px-8 py-4 mb-6 bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-sm transition-all duration-300">
-        
-        {/* Top Row: Title or Batch Actions */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            {selectedIds.size > 0 ? (
-                // Batch Actions State
-                <div className="flex flex-1 items-center gap-4 animate-in slide-in-from-left-2 fade-in duration-200">
-                    <div className="flex items-center gap-3">
-                        <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
-                        {selectedIds.size} {t('common.selected')}
-                        </span>
-                        <div className="h-4 w-px bg-gray-300" />
-                        <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                        {selectedType === 'income' ? t('transactions.income') : t('transactions.expense')}
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 ml-auto md:ml-0">
-                        <select 
-                            value={batchCategory}
-                            onChange={(e) => handleBatchCategoryChange(e.target.value)}
-                            className="text-sm py-1.5 pl-3 pr-8 rounded-lg border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 min-w-[150px]"
-                        >
-                            <option value="">{t('transactions.setCategory')}</option>
-                            {selectedType === 'income' 
-                                ? incomeCategories.map(c => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)
-                                : expenseCategories.map(c => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)
-                            }
-                        </select>
-
-                        <button 
-                            onClick={() => setBatchDeleteConfirm(true)}
-                            className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                            title={t('common.delete')}
-                        >
-                            <Trash2 size={18} />
-                        </button>
-
-                        <div className="h-6 w-px bg-gray-300 mx-2" />
-
-                        <button 
-                            onClick={() => setSelectedIds(new Set())}
-                            className="text-sm font-medium text-gray-600 hover:text-gray-900"
-                        >
-                            {t('common.cancel')}
-                        </button>
-                    </div>
-                </div>
-            ) : (
-                // Standard Title State
-                <div>
-                   <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                     {t('transactions.title')}
-                   </h1>
-                </div>
-            )}
-        </div>
-
-        {/* Second Row: Controls (Toggles & Filters) */}
-        <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between">
-            
-            {/* Type Toggle Group */}
-            <div className="flex bg-gray-100/80 p-1 rounded-xl w-full md:w-auto flex-shrink-0">
+    <div className="animate-fade-in relative">
+      <ContentList
+        page={page}
+        totalPage={totalPage}
+        totalItem={totalItem}
+        pageSize={PAGE_SIZE}
+        onPageChange={setPage}
+        isLoading={isLoading}
+        isError={isError}
+        errorMessage={t('transactions.failedToLoad')}
+        showingLabel={totalItem > 0 ? t('transactions.showing', { from: totalItem > 0 ? (page - 1) * PAGE_SIZE + 1 : 0, to: Math.min(page * PAGE_SIZE, totalItem), total: totalItem }) : undefined}
+        filterSection={
+          <div className="sticky top-16 z-30 -mx-4 px-4 md:px-6 py-2.5 bg-white/95 backdrop-blur-xl border-b border-gray-100 transition-all duration-300">
+            {/* Row 1: Type toggle, Month, Year, Search, and Filter Toggle */}
+            <div className="flex justify-center items-center gap-2 mb-2 w-full">
+              <div className="flex bg-gray-100 p-0.5 rounded-lg flex-shrink-0">
                 <button
-                onClick={() => { setFilterType(TransactionType.EXPENSE); setPage(1); setSelectedIds(new Set()); }}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${
-                    filterType === TransactionType.EXPENSE 
-                    ? 'bg-white text-rose-600 shadow-sm' 
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  onClick={() => { setFilterType(TransactionType.EXPENSE); resetPage(); }}
+                  className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                    filterType === TransactionType.EXPENSE
+                      ? 'bg-white text-rose-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
                 >
-                {t('transactions.expense')}
+                  {t('transactions.expense')}
                 </button>
                 <button
-                onClick={() => { setFilterType(TransactionType.INCOME); setPage(1); setSelectedIds(new Set()); }}
-                className={`flex-1 md:flex-none px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${
-                    filterType === TransactionType.INCOME 
-                    ? 'bg-white text-teal-600 shadow-sm' 
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  onClick={() => { setFilterType(TransactionType.INCOME); resetPage(); }}
+                  className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                    filterType === TransactionType.INCOME
+                      ? 'bg-white text-teal-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
                 >
-                {t('transactions.income')}
+                  {t('transactions.income')}
                 </button>
+              </div>
+
+              {/* Month / Year */}
+              <select
+                value={filterMonth}
+                onChange={(e) => { setFilterMonth(e.target.value); setPage(1); }}
+                className="hidden md:block px-2 py-1 rounded-lg border border-gray-200 bg-gray-50 hover:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer"
+              >
+                <option value="">{t('common.allMonths') || 'All Months'}</option>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                  <option key={m} value={m}>
+                    {new Date(2000, m - 1).toLocaleString('default', { month: 'short' })}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={filterYear}
+                onChange={(e) => { setFilterYear(e.target.value); setPage(1); }}
+                className="hidden md:block px-2 py-1 rounded-lg border border-gray-200 bg-gray-50 hover:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer w-20"
+              >
+                <option value="">{t('common.allYears') || 'All Years'}</option>
+                {years.map(y => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+
+              {/* Search Bar */}
+              <div className="relative flex-1 min-w-[100px] max-w-xs">
+                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder={t('common.search')}
+                  value={searchQuery}
+                  onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                  className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 outline-none text-xs transition-all"
+                />
+              </div>
             </div>
 
-            {/* Filters Bar */}
-            <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-                {/* Search */}
-                <div className="relative flex-grow md:flex-grow-0 md:w-64">
-                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder={t('common.search')}
-                        value={searchQuery}
-                        onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
-                        className="w-full pl-9 pr-4 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-sm transition-all"
-                    />
-                </div>
+            {/* Row 2: Expanded Filters */}
+              <div className="flex justify-center flex-wrap items-center gap-2 pt-2 border-t border-gray-100 animate-in slide-in-from-top-1 fade-in duration-200">
+                {/* Mobile-only Month/Year */}
+                <select
+                  value={filterMonth}
+                  onChange={(e) => { setFilterMonth(e.target.value); setPage(1); }}
+                  className="md:hidden px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer"
+                >
+                  <option value="">{t('common.allMonths') || 'All Months'}</option>
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                    <option key={m} value={m}>
+                      {new Date(2000, m - 1).toLocaleString('default', { month: 'short' })}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={filterYear}
+                  onChange={(e) => { setFilterYear(e.target.value); setPage(1); }}
+                  className="md:hidden px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer w-20"
+                >
+                  <option value="">{t('common.allYears') || 'All Years'}</option>
+                  {years.map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
 
-                {/* Date Inputs */}
-                <div className="flex items-center gap-2">
-                    <input
-                        type="date"
-                        value={filterStartDate}
-                        onChange={(e) => { setFilterStartDate(e.target.value); setPage(1); }}
-                        className="px-3 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 outline-none text-xs font-medium w-32"
-                    />
-                    <span className="text-gray-300">-</span>
-                    <input
-                        type="date"
-                        value={filterEndDate}
-                        onChange={(e) => { setFilterEndDate(e.target.value); setPage(1); }}
-                        className="px-3 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 outline-none text-xs font-medium w-32"
-                    />
-                </div>
-
-                {/* Category Dropdown */}
-                <div className="relative w-full md:w-40">
-                    <select
-                        value={filterCategory}
-                        onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
-                        className="w-full px-3 py-1.5 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 outline-none text-sm appearance-none font-medium truncate pr-6"
-                    >
-                        <option value="">{t('transactions.allCategories')}</option>
-                        {(filterType === TransactionType.INCOME
-                          ? incomeCategories
-                          : expenseCategories
-                        ).map((c) => (
-                            <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-        </div>
-      </div>
-
-      {/* Loading & Error States */}
-      {isLoading && (
-        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden mb-6">
-          <div className="h-full bg-indigo-500 animate-progress origin-left" />
-        </div>
-      )}
-      
-      {isError && (
-        <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-3xl mb-6 flex items-center gap-3">
-          <AlertCircle size={20} />
-          <span className="font-medium">{t('transactions.failedToLoad')}</span>
-        </div>
-      )}
-
-      {/* Transaction list */}
-      {!isLoading && !isError && (
-        <>
-          {transactions.length > 0 ? (
-            <TransactionsListCards 
-                transactions={transactions}
-                categories={categories}
-                accounts={accounts}
-                onUpdateTransaction={handleInlineUpdate}
-                onDeleteTransaction={handleDelete}
-                selectedIndices={selectedIds}
-                onSelectOne={handleSelectOne}
-                onSelectAllOfType={handleSelectAllOfType}
-                selectedType={selectedType}
-            />
-          ) : (
-            <EmptyState
-              emoji="🔍"
-              title={t('empty.noSearchResults')}
-              description={t('empty.noSearchResultsDesc')}
-              actionLabel={t('empty.addTransaction')}
-              onAction={() => setFormOpen(true)}
-            />
-          )}
-        </>
-      )}
+                <select
+                  value={filterAccount}
+                  onChange={(e) => { setFilterAccount(e.target.value); setPage(1); }}
+                  className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium min-w-[100px] cursor-pointer"
+                >
+                  <option value="">{t('transactions.allAccounts')}</option>
+                  {accounts.map(a => (
+                    <option key={a.id} value={a.id}>{a.name}</option>
+                  ))}
+                </select>
+                
+                <select
+                  value={filterCategory}
+                  onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
+                  className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium min-w-[110px] cursor-pointer"
+                >
+                  <option value="">{t('transactions.allCategories')}</option>
+                  {filteredCategories.map(c => (
+                    <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
+                  ))}
+                </select>
+              </div>
+          </div>
+        }
+      >
+        {!isLoading && !isError && transactions.length > 0 ? (
+          <TransactionsListCards
+            transactions={transactions}
+            categories={categories}
+            accounts={accounts}
+            onEditTransaction={handleEditInteraction}
+            onDeleteTransaction={handleDelete}
+            selectedType={null}
+          />
+        ) : !isLoading && !isError ? (
+          <EmptyState
+            emoji="🔍"
+            title={t('empty.noSearchResults')}
+            description={t('empty.noSearchResultsDesc')}
+            actionLabel={t('empty.addTransaction')}
+            onAction={() => setFormOpen(true)}
+          />
+        ) : null}
+      </ContentList>
 
       {/* Transaction form */}
       <TransactionForm
@@ -407,16 +301,6 @@ export default function TransactionsPage() {
         isEdit={!!editTarget}
       />
 
-      {/* Delete confirmation (batch) */}
-      <ConfirmDialog
-        open={batchDeleteConfirm}
-        title={t('transactions.deleteSelected')}
-        message={t('transactions.deleteSelectedMsg', { count: selectedIds.size })}
-        confirmLabel={deleteMutation.isPending ? t('common.deleting') : t('transactions.deleteAll')}
-        cancelLabel={t('common.cancel')}
-        onConfirm={handleBatchDelete}
-        onCancel={() => setBatchDeleteConfirm(false)}
-      />
     </div>
   );
 }

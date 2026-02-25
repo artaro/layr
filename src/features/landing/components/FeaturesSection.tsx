@@ -17,6 +17,13 @@ export default function FeaturesSection() {
   return (
     <section className="py-16 sm:py-24 px-4 bg-gradient-to-b from-white to-gray-50/50">
       <div className="max-w-6xl mx-auto">
+        {/* Section badge — Phase 1 indicator */}
+        <div className="flex justify-center mb-6">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full">
+            💰 {t('landing.featuresPhase')}
+          </span>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {FEATURES.map(({ key, icon: Icon, color }) => (
             <div

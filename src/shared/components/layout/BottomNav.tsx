@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, ArrowLeftRight, Landmark, Ellipsis, Plus, Receipt, Upload, X } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, Landmark, Ellipsis, Plus, Receipt, Upload } from 'lucide-react';
 import { useTranslation } from '@/shared/lib/i18n';
 import { useUIStore } from '@/shared/stores';
 

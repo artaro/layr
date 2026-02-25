@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { useCategories } from '@/features/expenses/hooks/useCategories';
 import { useCreateTransactionsBulk } from '@/features/expenses/hooks/useTransactions';
 import { CreateTransactionInput } from '@/features/expenses/types';
 import { TransactionType, StatementSource } from '@/features/expenses/types';
@@ -59,7 +58,6 @@ export function useStatementImport(): UseStatementImportReturn {
   const [pdfPassword, setPdfPassword] = useState('');
   const [hasLastImport, setHasLastImport] = useState(false);
 
-  const { data: categories = [] } = useCategories();
   const bulkCreate = useCreateTransactionsBulk();
 
   // Check if there is a saved import in localStorage
@@ -152,7 +150,7 @@ export function useStatementImport(): UseStatementImportReturn {
       setError(err instanceof Error ? err.message : 'Failed to parse file');
       setStatus('error');
     }
-  }, [file, pdfPassword, status, categories]);
+  }, [file, pdfPassword, status]);
 
   const loadDemoData = useCallback(() => {
     const mockData = generateMockTransactions(10);

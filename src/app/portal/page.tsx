@@ -2,13 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, Layers } from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useLayerStore } from '@/features/portal/stores/useLayerStore';
 import { useTranslation } from '@/shared/lib/i18n';
-import type { LayerTemplate } from '@/features/portal/stores/useLayerStore';
 import LayerStack from '@/features/portal/components/LayerStack';
-import TemplateSelector from '@/features/portal/components/TemplateSelector';
 
 export default function PortalPage() {
   const router = useRouter();
@@ -18,13 +16,13 @@ export default function PortalPage() {
 
   const {
     layers,
-    selectedTemplate,
     hasCompletedSetup,
-    selectTemplate,
+    initLayers,
     completeSetup,
   } = useLayerStore();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -34,6 +32,13 @@ export default function PortalPage() {
       router.push('/login');
     }
   }, [mounted, loading, user, router]);
+
+  // Auto-init layers when user arrives
+  useEffect(() => {
+    if (mounted && !loading && user && layers.length === 0) {
+      initLayers();
+    }
+  }, [mounted, loading, user, layers.length, initLayers]);
 
   // Already completed setup → go to expenses
   useEffect(() => {
@@ -53,10 +58,6 @@ export default function PortalPage() {
 
   // Redirect in progress
   if (hasCompletedSetup) return null;
-
-  const handleSelectTemplate = (template: LayerTemplate) => {
-    selectTemplate(template);
-  };
 
   const handleEnterApp = () => {
     completeSetup();
@@ -87,16 +88,12 @@ export default function PortalPage() {
           </p>
         </div>
 
-        {/* Layer visualization or template selector */}
-        {!selectedTemplate ? (
-          <TemplateSelector
-            selected={selectedTemplate}
-            onSelect={handleSelectTemplate}
-          />
-        ) : (
-          <div className="flex flex-col items-center gap-8">
-            <LayerStack layers={layers} animate />
+        {/* Layer visualization */}
+        <div className="flex flex-col items-center gap-8">
+          <LayerStack layers={layers} animate />
 
+          {/* Action buttons */}
+          <div className="flex flex-col items-center gap-3">
             {/* Enter app button */}
             <button
               onClick={handleEnterApp}
@@ -109,15 +106,16 @@ export default function PortalPage() {
               />
             </button>
 
-            {/* Change template link */}
+            {/* View layers button */}
             <button
-              onClick={() => selectTemplate(selectedTemplate === 'starter' ? 'custom' : 'starter')}
-              className="text-xs text-gray-400 hover:text-indigo-500 transition-colors underline underline-offset-2"
+              onClick={() => router.push('/expenses')}
+              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-indigo-500 transition-colors font-medium"
             >
-              {selectedTemplate === 'starter' ? t('portal.custom') : t('portal.starterKit')}
+              <Layers size={14} />
+              {t('portal.viewLayers')}
             </button>
           </div>
-        )}
+        </div>
       </main>
 
       {/* Footer */}
