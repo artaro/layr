@@ -63,10 +63,7 @@ export async function POST(request: NextRequest) {
     if (geminiMimeType === 'application/pdf') {
       try {
         // Try loading without password first to detect encryption
-        const pdfDoc = await PDFDocument.load(fileBuffer, {
-          password: password || '',
-          ignoreEncryption: false,
-        });
+        const pdfDoc = await PDFDocument.load(fileBuffer);
         // If encrypted and we decrypted, save decrypted bytes for Gemini
         if (pdfDoc.isEncrypted) {
           const decryptedBytes = await pdfDoc.save();
