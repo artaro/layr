@@ -27,29 +27,29 @@ export default function ConfirmDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
         onClick={onCancel}
       />
 
       {/* Dialog */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 animate-in zoom-in-95 duration-200">
-        <h3 className="text-lg font-bold text-gray-900 mb-2">
+      <div className="relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-accent)] w-full max-w-sm p-6 animate-fade-in">
+        <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-2 uppercase tracking-wider font-[var(--font-brand)]">
           {title}
         </h3>
-        <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+        <p className="text-[var(--color-text-secondary)] mb-6 text-sm leading-relaxed">
           {message}
         </p>
         
         <div className="flex gap-3 justify-end">
           <button
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors uppercase tracking-wider"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors shadow-sm shadow-red-200"
+            className="px-4 py-2 text-sm font-bold text-white bg-[var(--color-accent)] border-2 border-[var(--color-accent)] hover:shadow-[4px_4px_0px_0px_var(--color-accent)] transition-all uppercase tracking-wider"
           >
             {confirmLabel}
           </button>

@@ -47,12 +47,12 @@ export default function CategoriesPage() {
   const [formData, setFormData] = useState({
     name: '',
     icon: '📦',
-    color: '#6C5CE7',
+    color: '#00FFAB',
     type: TransactionType.EXPENSE,
   });
 
   const openAddForm = (type: TransactionType) => {
-    setFormData({ name: '', icon: '📦', color: '#6C5CE7', type: type });
+    setFormData({ name: '', icon: '📦', color: '#00FFAB', type: type });
     setEditTarget(null);
     setFormOpen(true);
   };
@@ -105,22 +105,22 @@ export default function CategoriesPage() {
     <div className="animate-fade-in space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">
+        <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-[var(--font-brand)] uppercase tracking-wider">
           {t('categories.title')}
         </h1>
-        <p className="text-gray-500">
+        <p className="text-[var(--color-text-secondary)]">
           {t('categories.subtitle')}
         </p>
       </div>
 
       {/* Loading & Error States */}
       {isLoading && (
-        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-          <div className="h-full bg-indigo-500 animate-progress origin-left" />
+        <div className="w-full h-1 bg-[var(--color-surface-2)] overflow-hidden">
+          <div className="h-full bg-[var(--color-primary)] animate-progress origin-left" />
         </div>
       )}
       {isError && (
-        <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl">
+        <div className="bg-[var(--color-accent)]/10 border-2 border-[var(--color-accent)] text-[var(--color-accent)] p-4">
           {t('categories.failedToLoad')}
         </div>
       )}
@@ -128,13 +128,13 @@ export default function CategoriesPage() {
       {/* Expense Categories Section */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+          <h2 className="text-lg font-bold flex items-center gap-2 text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
+            <span className="w-2.5 h-2.5 bg-[var(--color-expense)]" />
             {t('transactions.expense')}
           </h2>
           <button
             onClick={() => openAddForm(TransactionType.EXPENSE)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-surface)] border-2 border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] text-sm font-semibold transition-colors"
           >
             <Plus size={16} /> {t('common.add')}
           </button>
@@ -151,25 +151,25 @@ export default function CategoriesPage() {
             />
           ))}
           {expenseCategories.length === 0 && !isLoading && (
-            <div className="col-span-full py-4 text-center text-gray-400 italic">
+            <div className="col-span-full py-4 text-center text-[var(--color-text-muted)] italic">
               {t('empty.noExpenseCategories')}
             </div>
           )}
         </div>
       </div>
 
-      <hr className="border-dashed border-gray-200" />
+      <hr className="border-dashed border-[var(--color-border)]" />
 
       {/* Income Categories Section */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold flex items-center gap-2 text-gray-900">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+          <h2 className="text-lg font-bold flex items-center gap-2 text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
+            <span className="w-2.5 h-2.5 bg-[var(--color-income)]" />
             {t('transactions.income')}
           </h2>
           <button
             onClick={() => openAddForm(TransactionType.INCOME)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-surface)] border-2 border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] text-sm font-semibold transition-colors"
           >
             <Plus size={16} /> {t('common.add')}
           </button>
@@ -186,7 +186,7 @@ export default function CategoriesPage() {
             />
           ))}
           {incomeCategories.length === 0 && !isLoading && (
-            <div className="col-span-full py-4 text-center text-gray-400 italic">
+            <div className="col-span-full py-4 text-center text-[var(--color-text-muted)] italic">
               {t('empty.noIncomeCategories')}
             </div>
           )}
@@ -200,14 +200,14 @@ export default function CategoriesPage() {
                 className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-fade-in"
                 onClick={() => setFormOpen(false)}
             />
-            <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm animate-in zoom-in-95 duration-200 flex flex-col">
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-900">
+            <div className="relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-primary)] w-full max-w-sm animate-fade-in flex flex-col">
+                <div className="flex items-center justify-between p-5 border-b-2 border-[var(--color-border)]">
+                    <h2 className="text-lg font-bold text-[var(--color-text-primary)] uppercase tracking-wider font-[var(--font-brand)]">
                         {editTarget ? t('categories.editCategory') : t('categories.newCategory')}
                     </h2>
                     <button 
                         onClick={() => setFormOpen(false)}
-                        className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                        className="p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
                     >
                         <X size={20} />
                     </button>
@@ -215,14 +215,14 @@ export default function CategoriesPage() {
                 
                 <form onSubmit={handleSubmit} className="p-5 space-y-5">
                     {/* Type Selection */}
-                    <div className="flex bg-gray-100 p-1 rounded-xl">
+                    <div className="flex border-2 border-[var(--color-border)]">
                          <button
                             type="button"
                             onClick={() => setFormData({...formData, type: TransactionType.EXPENSE})}
-                            className={`flex-1 py-1.5 text-sm font-semibold rounded-lg transition-all ${
+                            className={`flex-1 py-1.5 text-sm font-bold uppercase tracking-wider transition-all ${
                                 formData.type === TransactionType.EXPENSE 
-                                ? 'bg-white text-red-600 shadow-sm' 
-                                : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-[var(--color-expense)] text-white' 
+                                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                             }`}
                         >
                             {t('transactions.expense')}
@@ -230,10 +230,10 @@ export default function CategoriesPage() {
                         <button
                             type="button"
                             onClick={() => setFormData({...formData, type: TransactionType.INCOME})}
-                            className={`flex-1 py-1.5 text-sm font-semibold rounded-lg transition-all ${
+                            className={`flex-1 py-1.5 text-sm font-bold uppercase tracking-wider transition-all border-l-2 border-[var(--color-border)] ${
                                 formData.type === TransactionType.INCOME 
-                                ? 'bg-white text-teal-600 shadow-sm' 
-                                : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-[var(--color-income)] text-[var(--color-text-inverse)]' 
+                                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                             }`}
                         >
                             {t('transactions.income')}
@@ -242,12 +242,12 @@ export default function CategoriesPage() {
 
                     {/* Name Input */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.categoryName')}</label>
+                        <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase mb-1.5 ml-1">{t('categories.categoryName')}</label>
                         <input
                             type="text"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400"
+                            className="brutal-input w-full px-4 py-2.5"
                             placeholder={t('categories.categoryNamePlaceholder')}
                             required
                         />
@@ -255,17 +255,17 @@ export default function CategoriesPage() {
 
                     {/* Icon Picker */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.icon')}</label>
+                        <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase mb-1.5 ml-1">{t('categories.icon')}</label>
                         <div className="flex flex-wrap gap-2">
                              {EMOJI_OPTIONS.map((emoji) => (
                                 <button
                                     key={emoji}
                                     type="button"
                                     onClick={() => setFormData({ ...formData, icon: emoji })}
-                                    className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl transition-all border ${
+                                    className={`w-10 h-10 flex items-center justify-center text-xl transition-all border-2 ${
                                         formData.icon === emoji 
-                                        ? 'border-indigo-500 bg-indigo-50/50' 
-                                        : 'border-gray-100 hover:border-gray-300'
+                                        ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10' 
+                                        : 'border-[var(--color-border)] hover:border-[var(--color-text-secondary)]'
                                     }`}
                                 >
                                     {emoji}
@@ -276,16 +276,16 @@ export default function CategoriesPage() {
 
                     {/* Color Picker */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('categories.color')}</label>
+                        <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase mb-1.5 ml-1">{t('categories.color')}</label>
                         <div className="flex flex-wrap gap-2">
                              {COLOR_OPTIONS.map((color) => (
                                 <button
                                     key={color}
                                     type="button"
                                     onClick={() => setFormData({ ...formData, color })}
-                                    className={`w-8 h-8 rounded-full transition-all border-2 ${
+                                    className={`w-8 h-8 transition-all border-2 ${
                                         formData.color === color 
-                                        ? 'border-gray-600 scale-110' 
+                                        ? 'border-[var(--color-text-primary)] scale-110' 
                                         : 'border-transparent hover:scale-110'
                                     }`}
                                     style={{ backgroundColor: color }}
@@ -299,7 +299,7 @@ export default function CategoriesPage() {
                         <button
                             type="button"
                             onClick={() => setFormOpen(false)}
-                            className="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                            className="px-4 py-2 text-sm font-bold text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors uppercase tracking-wider"
                             disabled={loading}
                         >
                             {t('common.cancel')}
@@ -307,7 +307,7 @@ export default function CategoriesPage() {
                         <button
                             type="submit"
                             disabled={!formData.name.trim() || loading}
-                            className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            className="brutal-btn px-6 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? t('common.saving') : editTarget ? t('categories.saveChanges') : t('categories.createCategory')}
                         </button>
@@ -341,8 +341,8 @@ function CategoryCard({ category, onEdit, onDelete, onPin }: {
 
   return (
     <div 
-        className={`group relative bg-white rounded-2xl border transition-all duration-200 overflow-hidden
-            ${category.isPinned ? 'border-indigo-200 ring-4 ring-indigo-50' : 'border-gray-100 hover:border-gray-200 hover:shadow-lg hover:-translate-y-1'}
+        className={`group relative bg-[var(--color-surface)] border-2 transition-all duration-200 overflow-hidden
+            ${category.isPinned ? 'border-[var(--color-primary)] shadow-[3px_3px_0px_0px_var(--color-primary)]' : 'border-[var(--color-border)] brutal-hover'}
             ${isDefault ? 'opacity-90' : ''}
         `}
     >
@@ -350,9 +350,9 @@ function CategoryCard({ category, onEdit, onDelete, onPin }: {
           {/* Badge */}
           <div className="absolute top-2 right-2 z-10">
              {isDefault ? (
-                 <Lock size={12} className="text-gray-300" />
+                 <Lock size={12} className="text-[var(--color-text-muted)]" />
              ) : category.isPinned ? (
-                 <Pin size={12} className="text-indigo-500 fill-indigo-500 transform rotate-45" />
+                 <Pin size={12} className="text-[var(--color-primary)] fill-[var(--color-primary)] transform rotate-45" />
              ) : null}
           </div>
 
@@ -360,19 +360,19 @@ function CategoryCard({ category, onEdit, onDelete, onPin }: {
               <div className="absolute top-2 right-2 left-2 flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                   <button 
                     onClick={(e) => { e.stopPropagation(); onPin(category); }}
-                    className="p-1 bg-white shadow-sm rounded-md hover:text-indigo-600 hover:bg-indigo-50"
+                    className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]"
                   >
-                      <Pin size={12} className={category.isPinned ? "fill-indigo-600" : ""} />
+                      <Pin size={12} className={category.isPinned ? "fill-[var(--color-primary)]" : ""} />
                   </button>
                   <button 
                     onClick={(e) => { e.stopPropagation(); onEdit(category); }}
-                    className="p-1 bg-white shadow-sm rounded-md hover:text-blue-600 hover:bg-blue-50"
+                    className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:text-[var(--color-secondary)] hover:border-[var(--color-secondary)]"
                   >
                       <Edit2 size={12} />
                   </button>
                   <button 
                     onClick={(e) => { e.stopPropagation(); onDelete(category); }}
-                    className="p-1 bg-white shadow-sm rounded-md hover:text-red-600 hover:bg-red-50"
+                    className="p-1 bg-[var(--color-surface-2)] border border-[var(--color-border)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]"
                   >
                       <Trash2 size={12} />
                   </button>
@@ -381,14 +381,14 @@ function CategoryCard({ category, onEdit, onDelete, onPin }: {
 
           {/* Icon */}
           <div 
-             className="w-12 h-12 rounded-xl mx-auto mb-2 flex items-center justify-center text-2xl transition-transform group-hover:scale-110"
+             className="w-12 h-12 mx-auto mb-2 flex items-center justify-center text-2xl transition-transform group-hover:scale-110 border-2 border-[var(--color-border)]"
              style={{ backgroundColor: `${category.color}20` }}
           >
               {category.icon}
           </div>
           
           {/* Name */}
-          <p className="text-xs font-bold text-gray-700 truncate px-1">
+          <p className="text-xs font-bold text-[var(--color-text-secondary)] truncate px-1">
               {category.name}
           </p>
       </div>

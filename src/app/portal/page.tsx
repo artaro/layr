@@ -50,8 +50,8 @@ export default function PortalPage() {
   // Loading state
   if (!mounted || loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50">
-        <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[var(--color-background)]">
+        <Loader2 className="w-10 h-10 text-[var(--color-primary)] animate-spin" />
       </div>
     );
   }
@@ -65,13 +65,13 @@ export default function PortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex flex-col">
+    <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
       {/* Header */}
       <header className="px-4 py-4 sm:px-6 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] flex items-center justify-center text-sm shadow-md shadow-indigo-200">
+        <div className="w-8 h-8 flex items-center justify-center text-sm border-2 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
           🧱
         </div>
-        <h1 className="text-lg font-bold text-gray-900 tracking-tight">
+        <h1 className="text-lg font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] tracking-widest uppercase">
           {t('app.name')}
         </h1>
       </header>
@@ -80,10 +80,10 @@ export default function PortalPage() {
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 gap-8">
         {/* Title */}
         <div className="text-center">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] tracking-widest uppercase">
             {t('portal.title')}
           </h1>
-          <p className="text-sm sm:text-base text-gray-500 mt-1.5">
+          <p className="text-sm sm:text-base font-bold text-[var(--color-text-secondary)] mt-1.5">
             {t('portal.subtitle')}
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function PortalPage() {
             {/* Enter app button */}
             <button
               onClick={handleEnterApp}
-              className="group flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-base rounded-2xl shadow-xl shadow-indigo-200 hover:shadow-2xl transition-all duration-300 active:scale-95"
+              className="group flex items-center gap-2 px-8 py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] text-[var(--color-surface)] font-bold text-base border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] transition-all duration-300 active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] uppercase tracking-wider"
             >
               {t('portal.enterApp')}
               <ArrowRight
@@ -109,7 +109,7 @@ export default function PortalPage() {
             {/* View layers button */}
             <button
               onClick={() => router.push('/expenses')}
-              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-indigo-500 transition-colors font-medium"
+              className="flex items-center gap-1.5 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors uppercase tracking-wider"
             >
               <Layers size={14} />
               {t('portal.viewLayers')}
@@ -119,8 +119,8 @@ export default function PortalPage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-4 text-center">
-        <p className="text-xs font-semibold text-gray-300">
+      <footer className="py-4 text-center border-t-2 border-[var(--color-border)] bg-[var(--color-surface)] mt-auto">
+        <p className="text-xs font-bold text-[var(--color-text-muted)] tracking-wider">
           {t('app.footer')}
         </p>
       </footer>

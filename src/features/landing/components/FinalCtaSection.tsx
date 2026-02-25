@@ -13,22 +13,24 @@ export default function FinalCtaSection() {
   const ctaHref = user ? '/portal' : '/login';
 
   return (
-    <section className="py-16 sm:py-24 px-4 bg-gradient-to-br from-[#6C5CE7] via-[#7C6CF7] to-[#A29BFE] relative overflow-hidden">
+    <section className="py-16 sm:py-24 px-4 bg-[var(--color-surface)] border-t-2 border-[var(--color-border)] relative overflow-hidden">
       {/* Decorative floating shapes */}
-      <div className="absolute top-8 left-[10%] w-20 h-20 rounded-full bg-white/5 animate-float-slow" />
-      <div className="absolute bottom-12 right-[15%] w-16 h-16 rounded-2xl bg-white/5 animate-float-delayed" />
+      <div className="absolute top-8 left-[10%] w-20 h-20 border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/5 animate-float-slow shadow-[4px_4px_0px_0px_var(--color-primary)]" />
+      <div className="absolute bottom-12 right-[15%] w-16 h-16 border-2 border-[var(--color-secondary)] bg-[var(--color-secondary)]/5 animate-float-delayed shadow-[4px_4px_0px_0px_var(--color-secondary)]" />
       
       <div className="max-w-2xl mx-auto text-center relative z-10">
-        <div className="text-4xl mb-5">🧱</div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">
+        <div className="text-4xl mb-5 flex justify-center">
+          <div className="w-16 h-16 border-2 border-[var(--color-border)] bg-[var(--color-background)] shadow-[4px_4px_0px_0px_var(--color-border)] flex items-center justify-center -rotate-3 hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0px_0px_var(--color-border)] transition-all">🧱</div>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-3 font-[var(--font-brand)] tracking-widest uppercase">
           {t('landing.finalCta')}
         </h2>
-        <p className="text-white/70 text-base sm:text-lg mb-8">
+        <p className="text-[var(--color-text-secondary)] font-bold text-base sm:text-lg mb-8">
           {t('landing.finalCtaDesc')}
         </p>
         <Link
           href={ctaHref}
-          className="inline-flex items-center gap-2 px-8 py-3.5 bg-white hover:bg-gray-50 text-indigo-700 text-base sm:text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] text-[var(--color-surface)] text-base sm:text-lg font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] hover:shadow-[6px_6px_0px_0px_var(--color-border)] hover:-translate-y-1 hover:-translate-x-1 transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] uppercase tracking-wider"
         >
           {t('landing.getStarted')} <ArrowRight size={18} />
         </Link>

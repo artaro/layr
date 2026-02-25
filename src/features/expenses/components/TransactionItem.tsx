@@ -30,21 +30,21 @@ export default function TransactionItem({
 
   return (
     <div
-      className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 hover:border-indigo-100 hover:shadow-sm transition-all duration-200"
+      className="group flex items-center justify-between p-4 bg-[var(--color-surface)] border-2 border-[var(--color-border)] hover:border-[var(--color-primary)] transition-all duration-200"
     >
       <div className="flex items-center gap-3 min-w-0 flex-1">
         {/* Category Icon */}
         <div
-          className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl shadow-sm flex-shrink-0"
-          style={{ backgroundColor: category ? `${category.color}15` : '#F3F4F6' }}
+          className="w-11 h-11 flex items-center justify-center text-xl flex-shrink-0 border-2 border-[var(--color-border)]"
+          style={{ backgroundColor: category ? `${category.color}20` : '#242424' }}
         >
           {category?.icon || '📦'}
         </div>
 
         {/* Main Info */}
         <div className="min-w-0 flex-1">
-          {/* Description - truncated */}
-          <h3 className="font-bold text-gray-900 text-sm md:text-base mb-1 truncate">
+          {/* Description */}
+          <h3 className="font-bold text-[var(--color-text-primary)] text-sm md:text-base mb-1 truncate">
             {transaction.description || 'No description'}
           </h3>
 
@@ -52,11 +52,11 @@ export default function TransactionItem({
           <div className="flex items-center gap-1.5 flex-wrap">
             {/* Category Chip */}
             <span
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold border"
+              className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold border"
               style={{
-                backgroundColor: category ? `${category.color}10` : '#F3F4F6',
-                color: category?.color || '#6B7280',
-                borderColor: category ? `${category.color}30` : '#E5E7EB',
+                backgroundColor: category ? `${category.color}15` : '#242424',
+                color: category?.color || 'var(--color-text-muted)',
+                borderColor: category ? `${category.color}40` : 'var(--color-border)',
               }}
             >
               {category?.icon && <span className="text-xs">{category.icon}</span>}
@@ -65,14 +65,14 @@ export default function TransactionItem({
 
             {/* Account Chip */}
             {account && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-50 text-gray-600 border border-gray-200">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border border-[var(--color-border)]">
                 <span className="text-xs">{accountIcon}</span>
                 {account.name}
               </span>
             )}
 
             {/* Date */}
-            <span className="text-[11px] text-gray-400 font-medium">
+            <span className="text-[11px] text-[var(--color-text-muted)] font-medium">
               {formatDate(transaction.transactionDate)}
             </span>
           </div>
@@ -83,7 +83,7 @@ export default function TransactionItem({
         {/* Amount */}
         <span
           className={`font-bold text-sm md:text-base whitespace-nowrap ${
-            transaction.type === 'expense' ? 'text-red-500' : 'text-teal-500'
+            transaction.type === 'expense' ? 'text-[var(--color-expense)]' : 'text-[var(--color-income)]'
           }`}
         >
           {transaction.type === 'expense' ? '-' : '+'}
@@ -99,7 +99,7 @@ export default function TransactionItem({
                   e.stopPropagation();
                   onEdit();
                 }}
-                className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-colors"
               >
                 <Edit2 size={16} />
               </button>
@@ -110,7 +110,7 @@ export default function TransactionItem({
                   e.stopPropagation();
                   onDelete();
                 }}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-expense)] hover:bg-[var(--color-expense)]/10 transition-colors"
               >
                 <Trash2 size={16} />
               </button>

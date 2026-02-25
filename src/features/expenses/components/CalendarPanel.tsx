@@ -100,35 +100,35 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] p-6">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
             <div className="flex items-center gap-2">
                 <button 
                    onClick={handlePrevMonth} 
-                   className="p-1 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                   className="p-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors"
                 >
                     <ChevronLeft size={20} />
                 </button>
-                <h3 className="text-lg font-bold text-gray-900 min-w-[140px] text-center">
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)] min-w-[140px] text-center font-[var(--font-brand)] tracking-wide">
                     {currentDate.toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', { month: 'long', year: 'numeric' })}
                 </h3>
                 <button 
                    onClick={handleNextMonth} 
-                   className="p-1 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                   className="p-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors"
                 >
                     <ChevronRight size={20} />
                 </button>
             </div>
 
-            <div className="flex bg-gray-100 p-1 rounded-lg">
+            <div className="flex border-2 border-[var(--color-border)]">
                 {(['total', 'expense', 'income'] as const).map((v) => (
                     <button
                         key={v}
                         onClick={() => setView(v)}
-                        className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
+                        className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-all border-r-2 border-[var(--color-border)] last:border-r-0 ${
                             view === v 
-                            ? 'bg-white text-gray-900 shadow-sm' 
-                            : 'text-gray-500 hover:text-gray-700'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-surface)]' 
+                            : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                         }`}
                     >
                         {viewLabels[v]}
@@ -140,7 +140,7 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
         {/* Weekday Headers */}
         <div className="grid grid-cols-7 mb-2">
           {weekdays.map((day) => (
-            <div key={day} className="text-center text-xs font-semibold text-gray-400">
+            <div key={day} className="text-center text-xs font-bold text-[var(--color-text-muted)] uppercase">
                {day}
             </div>
           ))}
@@ -162,9 +162,9 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
               <div
                 key={item.date.toISOString()}
                 className={`
-                    relative aspect-square p-1 rounded-lg border flex flex-col items-center justify-center transition-all group
-                    ${isToday ? 'border-primary' : 'border-gray-50'}
-                    ${value !== 0 ? 'hover:scale-105 hover:shadow-md hover:z-10' : ''}
+                    relative aspect-square p-1 border-2 flex flex-col items-center justify-center transition-all group
+                    ${isToday ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}
+                    ${value !== 0 ? 'hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[3px_3px_0px_0px_var(--color-text-primary)] hover:z-10' : ''}
                 `}
                 style={{
                     backgroundColor: value !== 0 ? getDayColor(value) : 'transparent',
@@ -173,8 +173,8 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
                   <span 
                     className={`text-[10px] ${
                         value !== 0 
-                        ? (isDarkBackground ? 'text-white' : 'text-gray-900') 
-                        : (isToday ? 'font-bold text-primary' : 'text-gray-400')
+                        ? (isDarkBackground ? 'text-[#0D0D0D]' : 'text-[var(--color-text-primary)]') 
+                        : (isToday ? 'font-bold text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]')
                     }`}
                   >
                       {item.dayNum}
@@ -184,7 +184,7 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
                       <>
                         <span 
                             className={`text-[9px] font-bold mt-0.5 max-w-full overflow-hidden text-ellipsis whitespace-nowrap px-0.5 ${
-                                isDarkBackground ? 'text-white' : 'text-gray-900'
+                                isDarkBackground ? 'text-[#0D0D0D]' : 'text-[var(--color-text-primary)]'
                             }`}
                         >
                             {Math.abs(value) >= 1000
@@ -193,7 +193,7 @@ export default function CalendarPanel({ transactions }: CalendarPanelProps) {
                         </span>
                         
                         {/* Tooltip */}
-                        <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
+                        <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-[var(--color-surface)] border-2 border-[var(--color-border)] text-[var(--color-text-primary)] text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20 font-bold shadow-[2px_2px_0px_0px_var(--color-primary)]">
                             {formatCurrency(value)}
                         </div>
                       </>

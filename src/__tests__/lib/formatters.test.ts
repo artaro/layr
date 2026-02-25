@@ -1,4 +1,4 @@
-import { formatCurrency, formatNumber, formatDate, formatRelativeTime, truncate, getRandomColor } from '@/lib/formatters';
+import { formatCurrency, formatNumber, formatDate, formatRelativeTime, truncate, getRandomColor } from '@/shared/lib/formatters';
 
 describe('formatters', () => {
   describe('formatCurrency', () => {

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { APP_NAME } from '@/shared/lib/constants';
 import { useTranslation } from '@/shared/lib/i18n';
 import { Eye, EyeOff, Check, X, Loader2 } from 'lucide-react';
 
@@ -54,31 +53,33 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F8F7FF] via-[#EDE8FF] to-[#F0EEFF] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Logo */}
+        {/* Brand Logo */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] inline-flex items-center justify-center text-3xl shadow-xl shadow-indigo-200 mb-4 animate-bounce-slow">
-            🧱
+          <div className="w-14 h-14 bg-[var(--color-primary)] border-2 border-[var(--color-primary)] inline-flex items-center justify-center text-3xl shadow-[4px_4px_0px_0px_var(--color-border)] mb-4">
+            💰
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-1 tracking-tight">
-            {APP_NAME}
+          <h1 className="text-4xl font-bold text-[var(--color-text-primary)] mb-1 tracking-tight font-[var(--font-brand)] uppercase">
+            <span className="animate-blink-char">อ</span>
+            <span className="text-[var(--color-primary)]">อม</span>
+            เก่ง
           </h1>
-          <p className="text-gray-500 font-medium">
+          <p className="text-[var(--color-text-secondary)] font-medium">
             {t('app.tagline')}
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl shadow-indigo-100 p-8 border border-white/50 backdrop-blur-xl">
+        <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-primary)] p-8">
           {/* Tabs */}
-          <div className="flex bg-gray-50 p-1 rounded-xl mb-6">
+          <div className="flex border-2 border-[var(--color-border)] mb-6">
              <button
                 type="button"
                 onClick={() => { setTab(0); setError(null); setSuccess(null); }}
-                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-wider transition-all ${
                    tab === 0 
-                   ? 'bg-white text-gray-900 shadow-sm' 
-                   : 'text-gray-500 hover:text-gray-700'
+                   ? 'bg-[var(--color-primary)] text-[var(--color-text-inverse)]' 
+                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                 }`}
              >
                {t('login.logIn')}
@@ -86,10 +87,10 @@ export default function LoginPage() {
              <button
                 type="button"
                 onClick={() => { setTab(1); setError(null); setSuccess(null); }}
-                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-wider transition-all border-l-2 border-[var(--color-border)] ${
                    tab === 1 
-                   ? 'bg-white text-gray-900 shadow-sm' 
-                   : 'text-gray-500 hover:text-gray-700'
+                   ? 'bg-[var(--color-primary)] text-[var(--color-text-inverse)]' 
+                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                 }`}
              >
                {t('login.signUp')}
@@ -97,14 +98,14 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-100 flex items-start gap-3 text-red-700 text-sm font-medium animate-in slide-in-from-top-2">
+            <div className="mb-4 p-3 bg-[var(--color-accent)]/10 border-2 border-[var(--color-accent)] flex items-start gap-3 text-[var(--color-accent)] text-sm font-medium animate-fade-in">
               <X size={18} className="mt-0.5 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="mb-4 p-3 rounded-xl bg-green-50 border border-green-100 flex items-start gap-3 text-green-700 text-sm font-medium animate-in slide-in-from-top-2">
+            <div className="mb-4 p-3 bg-[var(--color-primary)]/10 border-2 border-[var(--color-primary)] flex items-start gap-3 text-[var(--color-primary)] text-sm font-medium animate-fade-in">
               <Check size={18} className="mt-0.5 flex-shrink-0" />
               <span>{success}</span>
             </div>
@@ -112,32 +113,32 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.email')}</label>
+              <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-widest mb-1.5 ml-1">{t('login.email')}</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 font-medium bg-gray-50/50 focus:bg-white transition-all placeholder-gray-400"
+                className="brutal-input w-full px-4 py-3"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-               <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.password')}</label>
+               <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-widest mb-1.5 ml-1">{t('login.password')}</label>
                <div className="relative">
                  <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 font-medium bg-gray-50/50 focus:bg-white transition-all placeholder-gray-400"
+                    className="brutal-input w-full px-4 py-3 pr-12"
                     placeholder="••••••••"
                  />
                  <button 
                    type="button"
                    onClick={() => setShowPassword(!showPassword)}
-                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                   className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] p-1 transition-colors"
                  >
                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                  </button>
@@ -145,14 +146,14 @@ export default function LoginPage() {
             </div>
 
             {tab === 1 && (
-               <div className="animate-in slide-in-from-top-2">
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5 ml-1">{t('login.confirmPassword')}</label>
+               <div className="animate-fade-in">
+                  <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-widest mb-1.5 ml-1">{t('login.confirmPassword')}</label>
                   <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 font-medium bg-gray-50/50 focus:bg-white transition-all placeholder-gray-400"
+                      className="brutal-input w-full px-4 py-3"
                       placeholder="••••••••"
                   />
                </div>
@@ -161,7 +162,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
+              className="brutal-btn w-full py-3.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
             >
               {loading ? (
                 <>
@@ -173,7 +174,7 @@ export default function LoginPage() {
           </form>
         </div>
         
-        <p className="text-center text-xs font-semibold text-gray-400 mt-6">
+        <p className="text-center text-xs font-semibold text-[var(--color-text-muted)] mt-6">
           {t('app.footer')}
         </p>
       </div>

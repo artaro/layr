@@ -44,7 +44,7 @@ export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
 
   return (
     <header 
-      className="fixed top-0 right-0 z-40 h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 transition-all duration-300"
+      className="fixed top-0 right-0 z-40 h-16 bg-[var(--color-surface)]/95 backdrop-blur-md border-b-2 border-[var(--color-border)] transition-all duration-300"
       style={{
         width: '100%',
         paddingLeft: '1rem',
@@ -56,13 +56,13 @@ export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
           {/* Hamburger only on desktop — mobile uses BottomNav */}
           <button 
             onClick={onMenuClick}
-            className="p-2 -ml-2 text-gray-600 rounded-lg hover:bg-gray-100 hidden"
+            className="p-2 -ml-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hidden"
           >
             <Menu className="w-6 h-6" />
           </button>
 
           {title && (
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
               {title}
             </h1>
           )}
@@ -73,32 +73,32 @@ export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
           {/* Language Toggle */}
           <button 
             onClick={toggleLanguage}
-            className="px-2.5 py-1.5 text-xs font-bold rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-gray-600 flex items-center gap-1.5"
+            className="px-2.5 py-1.5 text-xs font-bold border-2 border-[var(--color-border)] hover:border-[var(--color-primary)] transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] flex items-center gap-1.5 bg-[var(--color-surface)]"
           >
             {language === 'th' ? '🇹🇭 TH' : '🇬🇧 EN'}
           </button>
 
-          <button className="p-2 text-gray-500 rounded-lg hover:bg-gray-100 relative">
+          <button className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] relative transition-colors">
             <Bell className="w-5 h-5" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-[var(--color-accent)] rounded-full ring-2 ring-[var(--color-surface)]" />
           </button>
           
           <div className="relative" ref={menuRef}>
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center justify-center w-9 h-9 text-sm font-semibold text-white rounded-full bg-gradient-to-br from-indigo-500 to-purple-400 hover:scale-105 transition-transform cursor-pointer shadow-sm shadow-indigo-200"
+              className="flex items-center justify-center w-9 h-9 text-sm font-bold text-[var(--color-text-inverse)] bg-[var(--color-primary)] border-2 border-[var(--color-primary)] hover:shadow-[3px_3px_0px_0px_var(--color-primary)] transition-all cursor-pointer"
             >
               {userInitials}
             </button>
 
             {/* Profile dropdown */}
             {isMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1 origin-top-right animate-in fade-in zoom-in-95 duration-200">
-                <div className="px-4 py-3 border-b border-gray-50">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+              <div className="absolute right-0 mt-2 w-56 bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] py-1 animate-fade-in">
+                <div className="px-4 py-3 border-b-2 border-[var(--color-border)]">
+                  <p className="text-sm font-medium text-[var(--color-text-primary)] truncate">
                     {user?.email || 'User'}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
                     {t('header.account')}
                   </p>
                 </div>
@@ -106,14 +106,14 @@ export default function AppHeader({ onMenuClick, title }: AppHeaderProps) {
                 <div className="p-1">
                   <button 
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-primary)] transition-colors"
                   >
                     <User className="w-4 h-4" />
                     {t('header.profile')}
                   </button>
                   <button 
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     {t('header.logout')}

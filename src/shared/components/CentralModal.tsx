@@ -45,22 +45,22 @@ const ACTION_CONFIG: Record<ModalActionType, {
   submit: {
     icon: Send,
     labelKey: 'common.submit',
-    className: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-200',
+    className: 'bg-[var(--color-primary)] hover:shadow-[4px_4px_0px_0px_var(--color-primary)] text-[var(--color-text-inverse)] border-2 border-[var(--color-primary)]',
   },
   edit: {
     icon: Edit2,
     labelKey: 'common.edit',
-    className: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200',
+    className: 'bg-[var(--color-secondary)] hover:shadow-[4px_4px_0px_0px_var(--color-secondary)] text-[var(--color-text-inverse)] border-2 border-[var(--color-secondary)]',
   },
   delete: {
     icon: Trash2,
     labelKey: 'common.delete',
-    className: 'bg-red-500 hover:bg-red-600 text-white shadow-md shadow-red-200',
+    className: 'bg-[var(--color-accent)] hover:shadow-[4px_4px_0px_0px_var(--color-accent)] text-white border-2 border-[var(--color-accent)]',
   },
   cancel: {
     icon: ArrowLeft,
     labelKey: 'common.cancel',
-    className: 'bg-transparent hover:bg-gray-100 text-gray-600',
+    className: 'bg-transparent hover:bg-[var(--color-surface-2)] text-[var(--color-text-secondary)] border-2 border-[var(--color-border)]',
   },
 };
 
@@ -93,24 +93,24 @@ export default function CentralModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
 
       {/* Dialog */}
       <div
-        className={`relative bg-white rounded-2xl shadow-xl w-full ${SIZE_MAP[size]} max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-200`}
+        className={`relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-primary)] w-full ${SIZE_MAP[size]} max-h-[90vh] flex flex-col animate-fade-in`}
       >
         {/* ── Header ── */}
         <div
-          className={`px-6 py-3 border-b border-gray-100 flex items-center justify-between gap-4 flex-shrink-0 ${
-            headerClassName || 'bg-gray-50/80 backdrop-blur-md'
+          className={`px-6 py-3 border-b-2 border-[var(--color-border)] flex items-center justify-between gap-4 flex-shrink-0 ${
+            headerClassName || 'bg-[var(--color-surface-2)]'
           }`}
         >
           {/* Left: title */}
           <div className="flex items-center gap-3 min-w-0">
             {titleNode || (
-              <h2 className="text-base font-bold text-gray-900 truncate">
+              <h2 className="text-base font-bold text-[var(--color-text-primary)] uppercase tracking-wider font-[var(--font-brand)] truncate">
                 {title}
               </h2>
             )}
@@ -120,7 +120,7 @@ export default function CentralModal({
           {headerAction || (
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors flex-shrink-0"
+              className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface)] transition-colors flex-shrink-0"
             >
               <X size={20} />
             </button>
@@ -128,13 +128,13 @@ export default function CentralModal({
         </div>
 
         {/* ── Content ── */}
-        <div className="flex-1 overflow-y-auto p-6 scroll-smooth bg-gray-50/30">
+        <div className="flex-1 overflow-y-auto p-6 scroll-smooth bg-[var(--color-surface)]">
           {children}
         </div>
 
         {/* ── Footer ── */}
         {hasFooter && (
-          <div className="px-6 py-3 border-t border-gray-100 bg-white flex items-center justify-between gap-3 flex-shrink-0 rounded-b-2xl">
+          <div className="px-6 py-3 border-t-2 border-[var(--color-border)] bg-[var(--color-surface-2)] flex items-center justify-between gap-3 flex-shrink-0">
             {footerNode}
             {actions && actions.length > 0 && (
               <div className="flex items-center gap-2 ml-auto">
@@ -146,7 +146,7 @@ export default function CentralModal({
                       key={action.type}
                       onClick={action.onClick}
                       disabled={action.disabled || action.loading}
-                      className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${config.className}`}
+                      className={`px-4 py-2 text-sm font-bold uppercase tracking-wider transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${config.className}`}
                     >
                       {action.type !== 'cancel' && <Icon size={16} />}
                       {t(config.labelKey)}

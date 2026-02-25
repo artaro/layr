@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { PDFDocument } from 'pdf-lib';
 
 const genAI = new GoogleGenerativeAI(process.env.LLM_API_KEY || '');
 
@@ -53,10 +54,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Read file as ArrayBuffer → base64
+    // Read file as ArrayBuffer
     const arrayBuffer = await file.arrayBuffer();
-    const base64Data = Buffer.from(arrayBuffer).toString('base64');
+    let fileBuffer = Buffer.from(arrayBuffer);
     const geminiMimeType = resolveGeminiMimeType(file.type, file.name);
+
+    // For PDFs: attempt to decrypt if password-protected
+    if (geminiMimeType === 'application/pdf') {
+      try {
+        // Try loading without password first to detect encryption
+        const pdfDoc = await PDFDocument.load(fileBuffer, {
+          password: password || '',
+          ignoreEncryption: false,
+        });
+        // If encrypted and we decrypted, save decrypted bytes for Gemini
+        if (pdfDoc.isEncrypted) {
+          const decryptedBytes = await pdfDoc.save();
+          fileBuffer = Buffer.from(decryptedBytes);
+        }
+      } catch (pdfErr: unknown) {
+        const msg = pdfErr instanceof Error ? pdfErr.message : String(pdfErr);
+        // Encrypted but wrong/missing password
+        if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('encrypt')) {
+          return NextResponse.json(
+            { error: 'PDF is password protected', code: 'PASSWORD_REQUIRED' },
+            { status: 401 }
+          );
+        }
+        // Other PDF parse errors — fall through and let Gemini try
+        console.warn('[parse-statement] pdf-lib parse warning:', msg);
+      }
+    }
+
+    const base64Data = fileBuffer.toString('base64');
 
     // Initialize Gemini model
     const model = genAI.getGenerativeModel({
@@ -64,10 +94,8 @@ export async function POST(request: NextRequest) {
       systemInstruction: SYSTEM_PROMPT_BASE,
     });
 
-    // Build prompt — hint about password if provided
-    const promptText = password
-      ? `Extract transactions from this document. PDF password if needed: ${password}. Return ONLY a valid JSON array.`
-      : 'Extract transactions from this file. Return ONLY a valid JSON array.';
+    // Build prompt
+    const promptText = 'Extract transactions from this file. Return ONLY a valid JSON array.';
 
     // Generate content
     const result = await model.generateContent([

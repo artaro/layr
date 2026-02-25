@@ -1,26 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #6C5CE7;
-  --color-primary-light: #A29BFE;
-  --color-primary-bg: rgba(108, 92, 231, 0.08);
-  --color-secondary: #00CEC9;
-  --color-secondary-light: #81ECEC;
-  --color-accent: #FD79A8;
-  --color-expense: #D63031;
-  --color-income: #00B894;
-  --color-background: #FAFBFC;
-  --color-surface: #FFFFFF;
-  --color-text-primary: #2D3436;
-  --color-text-secondary: #636E72;
-  --color-border: #DFE6E9;
+/* ── Aomkeng Design System — Neo-Brutalism Dark ───────────────────────────── */
 
-  --font-sans: var(--font-outfit), var(--font-kanit), sans-serif;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+@theme {
+  /* Brand Colors */
+  --color-primary: #00FFAB;          /* Money Mint — ออมแล้วรวย */
+  --color-primary-dim: #00CC88;      /* Money Mint dim — hover states */
+  --color-secondary: #FFF01F;        /* Risky Yellow — bold accents */
+  --color-accent: #FF6B6B;           /* Danger Red — ใช้จ่ายแล้วเสียดาย */
+
+  /* Semantic — Finance */
+  --color-income: #00FFAB;           /* รายรับ = mint */
+  --color-expense: #FF6B6B;          /* รายจ่าย = red */
+  --color-transfer: #FFF01F;         /* โอนเงิน = yellow */
+
+  /* Surface */
+  --color-background: #0D0D0D;       /* Deep Charcoal */
+  --color-surface: #1A1A1A;          /* Card surface */
+  --color-surface-2: #242424;        /* Elevated surface */
+  --color-border: #2E2E2E;           /* Subtle border */
+  --color-border-strong: #00FFAB;    /* Highlight border */
+
+  /* Text */
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: #A0A0A0;
+  --color-text-muted: #555555;
+  --color-text-inverse: #0D0D0D;
+
+  /* Fonts */
+  --font-brand: 'Chakra Petch', sans-serif;   /* headers, brand name */
+  --font-sans: 'IBM Plex Sans Thai', sans-serif; /* body, UI */
+
+  /* Neo-brutalism radius (sharp!) */
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
 }
+
+/* ── Base Styles ─────────────────────────────────────────────────────────── */
 
 body {
   font-family: var(--font-sans);
@@ -28,50 +47,155 @@ body {
   color: var(--color-text-primary);
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* When language is Thai, prioritize Kanit font */
-html[lang="th"] body {
-  font-family: var(--font-kanit), var(--font-outfit), sans-serif;
+/* Brand headers — Chakra Petch, uppercase, tight */
+h1, h2, .font-brand {
+  font-family: var(--font-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
+
+/* ── Neo-Brutalism Utilities ─────────────────────────────────────────────── */
+
+/* Hard shadow — primary (mint) */
+.brutal-shadow {
+  box-shadow: 4px 4px 0px 0px var(--color-primary);
+}
+.brutal-shadow-yellow {
+  box-shadow: 4px 4px 0px 0px var(--color-secondary);
+}
+.brutal-shadow-red {
+  box-shadow: 4px 4px 0px 0px var(--color-accent);
+}
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0px 0px var(--color-primary);
+}
+
+/* Hover: shadow lifts */
+.brutal-hover {
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+.brutal-hover:hover {
+  box-shadow: 6px 6px 0px 0px var(--color-primary);
+  transform: translate(-1px, -1px);
+}
+.brutal-hover:active {
+  box-shadow: 2px 2px 0px 0px var(--color-primary);
+  transform: translate(1px, 1px);
+}
+
+/* Card base */
+.brutal-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  box-shadow: 4px 4px 0px 0px var(--color-primary);
+}
+
+/* Input base — dark, sharp */
+.brutal-input {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 16px; /* Prevent iOS zoom */
+  outline: none;
+  transition: border-color 0.15s;
+}
+.brutal-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Button — primary (mint) */
+.brutal-btn {
+  font-family: var(--font-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: 2px solid var(--color-primary);
+  box-shadow: 4px 4px 0px 0px #ffffff22;
+  cursor: pointer;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+.brutal-btn:hover {
+  box-shadow: 6px 6px 0px 0px #ffffff33;
+  transform: translate(-1px, -1px);
+}
+.brutal-btn:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+/* Scrollbar — dark, thin */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-in-out;
+  animation: fadeIn 0.25s ease-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes progress {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(0%); }
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(0%); }
   100% { transform: translateX(100%); }
 }
 
 .animate-progress {
-  animation: progress 1.5s infinite linear;
+  animation: progress 1.2s infinite linear;
 }
 
-/* Toast auto-close progress bar */
 @keyframes shrink {
   from { width: 100%; }
-  to { width: 0%; }
+  to   { width: 0%; }
 }
 
-/* Safe area for bottom nav on iPhone notch devices */
+/* Glitch effect — for brand name playfulness */
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  20%       { clip-path: inset(20% 0 60% 0); transform: translateX(-3px); }
+  40%       { clip-path: inset(50% 0 30% 0); transform: translateX(3px); }
+  60%       { clip-path: inset(70% 0 10% 0); transform: translateX(-2px); }
+  80%       { clip-path: inset(10% 0 80% 0); transform: translateX(2px); }
+}
+
+/* Blink — for the "missing อ" effect on brand name */
+@keyframes blinkOut {
+  0%, 80%, 100% { opacity: 1; }
+  90%           { opacity: 0; }
+}
+
+.animate-blink-char {
+  display: inline-block;
+  animation: blinkOut 4s ease-in-out infinite;
+}
+
+/* Safe area — iPhone notch */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Hide scrollbar but keep scroll functionality */
+/* Scrollbar hide */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -80,40 +204,19 @@ html[lang="th"] body {
   display: none;
 }
 
-/* ── Landing Page Animations ──────────────────────────────────────────────── */
+/* ── Landing / Misc ──────────────────────────────────────────────────────── */
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  50%       { transform: translateY(-10px); }
 }
 
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(3deg); }
-}
-
-@keyframes floatDelayed {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-14px) rotate(-2deg); }
-}
+.animate-float        { animation: float 3s ease-in-out infinite; }
+.animate-float-slow   { animation: float 5s ease-in-out infinite; }
+.animate-float-delayed{ animation: float 4s ease-in-out infinite 1.2s; }
 
 @keyframes bounceSlow {
   0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(8px); opacity: 1; }
+  50%       { transform: translateY(6px); opacity: 1; }
 }
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: floatDelayed 5s ease-in-out infinite 1s;
-}
-
-.animate-bounce-slow {
-  animation: bounceSlow 2.5s ease-in-out infinite;
-}
+.animate-bounce-slow { animation: bounceSlow 2.5s ease-in-out infinite; }

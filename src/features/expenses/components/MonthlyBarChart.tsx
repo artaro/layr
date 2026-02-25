@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { EXPENSE_COLORS } from '@/shared/lib/constants';
+import { useTranslation } from '@/shared/lib/i18n';
 
 interface MonthlyDataItem {
   month: string;
@@ -25,33 +25,34 @@ interface MonthlyBarChartProps {
 }
 
 export default function MonthlyBarChart({ data, title = 'Monthly Overview' }: MonthlyBarChartProps) {
+  const { t } = useTranslation();
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center py-12 text-center h-full">
+      <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] flex flex-col items-center justify-center py-12 text-center h-full">
         <div className="text-4xl mb-3 opacity-50">📈</div>
-        <p className="text-gray-500 font-medium">No monthly data yet</p>
+        <p className="text-[var(--color-text-muted)] font-bold">{t('empty.noExpenses') || 'No monthly data yet'}</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-full">
-      <h3 className="text-lg font-bold text-gray-900 mb-6">
+    <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] p-6 h-full">
+      <h3 className="text-lg font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider mb-6">
         {title}
       </h3>
       <div className="h-[280px]">
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <BarChart data={data} barGap={4}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#2E2E2E" />
             <XAxis
               dataKey="month"
               tick={{ fontSize: 12, fontFamily: 'inherit', fill: '#9CA3AF' }}
-              axisLine={{ stroke: '#F3F4F6' }}
+              axisLine={{ stroke: '#2E2E2E' }}
               dy={10}
             />
             <YAxis
               tick={{ fontSize: 12, fontFamily: 'inherit', fill: '#9CA3AF' }}
-              axisLine={{ stroke: '#F3F4F6' }}
+              axisLine={{ stroke: '#2E2E2E' }}
               tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
               dx={-10}
             />
@@ -60,12 +61,13 @@ export default function MonthlyBarChart({ data, title = 'Monthly Overview' }: Mo
               formatter={(value: any) =>
                 `฿${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
               }
-              cursor={{ fill: '#F9FAFB' }}
+              cursor={{ fill: '#242424' }}
               contentStyle={{
-                borderRadius: '1rem',
-                border: 'none',
-                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                backgroundColor: '#1A1A1A',
+                border: '2px solid #2E2E2E',
+                boxShadow: '4px 4px 0px 0px #00FFAB',
                 fontFamily: 'inherit',
+                color: '#FFFFFF',
                 padding: '12px',
               }}
             />
@@ -73,15 +75,15 @@ export default function MonthlyBarChart({ data, title = 'Monthly Overview' }: Mo
             <Bar
               dataKey="income"
               name="💰 Income"
-              fill={EXPENSE_COLORS.income}
-              radius={[8, 8, 0, 0]}
+              fill="var(--color-income)"
+              radius={[0, 0, 0, 0]}
               barSize={32}
             />
             <Bar
               dataKey="expense"
               name="💸 Expense"
-              fill={EXPENSE_COLORS.expense}
-              radius={[8, 8, 0, 0]}
+              fill="var(--color-expense)"
+              radius={[0, 0, 0, 0]}
               barSize={32}
             />
           </BarChart>

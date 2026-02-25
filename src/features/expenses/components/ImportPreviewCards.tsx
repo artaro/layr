@@ -91,8 +91,8 @@ export default function ImportPreviewCards({
       <div
         key={globalIndex}
         className={`
-          group grid grid-cols-[auto_auto_1fr_auto] md:flex md:items-center gap-x-3 gap-y-1.5 px-4 py-3 rounded-xl transition-all duration-200 border border-transparent
-          ${isSelected ? 'bg-indigo-50/60 border-indigo-100' : 'bg-white hover:bg-gray-50 hover:border-gray-200'}
+          group grid grid-cols-[auto_auto_1fr_auto] md:flex md:items-center gap-x-3 gap-y-1.5 px-4 py-3 border-2 transition-all duration-200
+          ${isSelected ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:bg-[var(--color-surface-2)]'}
           ${blurClass}
         `}
       >
@@ -101,14 +101,14 @@ export default function ImportPreviewCards({
           checked={isSelected}
           onChange={() => onSelectOne(globalIndex)}
           disabled={!!isOtherType}
-          className="row-span-2 md:row-span-1 w-4 h-4 rounded border-gray-300 text-primary cursor-pointer flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="row-span-2 md:row-span-1 w-4 h-4 border-2 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] cursor-pointer flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
         />
 
         {/* Category Select */}
         <div className="row-span-2 md:row-span-1 flex-shrink-0 relative group/cat">
              <div 
-               className="w-10 h-10 rounded-xl flex items-center justify-center text-xl transition-colors"
-               style={{ backgroundColor: cat ? `${cat.color}15` : 'rgba(108, 92, 231, 0.08)' }}
+               className="w-10 h-10 border-2 border-[var(--color-border)] flex items-center justify-center text-xl transition-colors"
+               style={{ backgroundColor: cat ? `${cat.color}20` : '#242424' }}
              >
                 {cat?.icon || '📦'}
              </div>
@@ -132,13 +132,13 @@ export default function ImportPreviewCards({
           onChange={(e) => updateTransaction(globalIndex, 'description', e.target.value)}
           placeholder={t('txForm.description')}
           disabled={!!isOtherType}
-          className="col-start-3 md:col-auto w-full md:flex-1 min-w-0 bg-transparent border-b border-dashed border-gray-300 hover:border-indigo-300 focus:border-indigo-500 focus:outline-none py-1 text-sm font-medium text-gray-900 placeholder-gray-400 truncate transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="col-start-3 md:col-auto w-full md:flex-1 min-w-0 bg-transparent border-b-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] focus:border-[var(--color-primary)] focus:outline-none py-1 text-sm font-bold text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] truncate transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         />
 
         {/* Amount */}
         <div 
-          className={`col-start-4 md:col-auto justify-self-end md:justify-self-auto text-sm font-bold whitespace-nowrap text-right min-w-[80px] md:min-w-[90px] ${
-            tx.type === 'expense' ? 'text-rose-600' : 'text-emerald-600'
+          className={`col-start-4 md:col-auto justify-self-end md:justify-self-auto text-sm font-bold whitespace-nowrap text-right min-w-[80px] md:min-w-[90px] tracking-tight ${
+            tx.type === 'expense' ? 'text-[var(--color-expense)]' : 'text-[var(--color-income)]'
           }`}
         >
           {tx.type === 'expense' ? '-' : '+'}
@@ -147,11 +147,11 @@ export default function ImportPreviewCards({
 
         {/* Date & Time */}
         <div className="col-start-3 md:col-auto flex flex-row md:flex-col items-center md:items-end gap-2 md:gap-0 justify-start md:justify-center w-full md:w-24 flex-shrink-0 text-left md:text-right">
-             <span className="text-xs font-medium text-gray-700 whitespace-nowrap">
+             <span className="text-xs font-bold text-[var(--color-text-secondary)] whitespace-nowrap">
                {formatDate(tx.date)}
              </span>
              {tx.time && (
-               <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap md:mt-0.5">
+               <span className="text-[10px] text-[var(--color-text-muted)] font-bold whitespace-nowrap md:mt-0.5">
                  {tx.time}
                </span>
              )}
@@ -161,7 +161,7 @@ export default function ImportPreviewCards({
         <button
           onClick={() => handleDeleteSingleRequest(globalIndex)}
           disabled={!!isOtherType}
-          className="col-start-4 md:col-auto justify-self-end md:justify-self-auto p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="col-start-4 md:col-auto justify-self-end md:justify-self-auto p-2 text-[var(--color-text-muted)] hover:text-[var(--color-expense)] hover:bg-[var(--color-expense)]/20 border-2 border-transparent hover:border-[var(--color-border)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           title={t('common.delete')}
         >
           <Trash2 size={16} />
@@ -181,26 +181,26 @@ export default function ImportPreviewCards({
     return (
       <div className={`flex items-center justify-between mb-2 px-4 transition-opacity duration-200 ${isOtherType ? 'opacity-30 pointer-events-none' : ''}`}>
         <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer group">
             <input 
               type="checkbox" 
               checked={allSelected} 
               onChange={() => onSelectAllOfType(type, allIndices)}
               disabled={!!isOtherType}
-              className="w-4 h-4 rounded border-gray-300 text-primary disabled:cursor-not-allowed" 
+              className="w-4 h-4 border-2 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-primary)] disabled:cursor-not-allowed group-hover:border-[var(--color-primary)] transition-colors" 
             />
-            <span className="text-xs font-medium text-gray-500">{t('common.selectAll')} {label} ({allItems.length})</span>
+            <span className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">{t('common.selectAll')} {label} ({allItems.length})</span>
           </label>
           {pageCount > 1 && (
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-2 cursor-pointer group">
               <input 
                 type="checkbox" 
                 checked={allPageSelected} 
                 onChange={() => onSelectAllOfType(type, pageIndices)}
                 disabled={!!isOtherType}
-                className="w-4 h-4 rounded border-gray-300 text-primary disabled:cursor-not-allowed" 
+                className="w-4 h-4 border-2 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-primary)] disabled:cursor-not-allowed group-hover:border-[var(--color-primary)] transition-colors" 
               />
-              <span className="text-xs font-medium text-gray-500">{t('common.thisPage')}</span>
+              <span className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">{t('common.thisPage')}</span>
             </label>
           )}
         </div>
@@ -211,17 +211,17 @@ export default function ImportPreviewCards({
             <button 
               disabled={page === 1} 
               onClick={() => onPageChange(page - 1)}
-              className="px-3 py-1 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50 disabled:opacity-50"
+              className="px-3 py-1 border-2 border-[var(--color-border)] text-[var(--color-text-primary)] text-xs font-bold hover:bg-[var(--color-surface-2)] disabled:opacity-50 uppercase tracking-wider transition-colors bg-[var(--color-surface)]"
             >
               {t('common.prev')}
             </button>
-            <span className="text-xs font-medium py-1 px-2 text-gray-600">
+            <span className="text-xs font-bold py-1 px-2 text-[var(--color-text-primary)] tracking-widest">
               {page} / {pageCount}
             </span>
             <button 
               disabled={page === pageCount} 
               onClick={() => onPageChange(page + 1)}
-              className="px-3 py-1 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50 disabled:opacity-50"
+              className="px-3 py-1 border-2 border-[var(--color-border)] text-[var(--color-text-primary)] text-xs font-bold hover:bg-[var(--color-surface-2)] disabled:opacity-50 uppercase tracking-wider transition-colors bg-[var(--color-surface)]"
             >
               {t('common.next')}
             </button>
@@ -242,15 +242,15 @@ export default function ImportPreviewCards({
         <div className={`mb-6 transition-all duration-300 ${selectedType === 'expense' ? 'grayscale opacity-50' : ''}`}>
           <div className="flex items-center justify-between mb-2 px-2">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-teal-500" />
-              <h3 className="font-bold text-gray-900 text-sm">{t('transactions.income')} ({incomeTransactions.length})</h3>
+              <div className="w-2 h-2 rounded-none bg-[var(--color-income)]" />
+              <h3 className="font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] tracking-wide">{t('transactions.income')} ({incomeTransactions.length})</h3>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-teal-50 text-teal-600 text-xs font-bold">
+            <span className="px-2 py-0.5 border-2 border-[var(--color-income)] bg-[var(--color-income)]/10 text-[var(--color-income)] text-xs font-bold tracking-widest shadow-[2px_2px_0px_0px_var(--color-income)]">
               +{formatCurrency(incomeTotal)}
             </span>
           </div>
           {renderSectionHeader(incomeTransactions, pagedIncomes, incomePageCount, incomePage, setIncomePage, t('transactions.income').toLowerCase(), 'income')}
-          <div className="space-y-1">
+          <div className="space-y-4">
             {pagedIncomes.map(({ tx, idx }) => renderRow(tx, idx, incomeCategories))}
           </div>
         </div>
@@ -261,15 +261,15 @@ export default function ImportPreviewCards({
         <div className={`mb-6 transition-all duration-300 ${selectedType === 'income' ? 'grayscale opacity-50' : ''}`}>
           <div className="flex items-center justify-between mb-2 px-2">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-rose-500" />
-              <h3 className="font-bold text-gray-900 text-sm">{t('transactions.expense')} ({expenseTransactions.length})</h3>
+              <div className="w-2 h-2 rounded-none bg-[var(--color-expense)]" />
+              <h3 className="font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] tracking-wide">{t('transactions.expense')} ({expenseTransactions.length})</h3>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 text-xs font-bold">
+            <span className="px-2 py-0.5 border-2 border-[var(--color-expense)] bg-[var(--color-expense)]/10 text-[var(--color-expense)] text-xs font-bold tracking-widest shadow-[2px_2px_0px_0px_var(--color-expense)]">
               -{formatCurrency(expenseTotal)}
             </span>
           </div>
           {renderSectionHeader(expenseTransactions, pagedExpenses, expensePageCount, expensePage, setExpensePage, t('transactions.expense').toLowerCase(), 'expense')}
-          <div className="space-y-1">
+          <div className="space-y-4">
             {pagedExpenses.map(({ tx, idx }) => renderRow(tx, idx, expenseCategories))}
           </div>
         </div>

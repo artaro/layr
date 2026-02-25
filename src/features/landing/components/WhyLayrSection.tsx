@@ -15,9 +15,9 @@ export default function WhyLayrSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-16 sm:py-24 px-4 bg-gradient-to-b from-gray-50/50 to-white">
+    <section className="py-16 sm:py-24 px-4 bg-[var(--color-surface)] border-t-2 border-[var(--color-border)]">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-12 text-gray-900">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] text-center mb-12 font-[var(--font-brand)] tracking-widest uppercase">
           {t('landing.whyTitle')}
         </h2>
 
@@ -25,16 +25,16 @@ export default function WhyLayrSection() {
           {REASONS.map(({ key, icon: Icon }) => (
             <div
               key={key}
-              className="flex gap-4 p-5 rounded-2xl bg-white border border-gray-100 hover:border-indigo-100 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-50"
+              className="flex gap-4 p-5 border-2 border-[var(--color-border)] bg-[var(--color-surface-2)] hover:border-[var(--color-primary)] transition-all duration-300 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_var(--color-primary)]"
             >
-              <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center">
-                <Icon size={20} className="text-indigo-600" />
+              <div className="flex-shrink-0 w-11 h-11 border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/10 flex items-center justify-center shadow-[2px_2px_0px_0px_var(--color-primary)]">
+                <Icon size={20} className="text-[var(--color-primary)]" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900 mb-0.5">
+                <h3 className="text-base font-bold text-[var(--color-text-primary)] mb-0.5 tracking-wide">
                   {t(`landing.why${key}Title`)}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm font-bold text-[var(--color-text-secondary)]">
                   {t(`landing.why${key}Desc`)}
                 </p>
               </div>

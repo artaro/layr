@@ -57,16 +57,16 @@ export default function TransactionsListCards({
             <div
               key={tx.id}
               className={`
-                group grid grid-cols-[auto_1fr_auto_auto] md:flex md:items-center gap-x-3 gap-y-1 px-3 py-2 rounded-lg transition-all duration-150 border border-transparent
-                hover:bg-gray-50/80
+                group grid grid-cols-[auto_1fr_auto_auto] md:flex md:items-center gap-x-3 gap-y-1 px-3 py-2 border-2 border-transparent transition-all duration-150
+                hover:border-[var(--color-border)] hover:bg-[var(--color-surface-2)]
                 ${blurClass}
               `}
             >
               {/* Category icon */}
               <div className="row-span-2 md:row-span-1 flex-shrink-0">
                 <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shadow-sm"
-                  style={{ backgroundColor: cat ? `${cat.color}15` : 'rgba(108, 92, 231, 0.08)' }}
+                  className="w-9 h-9 flex items-center justify-center text-lg border-2 border-[var(--color-border)]"
+                  style={{ backgroundColor: cat ? `${cat.color}20` : '#242424' }}
                 >
                   {cat?.icon || '📦'}
                 </div>
@@ -74,15 +74,15 @@ export default function TransactionsListCards({
 
               {/* Description + account */}
               <div className="col-start-2 md:col-auto md:flex-1 min-w-0 flex flex-col justify-center">
-                <div className="w-full text-sm font-semibold text-gray-900 truncate tracking-tight">
+                <div className="w-full text-sm font-bold text-[var(--color-text-primary)] truncate tracking-tight">
                   {tx.description || t('txForm.description')}
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-[11px] font-medium text-gray-500 truncate">
+                  <span className="text-[11px] font-bold text-[var(--color-text-secondary)] truncate uppercase tracking-wider">
                     {account?.name}
                   </span>
-                  <span className="text-[10px] text-gray-300">•</span>
-                  <span className="text-[11px] font-medium text-gray-400">
+                  <span className="text-[10px] text-[var(--color-text-muted)]">•</span>
+                  <span className="text-[11px] font-medium text-[var(--color-text-muted)]">
                     {formatDate(tx.transactionDate)}
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export default function TransactionsListCards({
               {/* Amount */}
               <div
                 className={`col-start-3 md:col-auto justify-self-end text-sm font-bold whitespace-nowrap text-right min-w-[70px] ${
-                  tx.type === 'expense' ? 'text-rose-600' : 'text-emerald-600'
+                  tx.type === 'expense' ? 'text-[var(--color-expense)]' : 'text-[var(--color-income)]'
                 }`}
               >
                 {tx.type === 'expense' ? '-' : '+'}
@@ -103,7 +103,7 @@ export default function TransactionsListCards({
                 <button
                   onClick={() => onEditTransaction(tx)}
                   disabled={!!isOtherType}
-                  className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors disabled:opacity-0"
+                  className="p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-primary)]/20 transition-colors disabled:opacity-0"
                   title={t('common.edit')}
                 >
                   <Pencil size={15} />
@@ -111,7 +111,7 @@ export default function TransactionsListCards({
                 <button
                   onClick={() => handleDeleteSingleRequest(tx.id)}
                   disabled={!!isOtherType}
-                  className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors disabled:opacity-0"
+                  className="p-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-expense)] hover:bg-[var(--color-expense)]/20 transition-colors disabled:opacity-0"
                   title={t('common.delete')}
                 >
                   <Trash2 size={15} />

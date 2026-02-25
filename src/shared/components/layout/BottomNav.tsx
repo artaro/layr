@@ -44,13 +44,13 @@ export default function BottomNav() {
           flex flex-col items-center justify-center gap-0.5 flex-1 relative
           transition-colors duration-200
           ${active 
-            ? 'text-indigo-600' 
-            : 'text-gray-400 hover:text-gray-600'
+            ? 'text-[var(--color-primary)]' 
+            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
           }
         `}
       >
         {active && (
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-indigo-600 rounded-full" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[var(--color-primary)]" />
         )}
         <div className={`transition-transform duration-200 ${active ? 'scale-110' : ''}`}>
           {item.icon}
@@ -67,36 +67,36 @@ export default function BottomNav() {
       {/* Backdrop for add menu */}
       {addOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden animate-fade-in"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-fade-in"
           onClick={() => setAddOpen(false)}
         />
       )}
 
       {/* Pop-up actions */}
       {addOpen && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 md:hidden flex flex-col items-center gap-2 animate-in slide-in-from-bottom-4 fade-in duration-200">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 md:hidden flex flex-col items-center gap-2 animate-fade-in">
           <button
             onClick={() => { openImportModal(); setAddOpen(false); }}
-            className="flex items-center gap-3 bg-white pl-4 pr-5 py-2.5 rounded-full shadow-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-3 bg-[var(--color-surface)] pl-4 pr-5 py-2.5 border-2 border-[var(--color-border)] shadow-[3px_3px_0px_0px_var(--color-primary)] hover:shadow-[5px_5px_0px_0px_var(--color-primary)] transition-all"
           >
-            <div className="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-[var(--color-primary)]/15 text-[var(--color-primary)] flex items-center justify-center">
               <Upload size={16} />
             </div>
-            <span className="text-sm font-semibold text-gray-700">{t('nav.uploadStatement')}</span>
+            <span className="text-sm font-semibold text-[var(--color-text-primary)]">{t('nav.uploadStatement')}</span>
           </button>
           <button
             onClick={() => { openTransactionModal(); setAddOpen(false); }}
-            className="flex items-center gap-3 bg-white pl-4 pr-5 py-2.5 rounded-full shadow-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-3 bg-[var(--color-surface)] pl-4 pr-5 py-2.5 border-2 border-[var(--color-border)] shadow-[3px_3px_0px_0px_var(--color-primary)] hover:shadow-[5px_5px_0px_0px_var(--color-primary)] transition-all"
           >
-            <div className="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-[var(--color-primary)]/15 text-[var(--color-primary)] flex items-center justify-center">
               <Receipt size={16} />
             </div>
-            <span className="text-sm font-semibold text-gray-700">{t('nav.addManually')}</span>
+            <span className="text-sm font-semibold text-[var(--color-text-primary)]">{t('nav.addManually')}</span>
           </button>
         </div>
       )}
 
-      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-200/60 safe-area-bottom">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[var(--color-surface)]/95 backdrop-blur-xl border-t-2 border-[var(--color-border)] safe-area-bottom">
         <div className="flex items-stretch justify-around h-16 max-w-lg mx-auto">
           {/* Left items */}
           {leftItems.map(renderNavItem)}
@@ -105,10 +105,10 @@ export default function BottomNav() {
           <div className="flex items-center justify-center flex-1">
             <button
               onClick={() => setAddOpen(!addOpen)}
-              className={`w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300 -mt-5 ${
+              className={`w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 -mt-5 border-2 ${
                 addOpen 
-                  ? 'bg-gray-500 rotate-45 shadow-gray-200' 
-                  : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200 hover:scale-105'
+                  ? 'bg-[var(--color-text-muted)] border-[var(--color-text-muted)] text-[var(--color-text-inverse)] rotate-45' 
+                  : 'bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] hover:shadow-[4px_4px_0px_0px_var(--color-primary)] hover:scale-105'
               }`}
             >
               <Plus size={24} strokeWidth={2.5} />

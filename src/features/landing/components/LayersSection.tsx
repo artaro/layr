@@ -13,12 +13,12 @@ export default function LayersSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-16 sm:py-24 px-4 bg-white">
+    <section className="py-16 sm:py-24 px-4 bg-[var(--color-background)]">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-3 text-gray-900">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] text-center mb-3 font-[var(--font-brand)] tracking-widest uppercase">
           {t('landing.layersTitle')}
         </h2>
-        <p className="text-center text-gray-500 text-base sm:text-lg mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-[var(--color-text-secondary)] font-bold text-base sm:text-lg mb-12 max-w-2xl mx-auto">
           {t('landing.layersDesc')}
         </p>
 
@@ -26,27 +26,27 @@ export default function LayersSection() {
           {LAYERS.map((layer) => (
             <div
               key={layer.key}
-              className={`relative p-5 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+              className={`relative p-5 border-2 transition-all duration-300 hover:-translate-y-1 hover:-translate-x-1 ${
                 layer.active
-                  ? 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-md'
-                  : 'border-gray-100 bg-gray-50/50 opacity-75 hover:opacity-100'
+                  ? 'border-[var(--color-primary)] bg-[var(--color-surface)] shadow-[6px_6px_0px_0px_var(--color-primary)]'
+                  : 'border-[var(--color-border)] bg-[var(--color-surface-2)] opacity-75 hover:opacity-100 shadow-[4px_4px_0px_0px_var(--color-border)]'
               }`}
             >
               {/* Badge */}
               <span
-                className={`absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                className={`absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 border-2 tracking-widest uppercase ${
                   layer.active
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-gray-200 text-gray-500'
+                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
+                    : 'border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-text-muted)]'
                 }`}
               >
                 {layer.active ? t('landing.layer.active') : t('landing.layer.comingSoon')}
               </span>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-1.5 pr-16">
+              <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1.5 pr-16 tracking-wide">
                 {t(`landing.layer.${layer.key}`)}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm font-bold text-[var(--color-text-secondary)] leading-relaxed">
                 {t(`landing.layer.${layer.key}Desc`)}
               </p>
             </div>

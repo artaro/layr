@@ -1,27 +1,25 @@
 import type { Metadata } from 'next';
-import { Outfit, Kanit } from 'next/font/google';
 import './globals.css';
 import Providers from './providers';
 import LangSwitcher from '@/shared/components/layout/LangSwitcher';
 
-const outfit = Outfit({ 
-  subsets: ['latin'], 
-  variable: '--font-outfit',
-  display: 'swap',
-});
-
-const kanit = Kanit({ 
-  subsets: ['thai', 'latin'], 
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-kanit',
-  display: 'swap',
-});
+// ── Fonts are loaded via @import in globals.css (Chakra Petch + IBM Plex Sans Thai) ──
+// No next/font/google used — Google Fonts handles variable weights directly.
 
 export const metadata: Metadata = {
-  title: 'Layr — สร้างชีวิตดีขึ้น ทีละชั้น',
+  title: 'ออมเก่ง — ฝึกออมทุกวัน จนออมเก่ง',
   description:
-    'Layr (เลเยอร์) คือแอปพัฒนาชีวิตแบบเลเยอร์ — เริ่มจากการเงิน ต่อยอดด้วยทักษะและสุขภาพ ติดตามรายรับ-รายจ่าย นำเข้าใบแจ้งยอดธนาคาร ตั้งเป้าหมาย ออกแบบมาเพื่อคนรุ่นใหม่',
-  keywords: ['Layr', 'life improvement', 'expense tracker', 'จัดการเงิน', 'ติดตามรายจ่าย', 'พัฒนาตัวเอง', 'ทักษะ', 'สุขภาพ'],
+    'ออมเก่ง — บันทึกง่าย AI อ่านสลิปธนาคารให้อัตโนมัติ ฝึกออมทุกวัน จนออมเก่ง',
+  keywords: [
+    'ออมเก่ง', 'Aomkeng', 'จดรายจ่าย', 'แอปออม', 'expense tracker',
+    'จัดการเงิน', 'ติดตามรายจ่าย', 'Gen-Z', 'บัญชีรายรับรายจ่าย',
+  ],
+  openGraph: {
+    title: 'ออมเก่ง — ฝึกออมทุกวัน จนออมเก่ง',
+    description: 'แอปจดรายรับ-รายจ่ายที่ไม่น่าเบื่อ AI อ่านสลิปให้ ฟรี ไม่ต้องใช้บัตร',
+    locale: 'th_TH',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -31,7 +29,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th" suppressHydrationWarning>
-      <body className={`${outfit.variable} ${kanit.variable} font-sans antialiased text-gray-900 bg-gray-50`} suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="theme-color" content="#00FFAB" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
+      <body
+        className="antialiased"
+        style={{
+          fontFamily: "'IBM Plex Sans Thai', sans-serif",
+          backgroundColor: '#0D0D0D',
+          color: '#F5F5F5',
+        }}
+        suppressHydrationWarning
+      >
         <Providers>
           <LangSwitcher />
           {children}

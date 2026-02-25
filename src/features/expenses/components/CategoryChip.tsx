@@ -22,17 +22,18 @@ export default function CategoryChip({
     <div
       onClick={onClick}
       className={`
-        inline-flex items-center gap-1.5 rounded-full transition-all duration-200 cursor-pointer border
+        inline-flex items-center gap-1.5 transition-all duration-200 cursor-pointer border-2
         ${compact ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm'}
         ${
           selected
-            ? 'bg-opacity-15 border-transparent shadow-sm'
-            : 'bg-gray-100 border-transparent text-gray-700 hover:bg-gray-200'
+            ? 'border-transparent'
+            : 'bg-[var(--color-surface-2)] border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
         }
       `}
       style={{
-        backgroundColor: selected ? `${category.color}20` : undefined, // 20 = 12% opacity hex
+        backgroundColor: selected ? `${category.color}20` : undefined,
         color: selected ? category.color : undefined,
+        borderColor: selected ? `${category.color}60` : undefined,
       }}
     >
       <span className={compact ? 'text-sm' : 'text-base'}>

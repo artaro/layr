@@ -11,7 +11,6 @@ interface PortalCard {
   emoji: string;
   titleKey: string;
   descKey: string;
-  gradient: string;
 }
 
 export default function MorePage() {
@@ -24,7 +23,6 @@ export default function MorePage() {
       emoji: '🏷️',
       titleKey: 'more.categoryManagement',
       descKey: 'more.categoryManagementDesc',
-      gradient: 'from-amber-400 to-orange-500',
     },
     {
       href: '/expenses/upload',
@@ -32,7 +30,6 @@ export default function MorePage() {
       emoji: '📄',
       titleKey: 'import.title',
       descKey: 'import.subtitle',
-      gradient: 'from-emerald-400 to-teal-500',
     },
     {
       href: '/expenses/more/settings',
@@ -40,7 +37,6 @@ export default function MorePage() {
       emoji: '⚙️',
       titleKey: 'more.settings',
       descKey: 'more.settingsDesc',
-      gradient: 'from-indigo-400 to-purple-500',
     },
   ];
 
@@ -48,10 +44,10 @@ export default function MorePage() {
     <div className="animate-fade-in space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">
+        <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-[var(--font-brand)] uppercase tracking-wider">
           {t('more.title')}
         </h1>
-        <p className="text-gray-500">
+        <p className="text-[var(--color-text-secondary)]">
           {t('more.subtitle')}
         </p>
       </div>
@@ -62,20 +58,20 @@ export default function MorePage() {
           <Link
             key={card.href}
             href={card.href}
-            className="group relative bg-white rounded-2xl border border-gray-100 p-5 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-gray-200 active:scale-[0.98]"
+            className="group relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] p-5 transition-all duration-200 shadow-[3px_3px_0px_0px_var(--color-primary)] brutal-hover active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
           >
             <div className="flex items-start gap-4">
               {/* Icon */}
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-sm shrink-0`}>
+              <div className="w-12 h-12 bg-[var(--color-primary)] border-2 border-[var(--color-primary)] flex items-center justify-center shrink-0">
                 {card.icon}
               </div>
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <h3 className="text-base font-bold text-gray-900 mb-0.5 flex items-center gap-1.5">
+                <h3 className="text-base font-bold text-[var(--color-text-primary)] mb-0.5 flex items-center gap-1.5">
                   {t(card.titleKey)}
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed">
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   {t(card.descKey)}
                 </p>
               </div>
@@ -83,7 +79,7 @@ export default function MorePage() {
               {/* Arrow */}
               <ChevronRight 
                 size={20} 
-                className="text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all mt-1 shrink-0" 
+                className="text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] group-hover:translate-x-0.5 transition-all mt-1 shrink-0" 
               />
             </div>
           </Link>
@@ -92,8 +88,8 @@ export default function MorePage() {
 
       {/* App info */}
       <div className="pt-4 text-center">
-        <p className="text-xs text-gray-400 font-medium">
-          Layr v0.1.0 • {t('app.footer')}
+        <p className="text-xs text-[var(--color-text-muted)] font-medium">
+          ออมเก่ง v0.1.0 • {t('app.footer')}
         </p>
       </div>
     </div>

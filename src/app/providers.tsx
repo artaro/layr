@@ -27,10 +27,10 @@ function Toast() {
   if (!snackbar.open) return null;
 
   const config = {
-    error:   { bg: 'bg-red-600',    icon: <AlertCircle size={16} />,    bar: 'bg-red-400' },
-    success: { bg: 'bg-emerald-600', icon: <CheckCircle size={16} />,    bar: 'bg-emerald-400' },
-    info:    { bg: 'bg-indigo-600',  icon: <Info size={16} />,           bar: 'bg-indigo-400' },
-    warning: { bg: 'bg-amber-500',   icon: <AlertTriangle size={16} />,  bar: 'bg-amber-300' },
+    error:   { bg: 'bg-[var(--color-surface)] border-2 border-[var(--color-expense)] text-[var(--color-text-primary)] shadow-[6px_6px_0px_0px_var(--color-expense)]',    icon: <AlertCircle size={16} className="text-[var(--color-expense)]" />,    bar: 'bg-[var(--color-expense)]' },
+    success: { bg: 'bg-[var(--color-surface)] border-2 border-[var(--color-primary)] text-[var(--color-text-primary)] shadow-[6px_6px_0px_0px_var(--color-primary)]', icon: <CheckCircle size={16} className="text-[var(--color-primary)]" />,    bar: 'bg-[var(--color-primary)]' },
+    info:    { bg: 'bg-[var(--color-surface)] border-2 border-[var(--color-border)] text-[var(--color-text-primary)] shadow-[6px_6px_0px_0px_var(--color-border)]',  icon: <Info size={16} className="text-[var(--color-text-primary)]" />,           bar: 'bg-[var(--color-border)]' },
+    warning: { bg: 'bg-[var(--color-surface)] border-2 border-[var(--color-secondary)] text-[var(--color-text-primary)] shadow-[6px_6px_0px_0px_var(--color-secondary)]',   icon: <AlertTriangle size={16} className="text-[var(--color-secondary)]" />,  bar: 'bg-[var(--color-secondary)]' },
   };
 
   const { bg, icon, bar } = config[snackbar.severity as keyof typeof config] || config.info;
@@ -39,24 +39,24 @@ function Toast() {
     <div
       className={`
         fixed top-4 left-1/2 -translate-x-1/2 z-[9999]
-        flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl shadow-black/15
-        text-white min-w-[260px] max-w-[420px]
+        flex items-center gap-3 px-4 py-3 font-bold
+        min-w-[260px] max-w-[420px]
         animate-in slide-in-from-top-2 fade-in duration-200
         ${bg}
       `}
     >
       <span className="flex-shrink-0 opacity-90">{icon}</span>
-      <span className="text-sm font-medium flex-1">{snackbar.message}</span>
+      <span className="text-sm font-bold flex-1 tracking-wide">{snackbar.message}</span>
       <button
         onClick={hideSnackbar}
-        className="p-1 hover:bg-white/20 rounded-full transition-colors flex-shrink-0"
+        className="p-1 hover:bg-[var(--color-surface-2)] transition-colors flex-shrink-0"
       >
         <X size={14} />
       </button>
 
       {/* Auto-close progress bar */}
       <div
-        className={`absolute bottom-0 left-0 h-0.5 rounded-b-xl ${bar} opacity-60`}
+        className={`absolute bottom-0 left-0 h-1 ${bar}`}
         style={{
           animation: `shrink ${TOAST_DURATION_MS}ms linear forwards`,
         }}

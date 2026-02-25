@@ -73,23 +73,23 @@ export default function ExpenseDashboardPage() {
     <div className="animate-fade-in space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">
+        <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-[var(--font-brand)] uppercase tracking-wider">
           {t('dashboard.title')}
         </h1>
-        <p className="text-gray-500">
+        <p className="text-[var(--color-text-secondary)]">
           {t('dashboard.subtitle')}
         </p>
       </div>
 
       {/* Loading & Error States */}
       {isLoading && (
-        <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
-          <div className="h-full bg-indigo-500 animate-progress origin-left" />
+        <div className="w-full h-1 bg-[var(--color-surface-2)] overflow-hidden">
+          <div className="h-full bg-[var(--color-primary)] animate-progress origin-left" />
         </div>
       )}
       
       {isError && (
-        <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl flex items-center gap-3">
+        <div className="bg-[var(--color-accent)]/10 border-2 border-[var(--color-accent)] text-[var(--color-accent)] p-4 flex items-center gap-3">
           <AlertCircle size={20} />
           <span className="font-medium">{t('dashboard.failedToLoad')}</span>
         </div>
@@ -103,21 +103,21 @@ export default function ExpenseDashboardPage() {
               title={t('dashboard.totalIncome')}
               value={formatCurrency(summary?.totalIncome || 0)}
               icon={<TrendingUp className="text-white w-6 h-6" />}
-              gradient="linear-gradient(135deg, #00CEC9 0%, #00B894 100%)"
+              gradient="linear-gradient(135deg, #00FFAB 0%, #00CC88 100%)"
               trend={{ value: t('common.allTime'), positive: true }}
             />
             <StatCard
               title={t('dashboard.totalExpenses')}
               value={formatCurrency(summary?.totalExpense || 0)}
               icon={<TrendingDown className="text-white w-6 h-6" />}
-              gradient="linear-gradient(135deg, #FF7675 0%, #D63031 100%)"
+              gradient="linear-gradient(135deg, #FF6B6B 0%, #D63031 100%)"
               trend={{ value: t('common.allTime'), positive: false }}
             />
             <StatCard
               title={t('dashboard.balance')}
               value={formatCurrency(summary?.balance || 0)}
               icon={<Wallet className="text-white w-6 h-6" />}
-              gradient="linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%)"
+              gradient="linear-gradient(135deg, #FFF01F 0%, #FFD93D 100%)"
               trend={{
                 value: t('common.netWorth'),
                 positive: (summary?.balance || 0) >= 0,
@@ -143,12 +143,12 @@ export default function ExpenseDashboardPage() {
           {/* Recent transactions */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold text-gray-900">
+              <h2 className="text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
                 {t('dashboard.recentTransactions')}
               </h2>
               <Link 
                 href="/expenses/transactions" 
-                className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors"
+                className="text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 px-3 py-1.5 transition-colors border-2 border-[var(--color-primary)] uppercase tracking-wider"
               >
                 {t('common.viewAll')}
               </Link>

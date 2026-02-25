@@ -7,7 +7,7 @@ import { TransactionType, StatementSource } from '@/features/expenses/types';
 import { generateMockTransactions } from '@/features/import/mock/mockStatementTransactions';
 import { compressImage } from '@/shared/lib/imageUtils';
 
-const LAST_IMPORT_KEY = 'layr_last_import';
+const LAST_IMPORT_KEY = 'aomkeng_last_import';
 
 export interface ParsedLLMTransaction {
   date: string;

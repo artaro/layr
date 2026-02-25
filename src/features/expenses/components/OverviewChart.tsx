@@ -13,7 +13,6 @@ import {
 } from 'recharts';
 import { Transaction } from '@/features/expenses/types';
 import { TransactionType } from '@/features/expenses/types';
-import { EXPENSE_COLORS } from '@/shared/lib/constants';
 import { formatCurrency } from '@/shared/lib/formatters';
 import { useTranslation } from '@/shared/lib/i18n';
 
@@ -55,10 +54,10 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
 
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-full flex flex-col">
+    <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
           <div>
-            <h3 className="text-lg font-bold text-gray-900">
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
               {t('chart.financialOverview')}
             </h3>
 
@@ -68,11 +67,11 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
       <div className="flex-grow min-h-[300px] overflow-hidden">
           <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <BarChart data={data} barGap={4}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#2E2E2E" vertical={false} />
               <XAxis
                 dataKey="label"
                 tick={{ fontSize: 12, fontFamily: 'inherit', fill: '#9CA3AF' }}
-                axisLine={{ stroke: '#F3F4F6' }}
+                axisLine={{ stroke: '#2E2E2E' }}
                 tickLine={false}
                 dy={10}
               />
@@ -86,15 +85,16 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
               <Tooltip
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter={(value: any) => formatCurrency(Number(value))}
-                cursor={{ fill: '#F9FAFB' }}
+                cursor={{ fill: '#242424' }}
                 isAnimationActive={false}
                 wrapperStyle={{ zIndex: 10, pointerEvents: 'none' }}
                 contentStyle={{
-                  borderRadius: '1rem',
-                  border: 'none',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  backgroundColor: '#1A1A1A',
+                  border: '2px solid #2E2E2E',
+                  boxShadow: '4px 4px 0px 0px #00FFAB',
                   fontFamily: 'inherit',
                   padding: '12px',
+                  color: '#FFFFFF'
                 }}
               />
               <Legend 
@@ -104,15 +104,15 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
               <Bar
                 dataKey="income"
                 name={`💰 ${t('dashboard.totalIncome')}`}
-                fill={EXPENSE_COLORS.income}
-                radius={[4, 4, 0, 0]}
+                fill="var(--color-income)"
+                radius={[0, 0, 0, 0]}
                 barSize={32}
               />
               <Bar
                 dataKey="expense"
                 name={`💸 ${t('dashboard.totalExpenses')}`}
-                fill={EXPENSE_COLORS.expense}
-                radius={[4, 4, 0, 0]}
+                fill="var(--color-expense)"
+                radius={[0, 0, 0, 0]}
                 barSize={32}
               />
             </BarChart>

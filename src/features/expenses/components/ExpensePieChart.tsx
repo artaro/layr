@@ -60,14 +60,14 @@ export default function ExpensePieChart({ transactions }: ExpensePieChartProps) 
   const renderLegendText = (value: string, entry: any) => {
     const { payload } = entry;
     // Simple legend again
-    return <span className="text-gray-700 font-medium text-sm ml-1">{payload.icon} {value}</span>;
+    return <span className="text-[var(--color-text-secondary)] font-bold tracking-wider text-sm ml-1">{payload.icon} {value}</span>;
   };
 
   const dayOfMonth = new Date().getDate();
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-full flex flex-col">
-      <h3 className="text-lg font-bold text-gray-900 mb-4">
+    <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)] p-6 h-full flex flex-col">
+      <h3 className="text-lg font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider mb-4">
         {t('chart.spendingByCategory')}
       </h3>
 
@@ -93,13 +93,13 @@ export default function ExpensePieChart({ transactions }: ExpensePieChartProps) 
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     formatter={(value: any) => formatCurrency(Number(value))}
                     contentStyle={{ 
-                        borderRadius: '1rem', 
-                        border: 'none', 
-                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                        backgroundColor: 'white',
-                        fontFamily: 'inherit'
+                        backgroundColor: '#1A1A1A',
+                        border: '2px solid #2E2E2E',
+                        boxShadow: '4px 4px 0px 0px #00FFAB',
+                        fontFamily: 'inherit',
+                        color: '#FFFFFF'
                     }}
-                    itemStyle={{ color: '#374151', fontWeight: 600 }}
+                    itemStyle={{ color: '#FFFFFF', fontWeight: 600 }}
                 />
                 <Legend 
                     layout="vertical" 
@@ -113,16 +113,16 @@ export default function ExpensePieChart({ transactions }: ExpensePieChartProps) 
             </div>
             
             {/* Daily Averages Box */}
-            <div className="mt-4 pt-4 border-t border-gray-50">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{t('chart.avgExpense')}</p>
+            <div className="mt-4 pt-4 border-t-2 border-[var(--color-border)]">
+                <p className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">{t('chart.avgExpense')}</p>
                 <div className="grid grid-cols-2 gap-3">
                     {filteredData.slice(0, 4).map((item) => (
-                        <div key={item.name} className="bg-gray-50 rounded-xl p-2.5 flex items-center justify-between">
+                        <div key={item.name} className="bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] p-2.5 flex items-center justify-between">
                             <div className="flex items-center gap-1.5 min-w-0">
                                 <span className="text-sm">{item.icon}</span>
-                                <span className="text-xs font-medium text-gray-700 truncate">{item.name}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-primary)] truncate">{item.name}</span>
                             </div>
-                            <span className="text-xs font-bold text-gray-900">
+                            <span className="text-xs font-bold text-[var(--color-text-primary)]">
                                 ~{formatCurrency(item.value / dayOfMonth)}
                             </span>
                         </div>
@@ -133,7 +133,7 @@ export default function ExpensePieChart({ transactions }: ExpensePieChartProps) 
       ) : (
         <div className="flex-grow flex flex-col items-center justify-center min-h-[300px] text-center">
           <div className="text-5xl mb-3 opacity-50">📉</div>
-          <p className="text-gray-500 font-medium">{t('empty.noExpenses')}</p>
+          <p className="text-[var(--color-text-muted)] font-bold">{t('empty.noExpenses')}</p>
         </div>
       )}
     </div>

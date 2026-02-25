@@ -27,10 +27,10 @@ export default function TransactionRow({
 
   return (
     <div
-      className={`group flex items-center justify-between p-4 bg-white rounded-2xl border transition-all duration-200 ${
+      className={`group flex items-center justify-between p-4 bg-[var(--color-surface)] border-2 transition-all duration-200 ${
         selected
-          ? 'border-indigo-500 shadow-md shadow-indigo-100 bg-indigo-50/30'
-          : 'border-gray-100 hover:border-indigo-100 hover:shadow-sm'
+          ? 'border-[var(--color-primary)] shadow-[4px_4px_0px_0px_var(--color-primary)] bg-[var(--color-primary)]/10'
+          : 'border-[var(--color-border)] hover:border-[var(--color-primary)] hover:shadow-[4px_4px_0px_0px_var(--color-primary)] hover:-translate-y-1 hover:-translate-x-1'
       }`}
     >
       <div className="flex items-center gap-4">
@@ -39,33 +39,33 @@ export default function TransactionRow({
             type="checkbox"
             checked={selected}
             onChange={() => onSelect(transaction.id)}
-            className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer"
+            className="w-5 h-5 border-2 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] transition-all cursor-pointer"
           />
         )}
         
         <div 
-          className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm"
-          style={{ backgroundColor: category ? `${category.color}15` : '#F3F4F6' }}
+          className="w-12 h-12 border-2 border-[var(--color-border)] flex items-center justify-center text-2xl"
+          style={{ backgroundColor: category ? `${category.color}20` : '#242424' }}
         >
           {category?.icon || '📦'}
         </div>
         
         <div>
-          <h3 className="font-bold text-gray-900 text-sm md:text-base mb-0.5">
+          <h3 className="font-bold text-[var(--color-text-primary)] text-sm md:text-base mb-0.5">
             {transaction.description}
           </h3>
-          <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
-            <span>{category?.name || 'Uncategorized'}</span>
-            <span className="w-1 h-1 rounded-full bg-gray-300" />
-            <span>{formatDate(transaction.transactionDate)}</span>
+          <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] font-bold">
+            <span className="uppercase tracking-wider">{category?.name || 'Uncategorized'}</span>
+            <span className="text-[10px]">•</span>
+            <span className="font-medium tracking-wide">{formatDate(transaction.transactionDate)}</span>
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2 md:gap-6">
         <span
-          className={`font-bold text-sm md:text-base ${
-            transaction.type === 'expense' ? 'text-red-500' : 'text-teal-500'
+          className={`font-bold text-sm md:text-base tracking-tight ${
+            transaction.type === 'expense' ? 'text-[var(--color-expense)]' : 'text-[var(--color-income)]'
           }`}
         >
           {transaction.type === 'expense' ? '-' : '+'}
@@ -80,7 +80,7 @@ export default function TransactionRow({
                   e.stopPropagation();
                   onEdit();
                 }}
-                className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-primary)]/20 border-2 border-transparent hover:border-[var(--color-border)] transition-colors"
               >
                 <Edit2 size={16} />
               </button>
@@ -91,7 +91,7 @@ export default function TransactionRow({
                   e.stopPropagation();
                   onDelete();
                 }}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-expense)] hover:bg-[var(--color-expense)]/20 border-2 border-transparent hover:border-[var(--color-border)] transition-colors"
               >
                 <Trash2 size={16} />
               </button>

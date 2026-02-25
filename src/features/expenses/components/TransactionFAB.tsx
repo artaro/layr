@@ -25,10 +25,10 @@ export default function TransactionFAB() {
           }}
           className="flex items-center gap-3 group"
         >
-          <span className="bg-white px-2 py-1 rounded-lg text-sm font-medium text-gray-700 shadow-md transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+          <span className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] px-2 py-1 text-sm font-bold text-[var(--color-text-primary)] shadow-[2px_2px_0px_0px_var(--color-primary)] transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all uppercase tracking-wider">
             Upload Statement
           </span>
-          <div className="w-12 h-12 bg-white text-indigo-600 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
+          <div className="w-12 h-12 bg-[var(--color-surface)] text-[var(--color-primary)] border-2 border-[var(--color-primary)] shadow-[3px_3px_0px_0px_var(--color-primary)] flex items-center justify-center hover:shadow-[5px_5px_0px_0px_var(--color-primary)] transition-all">
             <Upload size={20} />
           </div>
         </button>
@@ -40,10 +40,10 @@ export default function TransactionFAB() {
           }}
           className="flex items-center gap-3 group"
         >
-           <span className="bg-white px-2 py-1 rounded-lg text-sm font-medium text-gray-700 shadow-md transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+           <span className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] px-2 py-1 text-sm font-bold text-[var(--color-text-primary)] shadow-[2px_2px_0px_0px_var(--color-primary)] transform translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all uppercase tracking-wider">
             Add Manually
           </span>
-          <div className="w-12 h-12 bg-white text-emerald-600 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
+          <div className="w-12 h-12 bg-[var(--color-surface)] text-[var(--color-primary)] border-2 border-[var(--color-primary)] shadow-[3px_3px_0px_0px_var(--color-primary)] flex items-center justify-center hover:shadow-[5px_5px_0px_0px_var(--color-primary)] transition-all">
             <Receipt size={20} />
           </div>
         </button>
@@ -52,8 +52,10 @@ export default function TransactionFAB() {
       {/* Main Button */}
       <button
         onClick={toggle}
-        className={`w-14 h-14 rounded-full shadow-lg shadow-indigo-500/30 flex items-center justify-center text-white transition-all duration-300 z-50 ${
-          open ? 'bg-indigo-600 rotate-45' : 'bg-indigo-600 hover:bg-indigo-700 hover:scale-105'
+        className={`w-14 h-14 border-2 flex items-center justify-center text-white transition-all duration-300 z-50 ${
+          open 
+            ? 'bg-[var(--color-text-muted)] border-[var(--color-text-muted)] rotate-45 shadow-none' 
+            : 'bg-[var(--color-primary)] border-[var(--color-primary)] text-[var(--color-text-inverse)] shadow-[4px_4px_0px_0px_var(--color-border)] hover:shadow-[6px_6px_0px_0px_var(--color-border)] hover:-translate-x-0.5 hover:-translate-y-0.5'
         }`}
       >
         <Plus size={28} strokeWidth={2.5} />
@@ -62,7 +64,7 @@ export default function TransactionFAB() {
       {/* Backdrop */}
       {open && (
         <div 
-          className="fixed inset-0 bg-black/20 z-30"
+          className="fixed inset-0 bg-black/40 z-30"
           onClick={() => setOpen(false)}
         />
       )}

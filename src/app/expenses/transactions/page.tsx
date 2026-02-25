@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import {
   Search,
+  X,
 } from 'lucide-react';
 import {
   TransactionForm,
@@ -131,8 +132,21 @@ export default function TransactionsPage() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => (currentYear - i).toString());
 
+  // Clear all filters
+  const hasActiveFilters = searchQuery !== '' || filterCategory !== '' || filterAccount !== '' || filterMonth !== '' || filterYear !== '';
+  const clearAllFilters = () => {
+    setSearchQuery('');
+    setFilterType(TransactionType.EXPENSE);
+    setFilterCategory('');
+    setFilterAccount('');
+    setFilterMonth('');
+    setFilterYear('');
+    setPage(1);
+  };
+
   return (
     <div className="animate-fade-in relative">
+      <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-primary)]">
       <ContentList
         page={page}
         totalPage={totalPage}
@@ -144,39 +158,52 @@ export default function TransactionsPage() {
         errorMessage={t('transactions.failedToLoad')}
         showingLabel={totalItem > 0 ? t('transactions.showing', { from: totalItem > 0 ? (page - 1) * PAGE_SIZE + 1 : 0, to: Math.min(page * PAGE_SIZE, totalItem), total: totalItem }) : undefined}
         filterSection={
-          <div className="sticky top-16 z-30 -mx-4 px-4 md:px-6 py-2.5 bg-white/95 backdrop-blur-xl border-b border-gray-100 transition-all duration-300">
-            {/* Row 1: Type toggle, Month, Year, Search, and Filter Toggle */}
+          <div className="sticky top-16 z-30 px-4 md:px-6 py-2.5 bg-[var(--color-surface)]/95 backdrop-blur-xl border-b-2 border-[var(--color-border)] transition-all duration-300">
+            {/* Row 1: Search → Type tabs → Month → Year */}
             <div className="flex justify-center items-center gap-2 mb-2 w-full">
-              <div className="flex bg-gray-100 p-0.5 rounded-lg flex-shrink-0">
+              {/* Search Bar (primary — flex-1) */}
+              <div className="relative flex-1 min-w-[120px]">
+                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                <input
+                  type="text"
+                  placeholder={t('common.search')}
+                  value={searchQuery}
+                  onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                  className="brutal-input w-full pl-8 pr-3 py-1.5 text-sm"
+                />
+              </div>
+
+              {/* Type tabs */}
+              <div className="flex border-2 border-[var(--color-border)] flex-shrink-0">
                 <button
                   onClick={() => { setFilterType(TransactionType.EXPENSE); resetPage(); }}
-                  className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                  className={`px-3 py-1 text-xs font-bold transition-all ${
                     filterType === TransactionType.EXPENSE
-                      ? 'bg-white text-rose-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
+                      ? 'bg-[var(--color-expense)] text-white'
+                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                   }`}
                 >
                   {t('transactions.expense')}
                 </button>
                 <button
                   onClick={() => { setFilterType(TransactionType.INCOME); resetPage(); }}
-                  className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                  className={`px-3 py-1 text-xs font-bold transition-all border-l-2 border-[var(--color-border)] ${
                     filterType === TransactionType.INCOME
-                      ? 'bg-white text-teal-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
+                      ? 'bg-[var(--color-income)] text-[var(--color-text-inverse)]'
+                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                   }`}
                 >
                   {t('transactions.income')}
                 </button>
               </div>
 
-              {/* Month / Year */}
+              {/* Month / Year (desktop) */}
               <select
                 value={filterMonth}
                 onChange={(e) => { setFilterMonth(e.target.value); setPage(1); }}
-                className="hidden md:block px-2 py-1 rounded-lg border border-gray-200 bg-gray-50 hover:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer"
+                className="hidden md:block brutal-input px-2 py-1.5 text-sm font-medium cursor-pointer"
               >
-                <option value="">{t('common.allMonths') || 'All Months'}</option>
+                <option value="">{t('common.allMonths')}</option>
                 {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                   <option key={m} value={m}>
                     {new Date(2000, m - 1).toLocaleString('default', { month: 'short' })}
@@ -186,34 +213,22 @@ export default function TransactionsPage() {
               <select
                 value={filterYear}
                 onChange={(e) => { setFilterYear(e.target.value); setPage(1); }}
-                className="hidden md:block px-2 py-1 rounded-lg border border-gray-200 bg-gray-50 hover:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer w-20"
+                className="hidden md:block brutal-input px-2 py-1.5 text-sm font-medium cursor-pointer w-20"
               >
-                <option value="">{t('common.allYears') || 'All Years'}</option>
+                <option value="">{t('common.allYears')}</option>
                 {years.map(y => (
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
-
-              {/* Search Bar */}
-              <div className="relative flex-1 min-w-[100px] max-w-xs">
-                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder={t('common.search')}
-                  value={searchQuery}
-                  onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
-                  className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 outline-none text-xs transition-all"
-                />
-              </div>
             </div>
 
             {/* Row 2: Expanded Filters */}
-              <div className="flex justify-center flex-wrap items-center gap-2 pt-2 border-t border-gray-100 animate-in slide-in-from-top-1 fade-in duration-200">
+              <div className="flex justify-center flex-wrap items-center gap-2 pt-2 border-t-2 border-[var(--color-border)] animate-fade-in">
                 {/* Mobile-only Month/Year */}
                 <select
                   value={filterMonth}
                   onChange={(e) => { setFilterMonth(e.target.value); setPage(1); }}
-                  className="md:hidden px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer"
+                  className="md:hidden brutal-input px-2.5 py-1.5 text-xs font-medium cursor-pointer"
                 >
                   <option value="">{t('common.allMonths') || 'All Months'}</option>
                   {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
@@ -225,7 +240,7 @@ export default function TransactionsPage() {
                 <select
                   value={filterYear}
                   onChange={(e) => { setFilterYear(e.target.value); setPage(1); }}
-                  className="md:hidden px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium cursor-pointer w-20"
+                  className="md:hidden brutal-input px-2.5 py-1.5 text-xs font-medium cursor-pointer w-20"
                 >
                   <option value="">{t('common.allYears') || 'All Years'}</option>
                   {years.map(y => (
@@ -236,7 +251,7 @@ export default function TransactionsPage() {
                 <select
                   value={filterAccount}
                   onChange={(e) => { setFilterAccount(e.target.value); setPage(1); }}
-                  className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium min-w-[100px] cursor-pointer"
+                  className="brutal-input px-2.5 py-1.5 text-xs font-medium min-w-[100px] cursor-pointer"
                 >
                   <option value="">{t('transactions.allAccounts')}</option>
                   {accounts.map(a => (
@@ -247,13 +262,24 @@ export default function TransactionsPage() {
                 <select
                   value={filterCategory}
                   onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
-                  className="px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-indigo-400 outline-none text-xs font-medium min-w-[110px] cursor-pointer"
+                  className="brutal-input px-2.5 py-1.5 text-xs font-medium min-w-[110px] cursor-pointer"
                 >
                   <option value="">{t('transactions.allCategories')}</option>
                   {filteredCategories.map(c => (
                     <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
                   ))}
                 </select>
+
+                {/* Clear Filters */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 border-2 border-[var(--color-primary)] transition-colors flex-shrink-0 uppercase tracking-wider"
+                  >
+                    <X size={12} />
+                    {t('transactions.clearFilters')}
+                  </button>
+                )}
               </div>
           </div>
         }
@@ -301,6 +327,7 @@ export default function TransactionsPage() {
         isEdit={!!editTarget}
       />
 
+      </div>
     </div>
   );
 }

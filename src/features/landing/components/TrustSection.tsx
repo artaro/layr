@@ -8,24 +8,24 @@ export default function TrustSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-16 sm:py-24 px-4 bg-white">
+    <section className="py-16 sm:py-24 px-4 bg-[var(--color-background)] border-t-2 border-[var(--color-border)]">
       <div className="max-w-3xl mx-auto text-center">
         <div className="flex justify-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-            <Lock size={18} className="text-green-600" />
+          <div className="w-10 h-10 border-2 border-[var(--color-primary)] bg-[var(--color-primary)]/10 flex items-center justify-center shadow-[2px_2px_0px_0px_var(--color-primary)]">
+            <Lock size={18} className="text-[var(--color-primary)]" />
           </div>
-          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-            <Eye size={18} className="text-blue-600" />
+          <div className="w-10 h-10 border-2 border-[var(--color-secondary)] bg-[var(--color-secondary)]/10 flex items-center justify-center shadow-[2px_2px_0px_0px_var(--color-secondary)]">
+            <Eye size={18} className="text-[var(--color-secondary)]" />
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
-            <Database size={18} className="text-purple-600" />
+          <div className="w-10 h-10 border-2 border-[var(--color-expense)] bg-[var(--color-expense)]/10 flex items-center justify-center shadow-[2px_2px_0px_0px_var(--color-expense)]">
+            <Database size={18} className="text-[var(--color-expense)]" />
           </div>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-3 font-[var(--font-brand)] tracking-widest uppercase">
           {t('landing.trustTitle')}
         </h2>
-        <p className="text-gray-500 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="text-[var(--color-text-secondary)] font-bold text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
           {t('landing.trustDesc')}
         </p>
       </div>

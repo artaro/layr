@@ -20,20 +20,20 @@ export default function HomePage() {
   const ctaHref = user ? '/portal' : '/login';
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[var(--color-background)] flex flex-col">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-gray-100/50">
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] flex items-center justify-center text-sm shadow-md shadow-indigo-200">
+          <div className="w-8 h-8 flex items-center justify-center text-sm border-2 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
             🧱
           </div>
-          <h1 className="text-lg font-bold text-gray-900 tracking-tight">
+          <h1 className="text-lg font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] tracking-widest uppercase">
             {t('app.name')}
           </h1>
         </div>
         <Link
           href={ctaHref}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-200 hover:shadow-lg transition-all active:scale-95 flex items-center gap-1.5"
+          className="px-4 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] text-[var(--color-surface)] text-sm font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] hover:shadow-[6px_6px_0px_0px_var(--color-border)] hover:-translate-y-1 hover:-translate-x-1 transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] flex items-center gap-1.5 uppercase tracking-wider"
         >
           {t('landing.openApp')} <ArrowRight size={14} />
         </Link>
@@ -54,8 +54,8 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-6 text-center bg-gray-50 border-t border-gray-100">
-        <p className="text-xs font-semibold text-gray-400">
+      <footer className="py-6 text-center bg-[var(--color-surface)] border-t-2 border-[var(--color-border)]">
+        <p className="text-xs font-bold text-[var(--color-text-muted)] tracking-wider">
           {t('app.footer')}
         </p>
       </footer>

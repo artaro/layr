@@ -185,27 +185,27 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
     if (selectedIndices.size > 0) {
       return (
         <div className="flex items-center gap-3">
-          <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
+          <span className="bg-[var(--color-primary)] text-[var(--color-surface)] px-3 py-1 border-2 border-[var(--color-border)] shadow-[2px_2px_0px_0px_var(--color-border)] font-bold uppercase tracking-wider text-xs">
             {selectedIndices.size} {t('common.selected')}
           </span>
-          <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+          <span className="text-xs text-[var(--color-text-secondary)] font-bold uppercase tracking-wider">
             {selectedType === 'income' ? t('transactions.income') : t('transactions.expense')}
           </span>
         </div>
       );
     }
     if (status === 'ready' && showReview) {
-      return <span className="text-sm font-bold text-emerald-700">📋 {t('import.reviewTitle')}</span>;
+      return <span className="text-sm font-bold text-[var(--color-primary)] uppercase tracking-wider">📋 {t('import.reviewTitle')}</span>;
     }
     if (status === 'ready') {
       return (
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('import.targetAccount')}</span>
+            <span className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">{t('import.targetAccount')}</span>
             <select
               value={targetAccountId}
               onChange={(e) => setTargetAccountId(e.target.value)}
-              className="text-sm font-medium bg-transparent border-none p-0 pr-6 focus:ring-0 cursor-pointer text-gray-900"
+              className="text-sm font-bold bg-transparent border-none p-0 pr-6 focus:ring-0 cursor-pointer text-[var(--color-text-primary)]"
             >
               <option value="">{t('import.selectAccount')}</option>
               {accounts.map(acc => (
@@ -213,8 +213,8 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
               ))}
             </select>
           </div>
-          <div className="h-8 w-px bg-gray-300 mx-2" />
-          <span className="bg-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded-full text-xs font-bold shadow-sm">
+          <div className="h-8 w-px bg-[var(--color-border)] mx-2" />
+          <span className="bg-[var(--color-primary)]/20 text-[var(--color-primary)] px-2.5 py-0.5 border-2 border-[var(--color-primary)] text-xs font-bold uppercase tracking-wider">
             {transactions.length} {t('import.items')}
           </span>
         </div>
@@ -230,7 +230,7 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
           <select 
             value={batchCategory}
             onChange={(e) => handleBatchCategoryChange(e.target.value)}
-            className="text-sm py-1.5 pl-3 pr-8 rounded-lg border-gray-300 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 min-w-[160px]"
+            className="text-sm py-1.5 pl-3 pr-8 border-2 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)] focus:ring-0 focus:border-[var(--color-primary)] min-w-[160px] font-bold"
           >
             <option value="">{t('transactions.setCategory')}</option>
             {categories.filter(c => c.type === selectedType).map(c => (
@@ -239,15 +239,15 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
           </select>
           <button 
             onClick={handleDeleteBatch}
-            className="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+            className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-expense)] hover:bg-[var(--color-expense)]/20 border-2 border-transparent hover:border-[var(--color-border)] transition-colors"
             title={t('common.delete')}
           >
             <Trash2 size={18} />
           </button>
-          <div className="h-6 w-px bg-gray-300 mx-2" />
+          <div className="h-6 w-px bg-[var(--color-border)] mx-2" />
           <button 
             onClick={() => setSelectedIndices(new Set())}
-            className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            className="text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] uppercase tracking-wider"
           >
             {t('common.cancel')}
           </button>
@@ -259,9 +259,9 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
   };
 
   const getHeaderClassName = () => {
-    if (selectedIndices.size > 0) return 'bg-indigo-50/90 backdrop-blur-md';
-    if (status === 'ready' && showReview) return 'bg-emerald-50/80 backdrop-blur-md';
-    return 'bg-gray-50/80 backdrop-blur-md';
+    if (selectedIndices.size > 0) return 'bg-[var(--color-surface)] border-b-2 border-[var(--color-border)]';
+    if (status === 'ready' && showReview) return 'bg-[var(--color-surface)] border-b-2 border-[var(--color-border)]';
+    return 'bg-[var(--color-surface)] border-b-2 border-[var(--color-border)]';
   };
 
   const getFooterNode = () => {
@@ -270,14 +270,14 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
         <>
           <button 
             onClick={() => setShowReview(false)}
-            className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] font-bold hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] uppercase tracking-wider transition-colors"
           >
             ← {t('common.back')}
           </button>
           <button 
             onClick={onImport}
             disabled={!targetAccountId}
-            className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all active:scale-[0.98] flex items-center gap-2"
+            className="px-5 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--color-surface)] text-sm font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] flex items-center gap-2 uppercase tracking-wider"
           >
             {t('import.submit')} <Send size={16} />
           </button>
@@ -289,14 +289,14 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
         <>
           <button 
             onClick={handleStartOverClick}
-            className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] font-bold hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] uppercase tracking-wider transition-colors"
           >
             {t('import.startOver')}
           </button>
           <button 
             onClick={handleShowReview}
             disabled={!targetAccountId}
-            className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-lg shadow-md shadow-indigo-200 transition-all active:scale-[0.98] flex items-center gap-2"
+            className="px-6 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--color-surface)] text-sm font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] flex items-center gap-2 uppercase tracking-wider"
           >
             {t('import.review')} <ArrowRight size={16} />
           </button>
@@ -330,23 +330,23 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
             {file && (
               <div className="animate-fade-in space-y-4">
                 {file.type === 'application/pdf' && (
-                  <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 flex gap-3">
-                     <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                     <div className="space-y-2">
-                        <p className="text-sm text-amber-800 font-medium">{t('import.passwordProtected')}</p>
+                  <div className="bg-[var(--color-secondary)]/10 border-2 border-[var(--color-secondary)] p-4 flex gap-3">
+                     <AlertCircle className="w-5 h-5 text-[var(--color-secondary)] flex-shrink-0" />
+                     <div className="space-y-2 w-full">
+                        <p className="text-sm font-bold text-[var(--color-text-primary)] tracking-wide">{t('import.passwordProtected')}</p>
                         <input 
                           type="password" 
                           placeholder={t('import.enterPassword')} 
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-amber-200 rounded-lg text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                          className="w-full px-3 py-2 bg-[var(--color-surface)] border-2 border-[var(--color-border)] text-sm focus:ring-0 focus:border-[var(--color-primary)] placeholder-[var(--color-text-muted)] text-[var(--color-text-primary)] font-bold"
                         />
                      </div>
                   </div>
                 )}
                 <button
                   onClick={handleParse}
-                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dim)] text-[var(--color-surface)] font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] flex items-center justify-center gap-2 uppercase tracking-wider"
                 >
                   <FileText size={18} />
                   {t('import.parseStatement')}
@@ -358,7 +358,7 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
                <div className="flex justify-center">
                  <button 
                    onClick={loadLastImport}
-                   className="text-sm text-indigo-600 font-medium hover:bg-indigo-50 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                   className="text-sm text-[var(--color-text-primary)] font-bold border-2 border-[var(--color-border)] hover:border-[var(--color-primary)] px-4 py-2 hover:bg-[var(--color-surface-2)] transition-colors flex items-center gap-2 uppercase tracking-wider"
                  >
                    <RotateCcw size={14} />
                    {t('import.restoreLastSession')}
@@ -371,10 +371,10 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
         {/* ── Reading ── */}
         {status === 'reading' && (
            <div className="flex flex-col items-center justify-center py-12 space-y-4 text-center">
-             <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+             <Loader2 className="w-12 h-12 text-[var(--color-primary)] animate-spin" />
              <div>
-                <h3 className="text-lg font-bold text-gray-900">{t('import.analyzingStatement')}</h3>
-                <p className="text-gray-500">{t('import.extractingWithAI')}</p>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)] uppercase tracking-wider font-[var(--font-brand)]">{t('import.analyzingStatement')}</h3>
+                <p className="text-[var(--color-text-muted)] font-bold">{t('import.extractingWithAI')}</p>
              </div>
            </div>
         )}
@@ -382,10 +382,10 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
         {/* ── Parsing ── */}
         {status === 'parsing' && (
            <div className="flex flex-col items-center justify-center py-12 space-y-4 text-center">
-             <Loader2 className="w-12 h-12 text-purple-600 animate-spin" />
+             <Loader2 className="w-12 h-12 text-[var(--color-primary)] animate-spin" />
              <div>
-                <h3 className="text-lg font-bold text-gray-900">{t('import.structuringData')}</h3>
-                <p className="text-gray-500">{t('import.almostThere')}</p>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)] uppercase tracking-wider font-[var(--font-brand)]">{t('import.structuringData')}</h3>
+                <p className="text-[var(--color-text-muted)] font-bold">{t('import.almostThere')}</p>
              </div>
            </div>
         )}
@@ -408,21 +408,21 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
           <div className="animate-fade-in space-y-6">
             {/* Summary Panel */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-teal-50/60 rounded-xl p-3 border border-teal-100">
-                <div className="text-xs font-semibold text-teal-600 uppercase tracking-wider mb-1">{t('transactions.income')}</div>
-                <div className="text-lg font-bold text-teal-700">+{formatCurrency(reviewIncomeTotal)}</div>
-                <div className="text-xs text-teal-500 mt-0.5">{reviewIncomes.length} {t('import.items')}</div>
+              <div className="bg-[var(--color-surface)] border-2 border-[var(--color-income)] p-3">
+                <div className="text-xs font-bold text-[var(--color-income)] uppercase tracking-wider mb-1">{t('transactions.income')}</div>
+                <div className="text-lg font-bold text-[var(--color-income)]">+{formatCurrency(reviewIncomeTotal)}</div>
+                <div className="text-xs text-[var(--color-income)] mt-0.5">{reviewIncomes.length} {t('import.items')}</div>
               </div>
-              <div className="bg-rose-50/60 rounded-xl p-3 border border-rose-100">
-                <div className="text-xs font-semibold text-rose-600 uppercase tracking-wider mb-1">{t('transactions.expense')}</div>
-                <div className="text-lg font-bold text-rose-700">-{formatCurrency(reviewExpenseTotal)}</div>
-                <div className="text-xs text-rose-500 mt-0.5">{reviewExpenses.length} {t('import.items')}</div>
+              <div className="bg-[var(--color-surface)] border-2 border-[var(--color-expense)] p-3">
+                <div className="text-xs font-bold text-[var(--color-expense)] uppercase tracking-wider mb-1">{t('transactions.expense')}</div>
+                <div className="text-lg font-bold text-[var(--color-expense)]">-{formatCurrency(reviewExpenseTotal)}</div>
+                <div className="text-xs text-[var(--color-expense)] mt-0.5">{reviewExpenses.length} {t('import.items')}</div>
               </div>
             </div>
 
             {/* Per-Category Breakdown */}
-            <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
-              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t('import.categoryBreakdown')}</div>
+            <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] p-3">
+              <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">{t('import.categoryBreakdown')}</div>
               <div className="space-y-1.5">
                 {(() => {
                   const catMap = new Map<string, { icon: string; name: string; income: number; expense: number }>();
@@ -435,14 +435,14 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
                     catMap.set(key, existing);
                   });
                   return Array.from(catMap.entries()).map(([key, val]) => (
-                    <div key={key} className="flex items-center justify-between text-xs">
-                      <span className="flex items-center gap-1.5 text-gray-700">
+                    <div key={key} className="flex items-center justify-between text-xs font-bold">
+                      <span className="flex items-center gap-1.5 text-[var(--color-text-primary)]">
                         <span>{val.icon}</span>
-                        <span className="font-medium">{val.name}</span>
+                        <span className="uppercase tracking-wide">{val.name}</span>
                       </span>
                       <div className="flex items-center gap-3">
-                        {val.income > 0 && <span className="text-teal-600 font-semibold">+{formatCurrency(val.income)}</span>}
-                        {val.expense > 0 && <span className="text-rose-600 font-semibold">-{formatCurrency(val.expense)}</span>}
+                        {val.income > 0 && <span className="text-[var(--color-income)] tracking-widest">+{formatCurrency(val.income)}</span>}
+                        {val.expense > 0 && <span className="text-[var(--color-expense)] tracking-widest">-{formatCurrency(val.expense)}</span>}
                       </div>
                     </div>
                   ));
@@ -454,17 +454,17 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
             {reviewIncomes.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 rounded-full bg-teal-500" />
-                  <h3 className="font-bold text-gray-900 text-sm">{t('transactions.income')} ({reviewIncomes.length})</h3>
+                  <div className="w-2 h-2 bg-[var(--color-income)]" />
+                  <h3 className="font-bold text-[var(--color-text-primary)] text-sm tracking-widest uppercase">{t('transactions.income')} ({reviewIncomes.length})</h3>
                 </div>
-                <div className="bg-white rounded-xl border border-gray-100 overflow-x-auto">
-                  <table className="w-full text-xs">
+                <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] overflow-x-auto shadow-[4px_4px_0px_0px_var(--color-primary)]">
+                  <table className="w-full text-xs font-bold">
                     <thead>
-                      <tr className="bg-gray-50 border-b border-gray-100">
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500 whitespace-nowrap">{t('txForm.date')}</th>
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500">{t('txForm.category')}</th>
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500">{t('txForm.description')}</th>
-                        <th className="text-right px-2 py-1.5 font-semibold text-gray-500">{t('txForm.amount')}</th>
+                      <tr className="bg-[var(--color-surface-2)] border-b-2 border-[var(--color-border)]">
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] whitespace-nowrap uppercase tracking-wider">{t('txForm.date')}</th>
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.category')}</th>
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.description')}</th>
+                        <th className="text-right px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.amount')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -477,24 +477,24 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
                         const time = tx.time ? ` ${tx.time.slice(0, 5)}` : '';
                         const dateStr = `${dd}/${mm}/${yyyy}${time}`;
                         return (
-                          <tr key={i} className="border-b border-gray-50 last:border-0">
-                            <td className="px-2 py-1.5 text-gray-500 whitespace-nowrap">{dateStr}</td>
+                          <tr key={i} className="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-2)] transition-colors">
+                            <td className="px-2 py-1.5 text-[var(--color-text-muted)] whitespace-nowrap">{dateStr}</td>
                             <td className="px-2 py-1.5 whitespace-nowrap">
-                              <span className="inline-flex items-center gap-1 text-gray-700">
+                              <span className="inline-flex items-center gap-1 text-[var(--color-text-primary)]">
                                 {cat?.icon && <span>{cat.icon}</span>}
-                                <span className="hidden md:inline">{cat?.name || '-'}</span>
+                                <span className="hidden md:inline uppercase tracking-wider">{cat?.name || '-'}</span>
                               </span>
                             </td>
-                            <td className="px-2 py-1.5 text-gray-900 truncate max-w-[100px] md:max-w-[200px]">{tx.description}</td>
-                            <td className="px-2 py-1.5 text-right font-bold text-teal-600 whitespace-nowrap">+{formatCurrency(tx.amount)}</td>
+                            <td className="px-2 py-1.5 text-[var(--color-text-primary)] truncate max-w-[100px] md:max-w-[200px]">{tx.description}</td>
+                            <td className="px-2 py-1.5 text-right text-[var(--color-income)] whitespace-nowrap tracking-wider">+{formatCurrency(tx.amount)}</td>
                           </tr>
                         );
                       })}
                     </tbody>
                     <tfoot>
-                      <tr className="bg-teal-50/50 border-t border-teal-100">
-                        <td colSpan={3} className="px-2 py-1.5 font-bold text-gray-700 text-xs uppercase">{t('import.incomeTotal')}</td>
-                        <td className="px-2 py-1.5 text-right font-bold text-teal-600">+{formatCurrency(reviewIncomeTotal)}</td>
+                      <tr className="bg-[var(--color-primary)]/10 border-t-2 border-[var(--color-primary)]">
+                        <td colSpan={3} className="px-2 py-1.5 text-[var(--color-primary)] text-xs uppercase tracking-widest">{t('import.incomeTotal')}</td>
+                        <td className="px-2 py-1.5 text-right text-[var(--color-primary)] tracking-wider">+{formatCurrency(reviewIncomeTotal)}</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -506,17 +506,17 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
             {reviewExpenses.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 rounded-full bg-rose-500" />
-                  <h3 className="font-bold text-gray-900 text-sm">{t('transactions.expense')} ({reviewExpenses.length})</h3>
+                  <div className="w-2 h-2 bg-[var(--color-expense)]" />
+                  <h3 className="font-bold text-[var(--color-text-primary)] text-sm tracking-widest uppercase">{t('transactions.expense')} ({reviewExpenses.length})</h3>
                 </div>
-                <div className="bg-white rounded-xl border border-gray-100 overflow-x-auto">
-                  <table className="w-full text-xs">
+                <div className="bg-[var(--color-surface)] border-2 border-[var(--color-border)] overflow-x-auto shadow-[4px_4px_0px_0px_var(--color-primary)]">
+                  <table className="w-full text-xs font-bold">
                     <thead>
-                      <tr className="bg-gray-50 border-b border-gray-100">
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500 whitespace-nowrap">{t('txForm.date')}</th>
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500">{t('txForm.category')}</th>
-                        <th className="text-left px-2 py-1.5 font-semibold text-gray-500">{t('txForm.description')}</th>
-                        <th className="text-right px-2 py-1.5 font-semibold text-gray-500">{t('txForm.amount')}</th>
+                      <tr className="bg-[var(--color-surface-2)] border-b-2 border-[var(--color-border)]">
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] whitespace-nowrap uppercase tracking-wider">{t('txForm.date')}</th>
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.category')}</th>
+                        <th className="text-left px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.description')}</th>
+                        <th className="text-right px-2 py-1.5 text-[var(--color-text-secondary)] uppercase tracking-wider">{t('txForm.amount')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -529,24 +529,24 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
                         const time = tx.time ? ` ${tx.time.slice(0, 5)}` : '';
                         const dateStr = `${dd}/${mm}/${yyyy}${time}`;
                         return (
-                          <tr key={i} className="border-b border-gray-50 last:border-0">
-                            <td className="px-2 py-1.5 text-gray-500 whitespace-nowrap">{dateStr}</td>
+                          <tr key={i} className="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-2)] transition-colors">
+                            <td className="px-2 py-1.5 text-[var(--color-text-muted)] whitespace-nowrap">{dateStr}</td>
                             <td className="px-2 py-1.5 whitespace-nowrap">
-                              <span className="inline-flex items-center gap-1 text-gray-700">
+                              <span className="inline-flex items-center gap-1 text-[var(--color-text-primary)]">
                                 {cat?.icon && <span>{cat.icon}</span>}
-                                <span className="hidden md:inline">{cat?.name || '-'}</span>
+                                <span className="hidden md:inline uppercase tracking-wider">{cat?.name || '-'}</span>
                               </span>
                             </td>
-                            <td className="px-2 py-1.5 text-gray-900 truncate max-w-[100px] md:max-w-[200px]">{tx.description}</td>
-                            <td className="px-2 py-1.5 text-right font-bold text-rose-600 whitespace-nowrap">-{formatCurrency(tx.amount)}</td>
+                            <td className="px-2 py-1.5 text-[var(--color-text-primary)] truncate max-w-[100px] md:max-w-[200px]">{tx.description}</td>
+                            <td className="px-2 py-1.5 text-right text-[var(--color-expense)] whitespace-nowrap tracking-wider">-{formatCurrency(tx.amount)}</td>
                           </tr>
                         );
                       })}
                     </tbody>
                     <tfoot>
-                      <tr className="bg-rose-50/50 border-t border-rose-100">
-                        <td colSpan={3} className="px-2 py-1.5 font-bold text-gray-700 text-xs uppercase">{t('import.expenseTotal')}</td>
-                        <td className="px-2 py-1.5 text-right font-bold text-rose-600">-{formatCurrency(reviewExpenseTotal)}</td>
+                      <tr className="bg-[var(--color-expense)]/10 border-t-2 border-[var(--color-expense)]">
+                        <td colSpan={3} className="px-2 py-1.5 text-[var(--color-expense)] text-xs uppercase tracking-widest">{t('import.expenseTotal')}</td>
+                        <td className="px-2 py-1.5 text-right text-[var(--color-expense)] tracking-wider">-{formatCurrency(reviewExpenseTotal)}</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -559,14 +559,14 @@ export default function ImportDialog({ open, onClose, accounts, categories }: Im
         {/* ── Error ── */}
         {status === 'error' && (
            <div className="flex flex-col items-center justify-center py-12 space-y-4 text-center animate-fade-in">
-             <div className="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-2">
+             <div className="w-16 h-16 bg-[var(--color-expense)]/20 text-[var(--color-expense)] border-2 border-[var(--color-expense)] flex items-center justify-center mb-2 mx-auto">
                <AlertCircle size={32} />
              </div>
              <div>
-                <h3 className="text-lg font-bold text-gray-900">{t('import.errorTitle')}</h3>
-                <p className="text-gray-500 max-w-sm mx-auto">{t('import.errorDesc')}</p>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)] uppercase tracking-wider font-[var(--font-brand)]">{t('import.errorTitle')}</h3>
+                <p className="text-[var(--color-text-muted)] font-bold max-w-sm mx-auto">{t('import.errorDesc')}</p>
              </div>
-             <button onClick={reset} className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-colors">
+             <button onClick={reset} className="px-6 py-2 bg-[var(--color-surface-2)] hover:bg-[var(--color-surface)] text-[var(--color-text-primary)] font-bold border-2 border-[var(--color-border)] shadow-[4px_4px_0px_0px_var(--color-border)] transition-all active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0px_0px_var(--color-border)] uppercase tracking-wider">
                {t('import.tryAgain')}
              </button>
            </div>

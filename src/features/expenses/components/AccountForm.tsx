@@ -64,14 +64,14 @@ export default function AccountForm({
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm animate-in zoom-in-95 duration-200 flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900">
+      <div className="relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-primary)] w-full max-w-sm flex flex-col pt-2 animate-fade-in">
+        <div className="flex items-center justify-between p-6 border-b-2 border-[var(--color-border)]">
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
             {isEdit ? t('accountForm.editAccount') : t('accountForm.addAccount')}
           </h2>
           <button 
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+            className="p-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
           >
             <X size={20} />
           </button>
@@ -81,28 +81,28 @@ export default function AccountForm({
            
            {/* Account Name */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.accountName')}</label>
+             <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('accountForm.accountName')}</label>
              <input 
                type="text"
                required
                value={name}
                onChange={(e) => setName(e.target.value)}
-               className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400"
+               className="brutal-input w-full px-4 py-2.5"
                placeholder={t('accountForm.accountNamePlaceholder')} 
              />
            </div>
 
            {/* Account Type */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.accountType')}</label>
+             <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('accountForm.accountType')}</label>
              <div className="flex gap-2">
                 <button
                     type="button"
                     onClick={() => setType(AccountType.BANK)}
-                    className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold border transition-all ${
+                    className={`flex-1 py-2 flex items-center justify-center gap-2 text-sm font-bold tracking-wider border-2 transition-all ${
                         type === AccountType.BANK
-                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-2 ring-indigo-500/20'
-                        : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                        ? 'border-[var(--color-income)] bg-[var(--color-income)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--color-border)]'
+                        : 'border-[var(--color-border)] hover:bg-[var(--color-surface-2)] text-[var(--color-text-secondary)]'
                     }`}
                 >
                     <Landmark size={18} /> {t('accountForm.bankType')}
@@ -110,10 +110,10 @@ export default function AccountForm({
                 <button
                     type="button"
                     onClick={() => setType(AccountType.CREDIT_CARD)}
-                    className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold border transition-all ${
+                    className={`flex-1 py-2 flex items-center justify-center gap-2 text-sm font-bold tracking-wider border-2 transition-all ${
                         type === AccountType.CREDIT_CARD
-                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700 ring-2 ring-indigo-500/20'
-                        : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                        ? 'border-[var(--color-expense)] bg-[var(--color-expense)] text-[var(--color-background)] shadow-[2px_2px_0px_0px_var(--color-border)]'
+                        : 'border-[var(--color-border)] hover:bg-[var(--color-surface-2)] text-[var(--color-text-secondary)]'
                     }`}
                 >
                     <CreditCard size={18} /> {t('accountForm.creditType')}
@@ -123,15 +123,15 @@ export default function AccountForm({
 
            {/* Balance */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.currentBalance')}</label>
+             <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('accountForm.currentBalance')}</label>
              <div className="relative">
-               <DollarSign size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+               <DollarSign size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
                <input 
                  type="number"
                  step="0.01"
                  value={balance}
                  onChange={(e) => setBalance(e.target.value)}
-                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 font-medium" 
+                 className="brutal-input w-full pl-10 pr-4 py-2.5 font-medium" 
                  placeholder="0.00"
                />
              </div>
@@ -139,14 +139,14 @@ export default function AccountForm({
 
            {/* Bank Name */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.bankName')}</label>
+             <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('accountForm.bankName')}</label>
              <div className="relative">
-               <Building2 size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+               <Building2 size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
                <input 
                  type="text"
                  value={bankName}
                  onChange={(e) => setBankName(e.target.value)}
-                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400" 
+                 className="brutal-input w-full pl-10 pr-4 py-2.5" 
                  placeholder={t('accountForm.bankNamePlaceholder')}
                />
              </div>
@@ -154,30 +154,30 @@ export default function AccountForm({
 
            {/* Last 4 Digits */}
            <div>
-             <label className="block text-sm font-medium text-gray-700 mb-1">{t('accountForm.last4')}</label>
+             <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('accountForm.last4')}</label>
              <input 
                type="text"
                maxLength={4}
                value={last4}
                onChange={(e) => setLast4(e.target.value.replace(/\D/g, '').slice(0, 4))}
-               className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900 placeholder-gray-400 tracking-widest" 
+               className="brutal-input w-full px-4 py-2.5 tracking-widest" 
                placeholder="1234"
              />
            </div>
 
            {/* Actions */}
-           <div className="pt-4 flex justify-end gap-3">
+           <div className="pt-4 flex justify-end gap-3 mt-2">
              <button 
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                className="px-5 py-2.5 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors uppercase tracking-wider"
                 disabled={loading}
              >
                 {t('common.cancel')}
              </button>
              <button 
                 type="submit"
-                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="brutal-btn px-6 py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading || !name.trim()}
              >
                 {loading ? t('common.saving') : (isEdit ? t('accountForm.update') : t('accountForm.create'))}

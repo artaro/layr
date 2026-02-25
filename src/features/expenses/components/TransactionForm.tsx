@@ -89,15 +89,15 @@ export default function TransactionForm({
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+      <div className="relative bg-[var(--color-surface)] border-2 border-[var(--color-border)] shadow-[6px_6px_0px_0px_var(--color-primary)] w-full max-w-md flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-5 border-b-2 border-[var(--color-border)]">
+          <h2 className="text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-brand)] uppercase tracking-wider">
             {isEdit ? t('txForm.editTransaction') : t('txForm.newTransaction')}
           </h2>
           <button 
             onClick={onClose}
-            className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
           >
             <X size={20} />
           </button>
@@ -106,14 +106,14 @@ export default function TransactionForm({
         {/* content */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
           {/* Type Toggle */}
-          <div className="flex bg-gray-100 p-1 rounded-xl">
+          <div className="flex border-2 border-[var(--color-border)]">
             <button
                 type="button"
                 onClick={() => setFormData({...formData, type: TransactionType.EXPENSE, categoryId: ''})}
-                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-wider transition-all ${
                     formData.type === TransactionType.EXPENSE
-                    ? 'bg-white text-red-600 shadow-sm' 
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'bg-[var(--color-expense)] text-[var(--color-text-inverse)]' 
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                 }`}
             >
                 {t('transactions.expense')}
@@ -121,10 +121,10 @@ export default function TransactionForm({
             <button
                 type="button"
                 onClick={() => setFormData({...formData, type: TransactionType.INCOME, categoryId: ''})}
-                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-wider transition-all border-l-2 border-[var(--color-border)] ${
                     formData.type === TransactionType.INCOME
-                    ? 'bg-white text-teal-600 shadow-sm' 
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'bg-[var(--color-income)] text-[var(--color-text-inverse)]' 
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)]'
                 }`}
             >
                 {t('transactions.income')}
@@ -133,9 +133,9 @@ export default function TransactionForm({
 
           {/* Amount */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.amount')}</label>
+            <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('txForm.amount')}</label>
             <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] font-bold">
                     <DollarSign size={18} />
                 </div>
                 <input
@@ -145,7 +145,7 @@ export default function TransactionForm({
                     placeholder="0.00"
                     value={formData.amount}
                     onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-lg font-bold text-gray-900 placeholder-gray-300"
+                    className="brutal-input w-full pl-10 pr-4 py-3 text-lg"
                     required
                     autoFocus={!isEdit}
                 />
@@ -154,9 +154,9 @@ export default function TransactionForm({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.description')}</label>
+            <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('txForm.description')}</label>
             <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
                     <FileText size={18} />
                 </div>
                 <input
@@ -164,7 +164,7 @@ export default function TransactionForm({
                     placeholder={t('txForm.descriptionPlaceholder')}
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-gray-900"
+                    className="brutal-input w-full pl-10 pr-4 py-3"
                     required
                 />
             </div>
@@ -173,12 +173,12 @@ export default function TransactionForm({
           <div className="grid grid-cols-2 gap-4">
               {/* Category */}
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.category')}</label>
+                <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('txForm.category')}</label>
                 <div className="relative">
                     <select
                         value={formData.categoryId}
                         onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
-                        className="w-full pl-3 pr-8 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none appearance-none bg-white font-medium text-sm truncate"
+                        className="brutal-input w-full pl-3 pr-8 py-2.5 appearance-none font-medium text-sm truncate cursor-pointer bg-[var(--color-surface)]"
                         required
                     >
                         <option value="" disabled>{t('txForm.selectCategory')}</option>
@@ -188,22 +188,22 @@ export default function TransactionForm({
                             </option>
                         ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" size={16} />
                 </div>
               </div>
 
               {/* Date */}
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.date')}</label>
+                <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('txForm.date')}</label>
                 <div className="relative">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
                         <CalendarIcon size={16} />
                     </div>
                     <input
                         type="date"
                         value={formData.transactionDate}
                         onChange={(e) => setFormData({...formData, transactionDate: e.target.value})}
-                        className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none font-medium text-sm"
+                        className="brutal-input w-full pl-9 pr-3 py-2.5 font-medium text-sm"
                         required
                     />
                 </div>
@@ -212,12 +212,12 @@ export default function TransactionForm({
 
           {/* Account */}
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 ml-1">{t('txForm.account')}</label>
+            <label className="block text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 ml-1">{t('txForm.account')}</label>
             <div className="relative">
                 <select
                     value={formData.accountId}
                     onChange={(e) => setFormData({...formData, accountId: e.target.value})}
-                    className="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none appearance-none bg-white font-medium"
+                    className="brutal-input w-full pl-3 pr-8 py-3 appearance-none font-medium text-sm bg-[var(--color-surface)] cursor-pointer"
                     required
                 >
                     <option value="" disabled>{t('txForm.selectAccount')}</option>
@@ -227,16 +227,16 @@ export default function TransactionForm({
                         </option>
                     ))}
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" size={20} />
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+          <div className="flex justify-end gap-3 pt-4 border-t-2 border-[var(--color-border)] mt-2">
             <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                className="px-5 py-2.5 text-sm font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-2)] border-2 border-[var(--color-border)] transition-colors uppercase tracking-wider"
                 disabled={loading}
             >
                 {t('common.cancel')}
@@ -244,7 +244,7 @@ export default function TransactionForm({
             <button
                 type="submit"
                 disabled={loading || !formData.amount || !formData.description || !formData.accountId || !formData.categoryId}
-                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="brutal-btn px-6 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {loading ? t('common.saving') : t('txForm.saveTransaction')}
             </button>

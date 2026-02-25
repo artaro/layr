@@ -32,15 +32,15 @@ export default function DashboardLayout({
 
   if (!mounted || loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-sm text-gray-500 font-medium">กำลังโหลด...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-[var(--color-background)]">
+        <Loader2 className="w-10 h-10 text-[var(--color-primary)] animate-spin" />
+        <p className="text-sm text-[var(--color-text-secondary)] font-medium">กำลังโหลด...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-[var(--color-background)]">
       <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       <main 
