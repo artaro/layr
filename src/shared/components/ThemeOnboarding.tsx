@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useThemeStore, THEMES, ThemeId } from "@/shared/stores/useThemeStore";
 
 export default function ThemeOnboarding() {
-  const { setTheme, _hydrated } = useThemeStore();
+  const { setTheme } = useThemeStore();
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState<ThemeId | null>(null);
 

@@ -48,7 +48,6 @@ export async function POST(request: NextRequest) {
     // Accept FormData (sent by useStatementImport hook)
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
-    const password = formData.get('password') as string | null;
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Tags, Settings, ChevronRight, Upload } from "lucide-react";
+import { Tags, Settings, ChevronRight } from "lucide-react";
 import { useTranslation } from "@/shared/lib/i18n";
 
 interface PortalCard {
