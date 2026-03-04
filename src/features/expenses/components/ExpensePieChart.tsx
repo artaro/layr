@@ -11,8 +11,9 @@ import {
 } from "recharts";
 import { Transaction } from "@/features/expenses/types";
 import { TransactionType } from "@/features/expenses/types";
-import { formatCurrency } from "@/shared/lib/formatters";
+import { formatCurrency, toLocalDateString } from "@/shared/lib/formatters";
 import { useTranslation } from "@/shared/lib/i18n";
+import { format } from "date-fns";
 
 interface ExpensePieChartProps {
   transactions: Transaction[];
@@ -24,12 +25,12 @@ export default function ExpensePieChart({
   const { t } = useTranslation();
   const filteredData = useMemo(() => {
     const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfMonthStr = format(new Date(now.getFullYear(), now.getMonth(), 1), 'yyyy-MM-dd');
 
     const filtered = transactions.filter(
       (t) =>
         t.type === TransactionType.EXPENSE &&
-        new Date(t.transactionDate) >= startOfMonth,
+        toLocalDateString(t.transactionDate) >= startOfMonthStr,
     );
 
     const categoryMap = new Map<string, number>();

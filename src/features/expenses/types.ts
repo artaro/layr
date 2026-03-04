@@ -110,14 +110,14 @@ export interface Transaction {
 
 export interface CreateTransactionInput {
     accountId: string;
-    categoryId?: string;
+    categoryId?: string | null;
     type: TransactionType;
     amount: number;
     description?: string;
     transactionDate: string;
     source?: StatementSource;
     referenceId?: string;
-    destinationAccountId?: string;
+    destinationAccountId?: string | null;
 }
 
 export interface UpdateTransactionInput {
@@ -198,8 +198,8 @@ import { z } from 'zod';
 
 export const transactionSchema = z.object({
     accountId: z.string().min(1, 'Account is required'),
-    categoryId: z.string().optional(),
-    destinationAccountId: z.string().optional(),
+    categoryId: z.string().nullable().optional(),
+    destinationAccountId: z.string().nullable().optional(),
     type: z.nativeEnum(TransactionType),
     amount: z
         .number({ error: 'Amount must be a valid number' })

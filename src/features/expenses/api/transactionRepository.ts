@@ -1,4 +1,5 @@
 import { supabase } from '@/config/supabase';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import {
   Transaction,
   CreateTransactionInput,
@@ -12,7 +13,13 @@ function toSnakeCase(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const key in obj) {
     const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-    result[snakeKey] = obj[key];
+    const value = obj[key];
+    // Convert empty strings to null for nullable UUID fields
+    if (value === '' && (snakeKey === 'category_id' || snakeKey === 'destination_account_id')) {
+      result[snakeKey] = null;
+    } else {
+      result[snakeKey] = value;
+    }
   }
   return result;
 }
@@ -61,9 +68,10 @@ export const transactionRepository = {
     if (filter?.year && !filter?.startDate && !filter?.endDate) {
       if (filter?.month) {
         // Specific month in a year
-        const startOfMonth = new Date(filter.year, filter.month - 1, 1).toISOString().split('T')[0];
-        const endOfMonth = new Date(filter.year, filter.month, 0).toISOString().split('T')[0];
-        query = query.gte('transaction_date', startOfMonth).lte('transaction_date', endOfMonth);
+        const targetDate = new Date(filter.year, filter.month - 1, 1);
+        const startOfMonthStr = format(startOfMonth(targetDate), 'yyyy-MM-dd');
+        const endOfMonthStr = format(endOfMonth(targetDate), 'yyyy-MM-dd');
+        query = query.gte('transaction_date', startOfMonthStr).lte('transaction_date', endOfMonthStr);
       } else {
         // Entire year
         const startOfYear = `${filter.year}-01-01`;

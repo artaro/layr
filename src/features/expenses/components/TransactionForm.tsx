@@ -15,6 +15,8 @@ import {
   CreateTransactionInput,
 } from "@/features/expenses/types";
 import { useTranslation } from "@/shared/lib/i18n";
+import { format } from "date-fns";
+import { toLocalDateString } from "@/shared/lib/formatters";
 
 interface TransactionFormProps {
   open: boolean;
@@ -45,7 +47,7 @@ export default function TransactionForm({
     accountId: "",
     categoryId: "",
     destinationAccountId: "",
-    transactionDate: new Date().toISOString().split("T")[0],
+    transactionDate: format(new Date(), "yyyy-MM-dd"),
   });
 
   useEffect(() => {
@@ -59,9 +61,9 @@ export default function TransactionForm({
           accountId: initialData.accountId || "",
           categoryId: initialData.categoryId || "",
           destinationAccountId: initialData.destinationAccountId || "",
-          transactionDate:
-            initialData.transactionDate ||
-            new Date().toISOString().split("T")[0],
+          transactionDate: initialData.transactionDate
+            ? toLocalDateString(initialData.transactionDate)
+            : format(new Date(), "yyyy-MM-dd"),
         });
       } else {
         setFormData({
@@ -71,7 +73,7 @@ export default function TransactionForm({
           accountId: accounts.length > 0 ? accounts[0].id : "",
           categoryId: "",
           destinationAccountId: "",
-          transactionDate: new Date().toISOString().split("T")[0],
+          transactionDate: format(new Date(), "yyyy-MM-dd"),
         });
       }
     }
@@ -84,6 +86,12 @@ export default function TransactionForm({
     onSubmit({
       ...formData,
       amount: Number(formData.amount),
+      destinationAccountId:
+        formData.type === TransactionType.TRANSFER
+          ? formData.destinationAccountId
+          : null,
+      categoryId:
+        formData.type === TransactionType.TRANSFER ? null : formData.categoryId,
     });
   };
 
@@ -214,7 +222,6 @@ export default function TransactionForm({
                   setFormData({ ...formData, description: e.target.value })
                 }
                 className="brutal-input w-full pl-10 pr-4 py-3"
-                required
               />
             </div>
           </div>
@@ -370,7 +377,6 @@ export default function TransactionForm({
               disabled={
                 loading ||
                 !formData.amount ||
-                !formData.description ||
                 !formData.accountId ||
                 (formData.type !== TransactionType.TRANSFER &&
                   !formData.categoryId) ||

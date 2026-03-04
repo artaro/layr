@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { Transaction } from "@/features/expenses/types";
 import { TransactionType } from "@/features/expenses/types";
-import { formatCurrency } from "@/shared/lib/formatters";
+import { formatCurrency, toLocalDateString } from "@/shared/lib/formatters";
 import { useTranslation } from "@/shared/lib/i18n";
 
 interface OverviewChartProps {
@@ -44,8 +44,8 @@ export default function OverviewChart({ transactions }: OverviewChartProps) {
     }
 
     transactions.forEach((t) => {
-      const tDate = new Date(t.transactionDate);
-      const key = `${tDate.getFullYear()}-${String(tDate.getMonth() + 1).padStart(2, "0")}`;
+      const localDate = toLocalDateString(t.transactionDate);
+      const key = localDate.substring(0, 7); // "YYYY-MM"
 
       if (dataMap.has(key)) {
         const entry = dataMap.get(key)!;

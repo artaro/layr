@@ -56,12 +56,13 @@ export default function ExpenseDashboardPage() {
     try {
       await createMutation.mutateAsync({
         accountId: data.accountId,
-        categoryId: data.categoryId,
+        categoryId: data.categoryId || null,
         type: data.type,
         amount: data.amount,
         description: data.description,
         transactionDate: data.transactionDate,
         source: StatementSource.MANUAL,
+        destinationAccountId: data.destinationAccountId || null,
       });
       setFormOpen(false);
     } catch (error) {

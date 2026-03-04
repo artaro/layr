@@ -28,6 +28,32 @@ export function formatNumber(
   }).format(value);
 }
 
+import { parseISO, format as fnsFormat } from 'date-fns';
+
+/**
+ * Parse a date string into a local Date, handling timezone correctly.
+ * - Strings with timezone info (e.g. "2026-02-25T17:00:00+00:00") are converted to local time.
+ * - Date-only strings (e.g. "2026-02-26") are treated as local dates (midnight local).
+ */
+function toLocalDate(dateStr: string): Date {
+  // Date-only string (no "T"): treat as local midnight, NOT UTC
+  if (!dateStr.includes('T')) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+  // Full datetime: parseISO handles timezone offsets correctly
+  return parseISO(dateStr);
+}
+
+/**
+ * Extract the local YYYY-MM-DD string from a date/datetime string.
+ * Unlike `.split("T")[0]`, this correctly handles timezone conversion.
+ */
+export function toLocalDateString(dateStr: string): string {
+  const d = toLocalDate(dateStr);
+  return fnsFormat(d, 'yyyy-MM-dd');
+}
+
 /**
  * Format a date string to a user-friendly format.
  */
@@ -36,7 +62,7 @@ export function formatDate(
   locale: string = 'en-GB',
   options?: Intl.DateTimeFormatOptions
 ): string {
-  const date = typeof dateStr === 'string' ? new Date(dateStr) : dateStr;
+  const date = typeof dateStr === 'string' ? toLocalDate(dateStr) : dateStr;
   return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'short',
@@ -49,7 +75,7 @@ export function formatDate(
  * Format a date as relative time (e.g., "2 hours ago").
  */
 export function formatRelativeTime(dateStr: string): string {
-  const date = new Date(dateStr);
+  const date = typeof dateStr === 'string' ? toLocalDate(dateStr) : dateStr;
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffSecs = Math.floor(diffMs / 1000);

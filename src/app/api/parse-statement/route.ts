@@ -14,7 +14,7 @@ Strict Rules:
 - Each transaction must have:
   - "date": YYYY-MM-DD
   - "time": HH:mm (24-hour) or "" if missing
-  - "description": Look for 'รายละเอียด' column not 'รายการ' column. If not found, use the main description column.
+  - "description": CRITICAL — For Thai bank statements (KBank, SCB, etc.), the table has BOTH a 'รายการ' column (generic type like ชำระเงิน/โอนเงิน) AND a 'รายละเอียด' column (detailed info with ref codes, merchant names, account numbers). You MUST use the 'รายละเอียด' column for description, NEVER the 'รายการ' column. The 'รายละเอียด' column is usually the rightmost/widest column. If 'รายละเอียด' is not present, use the most detailed description column available.
   - "amount": Positive number (float). ABSOLUTELY NO NEGATIVE SIGNS or commas.
   - "type": "income" (if amount has a minus sign in the image, e.g. -500.00) or "expense" (if amount is positive). Default to "expense".
 

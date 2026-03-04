@@ -16,6 +16,7 @@ import {
   useDeleteTransaction,
 } from "@/features/expenses";
 import { useTranslation } from "@/shared/lib/i18n";
+import { toLocalDateString } from "@/shared/lib/formatters";
 
 const PAGE_SIZE = 20;
 
@@ -86,12 +87,13 @@ export default function TransactionsPage() {
     try {
       await createMutation.mutateAsync({
         accountId: data.accountId,
-        categoryId: data.categoryId,
+        categoryId: data.categoryId || null,
         type: data.type,
         amount: data.amount,
         description: data.description,
         transactionDate: data.transactionDate,
         source: StatementSource.MANUAL,
+        destinationAccountId: data.destinationAccountId || null,
       });
       setFormOpen(false);
     } catch (error) {
@@ -105,7 +107,11 @@ export default function TransactionsPage() {
     try {
       await updateMutation.mutateAsync({
         id: editTarget.id,
-        input: { ...data },
+        input: {
+          ...data,
+          categoryId: data.categoryId || null,
+          destinationAccountId: data.destinationAccountId || null,
+        },
       });
       setFormOpen(false);
       setEditTarget(null);
@@ -403,7 +409,9 @@ export default function TransactionsPage() {
                   type: editTarget.type,
                   amount: editTarget.amount,
                   description: editTarget.description || "",
-                  transactionDate: editTarget.transactionDate.split("T")[0],
+                  transactionDate: toLocalDateString(
+                    editTarget.transactionDate,
+                  ),
                 }
               : undefined
           }

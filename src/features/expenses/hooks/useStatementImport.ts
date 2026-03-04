@@ -197,6 +197,7 @@ export function useStatementImport(): UseStatementImportReturn {
                         transactionDate,
                         source: StatementSource.LLM_IMPORT,
                         referenceId: `llm-${tx.date}-${tx.amount}-${i}-${Date.now()}`,
+                        destinationAccountId: null,
                     };
                 });
 
